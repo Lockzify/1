@@ -1,0 +1,34 @@
+/* Header/Navbar auf Mobilgeräten: kompakt, Logo gut sichtbar */
+@media screen and (max-width: 991px) {
+  .navbar {
+    min-height: 56px;
+    padding: 10px 16px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  .navbar .container.nav {
+    min-height: 40px;
+    align-items: center;
+  }
+  .navbar .logo-wrapper,
+  .navbar .brand {
+    align-items: center;
+  }
+  .navbar .logo-svg img {
+    max-height: 52px;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .navbar {
+    min-height: 52px;
+    padding: 8px 12px;
+  }
+  .navbar .logo-svg img {
+    max-height: 46px;
+  }
+}
