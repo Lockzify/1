@@ -1239,10 +1239,62 @@
       }
     }
   </style>
-  <!-- Calendly Inline-Widget Beginn -->
-  <div id="kontakt" class="calendly-inline-widget" data-url="https://calendly.com/adlions/kennenlernen-mit-adlions?hide_gdpr_banner=1&background_color=252525&text_color=dedede&primary_color=e67b33" style="min-width:320px;height:700px;"></div>
-  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-  <!-- Calendly Inline-Widget Ende -->
+  <section id="kontakt" class="section">
+    <div class="w-layout-blockcontainer container w-container">
+      <header class="centred" style="margin-bottom: 2rem;">
+        <h2 class="main-heading centred">Jetzt <span class="orange">anfragen</span></h2>
+        <p class="paragraph">Kurz ein paar Fragen – dann melden wir uns bei dir.</p>
+      </header>
+      <form id="anfrage-funnel" class="anfrage-funnel-form" action="https://api.web3forms.com/submit" method="POST" style="max-width: 600px; margin: 0 auto;">
+        <input type="hidden" name="access_key" value="d7aa098b-83d4-4a29-8a31-a336d22d12da">
+        <input type="hidden" name="subject" value="Neue Anfrage von adlions.de (Hamburg)">
+        <div class="funnel-step master-card" data-step="1" style="padding: 2rem 2.5rem; border-radius: 20px; margin-bottom: 1rem;">
+          <p class="h3" style="margin-bottom: 1.25rem;">Für welche Dienstleistung interessierst du dich?</p>
+          <p class="paragraph small-wrapp" style="margin-bottom: 1.25rem; opacity: 0.9;">Mehrfachauswahl möglich.</p>
+          <div class="funnel-options funnel-options-grid-leistungen">
+            <div class="funnel-options-row1">
+              <label class="funnel-option"><input type="checkbox" name="dienstleistung" value="Website"> <span>Website</span></label>
+              <label class="funnel-option"><input type="checkbox" name="dienstleistung" value="SEO"> <span>SEO</span></label>
+              <label class="funnel-option"><input type="checkbox" name="dienstleistung" value="Social Media"> <span>Social Media</span></label>
+            </div>
+            <div class="funnel-options-row2">
+              <label class="funnel-option"><input type="checkbox" name="dienstleistung" value="Neukundengewinnung"> <span>Neukundengewinnung</span></label>
+              <label class="funnel-option"><input type="checkbox" name="dienstleistung" value="Mitarbeitergewinnung"> <span>Mitarbeitergewinnung</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="funnel-step master-card" data-step="2" style="padding: 2rem 2.5rem; border-radius: 20px; margin-bottom: 1rem; display: none;">
+          <p class="h3" style="margin-bottom: 1.25rem;">Wann soll dein Projekt durchgeführt werden?</p>
+          <div class="funnel-zeit-options">
+            <label class="funnel-zeit-option"><input type="radio" name="zeitrahmen" value="Sofort"> <span>Sofort</span></label>
+            <label class="funnel-zeit-option"><input type="radio" name="zeitrahmen" value="In 1–3 Monaten"> <span>In 1–3 Monaten</span></label>
+            <label class="funnel-zeit-option"><input type="radio" name="zeitrahmen" value="In 3–6 Monaten"> <span>In 3–6 Monaten</span></label>
+            <label class="funnel-zeit-option"><input type="radio" name="zeitrahmen" value="Später / unklar"> <span>Später / noch unklar</span></label>
+          </div>
+        </div>
+        <div class="funnel-step master-card" data-step="3" style="padding: 2rem 2.5rem; border-radius: 20px; margin-bottom: 1rem; display: none;">
+          <p class="h3" style="margin-bottom: 1rem;">Wie lautet dein Name?</p>
+          <input type="text" name="name" required placeholder="Dein Name" class="funnel-input" style="width: 100%; padding: 1rem; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: inherit; font-size: 1rem;">
+        </div>
+        <div class="funnel-step master-card" data-step="4" style="padding: 2rem 2.5rem; border-radius: 20px; margin-bottom: 1rem; display: none;">
+          <p class="h3" style="margin-bottom: 1rem;">Wie dürfen wir dich kontaktieren?</p>
+          <input type="email" name="email" required placeholder="E-Mail" class="funnel-input" style="width: 100%; padding: 1rem; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: inherit; font-size: 1rem; margin-bottom: 0.75rem;">
+          <input type="tel" name="telefon" placeholder="Telefon (optional)" class="funnel-input" style="width: 100%; padding: 1rem; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: inherit; font-size: 1rem; margin-bottom: 1.25rem;">
+          <label class="funnel-datenschutz-label">
+            <input type="checkbox" name="datenschutz_akzeptiert" id="funnel-datenschutz-check" required>
+            <span>Ich stimme der <a href="/datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> zu.</span>
+          </label>
+        </div>
+        <div class="funnel-nav centred">
+          <button type="button" class="funnel-btn-back tag-bage" id="funnel-back">← Zurück</button>
+          <button type="button" class="funnel-btn-next tag-bage" id="funnel-next">Weiter →</button>
+          <button type="submit" class="tag-bage funnel-btn-submit" id="funnel-submit">Anfrage absenden</button>
+        </div>
+      </form>
+    </div>
+  </section>
+  <style>.funnel-options-grid-leistungen{display:flex;flex-direction:column;gap:1rem;max-width:100%;}.funnel-options-row1{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:1rem;}.funnel-options-row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;}@media (max-width:600px){.funnel-options-row1{grid-template-columns:1fr;}.funnel-options-row2{grid-template-columns:1fr;}}.funnel-option{display:flex;align-items:center;justify-content:flex-start;min-height:56px;padding:1rem 1.25rem;border:2px solid rgba(255,255,255,0.2);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s;text-align:left;}.funnel-option input{margin-right:.5rem;flex-shrink:0;}.funnel-option:has(input:checked){border-color:#e67b33!important;background:rgba(230,123,51,0.12)!important;}.funnel-zeit-options{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}@media (max-width:480px){.funnel-zeit-options{grid-template-columns:1fr;}}.funnel-zeit-option{display:flex;align-items:center;justify-content:flex-start;min-height:52px;padding:1rem 1.25rem;border:2px solid rgba(255,255,255,0.25);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s;text-align:left;background:rgba(0,0,0,0.2);}.funnel-zeit-option input{margin-right:.5rem;flex-shrink:0;}.funnel-zeit-option:has(input:checked){border-color:#e67b33!important;background:rgba(230,123,51,0.12)!important;}.funnel-input::placeholder{color:rgba(255,255,255,0.5);}.funnel-input:focus{border-color:#e67b33!important;outline:none;}.funnel-nav{display:flex;flex-direction:row;gap:1rem;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:1.5rem;}.funnel-nav .tag-bage{padding:.75rem 1.5rem;cursor:pointer;border:none;border-radius:12px;font-size:1rem;}.funnel-nav .funnel-btn-back{display:none;}.funnel-nav .funnel-btn-next{display:inline-block;}.funnel-nav .funnel-btn-submit{display:none;}.funnel-nav.step-0 .funnel-btn-back{display:none;}.funnel-nav.step-0 .funnel-btn-next{display:inline-block;}.funnel-nav.step-0 .funnel-btn-submit{display:none;}.funnel-nav.step-middle .funnel-btn-back{display:inline-block;}.funnel-nav.step-middle .funnel-btn-next{display:inline-block;}.funnel-nav.step-middle .funnel-btn-submit{display:none;}.funnel-nav.step-last .funnel-btn-back{display:inline-block;}.funnel-nav.step-last .funnel-btn-next{display:none;}.funnel-nav.step-last .funnel-btn-submit{display:inline-block;}.funnel-datenschutz-label{display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;color:rgba(255,255,255,0.95);font-size:.95rem}.funnel-datenschutz-label input{margin-top:.25rem;flex-shrink:0}.funnel-datenschutz-label a{color:#e67b33;text-decoration:underline}</style>
+  <script>(function(){var form=document.getElementById('anfrage-funnel');var steps=form.querySelectorAll('.funnel-step');var nav=form.querySelector('.funnel-nav');var backBtn=document.getElementById('funnel-back');var nextBtn=document.getElementById('funnel-next');var submitBtn=document.getElementById('funnel-submit');var current=0;function showStep(i){steps.forEach(function(s,j){s.style.display=j===i?'block':'none';});nav.className='funnel-nav centred'+(i===0?' step-0':i===steps.length-1?' step-last':' step-middle');current=i;}nextBtn.onclick=function(){if(current===0){var checked=form.querySelectorAll('input[name="dienstleistung"]:checked');if(checked.length===0){alert('Bitte wähle mindestens eine Dienstleistung.');return;}}if(current===1){var zeit=form.querySelector('input[name="zeitrahmen"]:checked');if(!zeit){alert('Bitte wähle einen Zeitrahmen.');return;}}if(current<steps.length-1)showStep(current+1);};backBtn.onclick=function(){if(current>0)showStep(current-1);};form.onsubmit=function(e){var datenschutzCheck=document.getElementById('funnel-datenschutz-check');if(datenschutzCheck&&!datenschutzCheck.checked){e.preventDefault();alert('Bitte stimme der Datenschutzerklärung zu, um die Anfrage abzusenden.');return;}submitBtn.disabled=true;submitBtn.textContent='Wird gesendet…';};showStep(0);})();</script>
   <div class="horizantol-gradient-line for-footer"></div>
   <footer class="section footer">
     <div class="w-layout-blockcontainer container for-footer w-container"><a href="/" aria-current="page"
@@ -1270,6 +1322,14 @@
   </footer>
 
  
+  <div id="datenschutz-popup" class="datenschutz-popup" aria-hidden="true">
+    <div class="datenschutz-popup-inner">
+      <p class="datenschutz-popup-text">Wir nutzen Cookies und verarbeiten Daten. Mit Klick auf „Akzeptieren“ erklären Sie sich mit unserer <a href="/datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> einverstanden.</p>
+      <button type="button" class="datenschutz-popup-btn tag-bage" id="datenschutz-popup-akzeptieren">Akzeptieren</button>
+    </div>
+  </div>
+  <style>.datenschutz-popup{position:fixed;bottom:0;left:0;right:0;z-index:9999;padding:1.25rem 1.5rem;background:linear-gradient(180deg,rgba(25,25,28,0.99) 0%,rgba(15,15,18,0.99) 100%);border-top:4px solid #e67b33;box-shadow:0 -8px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(230,123,51,0.2);transform:translateY(100%);transition:transform .4s ease}.datenschutz-popup.is-visible{transform:translateY(0);animation:datenschutz-popup-pulse 2.5s ease-in-out infinite}@keyframes datenschutz-popup-pulse{0%,100%{box-shadow:0 -8px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(230,123,51,0.2)}50%{box-shadow:0 -8px 32px rgba(0,0,0,0.5),0 0 20px rgba(230,123,51,0.35)}}.datenschutz-popup-inner{max-width:920px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.25rem}.datenschutz-popup-text{margin:0;color:#fff;font-size:1rem;line-height:1.55;flex:1 1 300px;font-weight:500}.datenschutz-popup-text a{color:#e67b33;text-decoration:underline;font-weight:600}.datenschutz-popup-btn{padding:.9rem 1.75rem;background:#e67b33;color:#fff;border:none;border-radius:12px;font-size:1.05rem;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(230,123,51,0.4);transition:background .2s,box-shadow .2s}.datenschutz-popup-btn:hover{background:#d96b28;box-shadow:0 6px 20px rgba(230,123,51,0.5)}</style>
+  <script>(function(){var COOKIE_NAME='adlions_datenschutz_akzeptiert',COOKIE_DAYS=365;function setAccepted(){var d=new Date();d.setTime(d.getTime()+COOKIE_DAYS*24*60*60*1000);document.cookie=COOKIE_NAME+'=1; path=/; expires='+d.toUTCString()+'; SameSite=Lax';try{localStorage.setItem(COOKIE_NAME,'1')}catch(e){}}function isAccepted(){if(document.cookie.indexOf(COOKIE_NAME+'=1')!==-1)return true;try{return localStorage.getItem(COOKIE_NAME)==='1'}catch(e){return false}}var popup=document.getElementById('datenschutz-popup'),btn=document.getElementById('datenschutz-popup-akzeptieren');if(popup&&btn){if(!isAccepted()){popup.classList.add('is-visible');popup.setAttribute('aria-hidden','false')}btn.onclick=function(){setAccepted();popup.classList.remove('is-visible');popup.setAttribute('aria-hidden','true')}}})();</script>
   <div style="opacity:0;display:none" class="modal-wrapper">
 
     <div data-w-id="e2962fb3-13f4-13b0-c913-d1fe9c04dc69" class="overlay-modal"></div>

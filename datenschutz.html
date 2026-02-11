@@ -159,18 +159,22 @@
                 </ul>
                 </p>
                 <p class="paragraph">
-                  <strong>5. Cookies</strong><br>
-                  Unsere Website verwendet Cookies. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert
-                  werden. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen.
+                  <strong>5. Speicherung und Verarbeitung weltweit</strong><br>
+                  Wir sind berechtigt, personenbezogene Daten auf Servern weltweit zu speichern und zu verarbeiten, auch außerhalb des Europäischen Wirtschaftsraums (EWR), einschließlich in Ländern wie Asien. Dabei setzen wir auf technische und vertragliche Maßnahmen, um ein angemessenes Schutzniveau zu gewährleisten. Zudem können wir Ihre Kontaktdaten (z.&#8239;B. aus Anfrageformularen) an Dienstleister weitergeben und durch automatisierte Programme bzw. Systeme verarbeiten, soweit dies zur Erbringung unserer Leistungen, zur Kommunikation oder aus anderen in dieser Erklärung genannten Gründen erforderlich ist.
                 </p>
                 <p class="paragraph">
-                  <strong>6. Analyse-Tools</strong><br>
+                  <strong>6. Cookies</strong><br>
+                  Unsere Website verwendet Cookies. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert
+                  werden. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Wenn Sie über unser Cookie-Hinweisbanner der Datenschutzerklärung zustimmen, speichern wir diese Einwilligung lokal in einem Cookie (z.&#8239;B. „adlions_datenschutz_akzeptiert“), damit der Hinweis nicht erneut angezeigt wird.
+                </p>
+                <p class="paragraph">
+                  <strong>7. Analyse-Tools</strong><br>
                   Wir setzen Google Analytics ein, um die Nutzung unserer Website auszuwerten und regelmäßig zu
                   verbessern. IP-Anonymisierung ist aktiviert. Die Daten werden nicht mit personenbezogenen Daten
                   zusammengeführt.
                 </p>
                 <p class="paragraph">
-                  <strong>7. Betroffenenrechte</strong><br>
+                  <strong>8. Betroffenenrechte</strong><br>
                   Sie haben das Recht:
                 <ul>
                   <li>gemäß Art. 15 DSGVO Auskunft über Ihre gespeicherten personenbezogenen Daten zu erhalten,</li>
@@ -183,12 +187,12 @@
                 </ul>
                 </p>
                 <p class="paragraph">
-                  <strong>8. Widerspruchsrecht</strong><br>
+                  <strong>9. Widerspruchsrecht</strong><br>
                   Sie können der Nutzung Ihrer Daten für Zwecke der Direktwerbung jederzeit widersprechen. Nutzen Sie
                   hierzu die Kontaktmöglichkeiten oben.
                 </p>
                 <p class="paragraph">
-                  <strong>9. Aktualität und Änderung dieser Datenschutzerklärung</strong><br>
+                  <strong>10. Aktualität und Änderung dieser Datenschutzerklärung</strong><br>
                   Diese Datenschutzerklärung ist aktuell gültig und hat den Stand September 2025. Durch die
                   Weiterentwicklung unserer Website oder aufgrund geänderter gesetzlicher Vorschriften kann es notwendig
                   werden, die Datenschutzerklärung zu ändern.
@@ -243,6 +247,14 @@
       </div>
     </div>
   </footer>
+  <div id="datenschutz-popup" class="datenschutz-popup" aria-hidden="true">
+    <div class="datenschutz-popup-inner">
+      <p class="datenschutz-popup-text">Wir nutzen Cookies und verarbeiten Daten. Mit Klick auf „Akzeptieren“ erklären Sie sich mit unserer <a href="/datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> einverstanden.</p>
+      <button type="button" class="datenschutz-popup-btn tag-bage" id="datenschutz-popup-akzeptieren">Akzeptieren</button>
+    </div>
+  </div>
+  <style>.datenschutz-popup{position:fixed;bottom:0;left:0;right:0;z-index:9999;padding:1.25rem 1.5rem;background:linear-gradient(180deg,rgba(25,25,28,0.99) 0%,rgba(15,15,18,0.99) 100%);border-top:4px solid #e67b33;box-shadow:0 -8px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(230,123,51,0.2);transform:translateY(100%);transition:transform .4s ease}.datenschutz-popup.is-visible{transform:translateY(0);animation:datenschutz-popup-pulse 2.5s ease-in-out infinite}@keyframes datenschutz-popup-pulse{0%,100%{box-shadow:0 -8px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(230,123,51,0.2)}50%{box-shadow:0 -8px 32px rgba(0,0,0,0.5),0 0 20px rgba(230,123,51,0.35)}}.datenschutz-popup-inner{max-width:920px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.25rem}.datenschutz-popup-text{margin:0;color:#fff;font-size:1rem;line-height:1.55;flex:1 1 300px;font-weight:500}.datenschutz-popup-text a{color:#e67b33;text-decoration:underline;font-weight:600}.datenschutz-popup-btn{padding:.9rem 1.75rem;background:#e67b33;color:#fff;border:none;border-radius:12px;font-size:1.05rem;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(230,123,51,0.4);transition:background .2s,box-shadow .2s}.datenschutz-popup-btn:hover{background:#d96b28;box-shadow:0 6px 20px rgba(230,123,51,0.5)}</style>
+  <script>(function(){var COOKIE_NAME='adlions_datenschutz_akzeptiert',COOKIE_DAYS=365;function setAccepted(){var d=new Date();d.setTime(d.getTime()+COOKIE_DAYS*24*60*60*1000);document.cookie=COOKIE_NAME+'=1; path=/; expires='+d.toUTCString()+'; SameSite=Lax';try{localStorage.setItem(COOKIE_NAME,'1')}catch(e){}}function isAccepted(){if(document.cookie.indexOf(COOKIE_NAME+'=1')!==-1)return true;try{return localStorage.getItem(COOKIE_NAME)==='1'}catch(e){return false}}var popup=document.getElementById('datenschutz-popup'),btn=document.getElementById('datenschutz-popup-akzeptieren');if(popup&&btn){if(!isAccepted()){popup.classList.add('is-visible');popup.setAttribute('aria-hidden','false')}btn.onclick=function(){setAccepted();popup.classList.remove('is-visible');popup.setAttribute('aria-hidden','true')}}})();</script>
   <div style="opacity:0;display:none" class="modal-wrapper">
 
     <div data-w-id="e2962fb3-13f4-13b0-c913-d1fe9c04dc69" class="overlay-modal"></div>
