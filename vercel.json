@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "framework": null,
+  "redirects": [
+    { "source": "/checkout", "destination": "/", "permanent": true },
+    { "source": "/contact", "destination": "/", "permanent": true },
+    { "source": "/features", "destination": "/", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
