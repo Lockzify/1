@@ -1270,6 +1270,9 @@
     .datenschutz-popup-text a { color: #e67b33; text-decoration: underline; font-weight: 600; }
     .datenschutz-popup-btn { padding: 0.9rem 1.75rem; background: #e67b33; color: #fff; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 14px rgba(230,123,51,0.4); transition: background 0.2s, box-shadow 0.2s; }
     .datenschutz-popup-btn:hover { background: #d96b28; box-shadow: 0 6px 20px rgba(230,123,51,0.5); }
+    @media (max-width: 767px) {
+      .datenschutz-popup { bottom: 1rem; padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 12px)); left: 0.5rem; right: 0.5rem; max-height: 45vh; overflow-y: auto; border-radius: 16px 16px 0 0; }
+    }
   </style>
   <script>
     (function() {
