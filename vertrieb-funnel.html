@@ -45,7 +45,7 @@
   <section class="section perspective-funnel-section">
     <div class="w-layout-blockcontainer container w-container">
       <header class="centred" style="margin-bottom: 2.5rem;">
-        <h2 class="main-heading centred">Bewerbung <span class="orange">Vertriebsmitarbeiter</span></h2>
+        <h2 class="main-heading centred">Bewerbung <span class="orange">Vertrieb</span></h2>
         <p class="paragraph">Kurz ein paar Fragen – dann melden wir uns bei dir.</p>
         <div class="perspective-funnel-dots" aria-hidden="true">
           <span class="perspective-dot" data-dot="0"></span>
@@ -66,7 +66,7 @@
 
       <form id="vertrieb-funnel" class="anfrage-funnel-form perspective-funnel-form" action="https://api.web3forms.com/submit" method="POST">
         <input type="hidden" name="access_key" value="d7aa098b-83d4-4a29-8a31-a336d22d12da">
-        <input type="hidden" name="subject" value="Bewerbung Vertriebsmitarbeiter – adlions.de">
+        <input type="hidden" name="subject" value="Bewerbung Vertrieb – adlions.de">
         <input type="hidden" name="quelle" value="Vertrieb-Funnel Karriere">
 
         <div class="perspective-funnel-scene">
@@ -695,6 +695,7 @@
         scene.style.minHeight = (h + 60) + 'px';
       }
       function showStep(i) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         steps.forEach(function(s, j) {
           s.style.display = 'block';
           s.classList.remove('is-behind', 'is-next');

@@ -1,3 +1,8 @@
+/* Horizontal scrolling deaktivieren */
+html, body {
+  overflow-x: hidden;
+}
+
 /* Header/Navbar auf Mobilgeräten: kompakt, Logo gut sichtbar */
 @media screen and (max-width: 991px) {
   .navbar {
