@@ -4,6 +4,13 @@ html, body {
   overflow-y: auto;
 }
 
+/* Datenschutz-Popup auf Handy ausblenden */
+@media (max-width: 767px) {
+  .datenschutz-popup {
+    display: none !important;
+  }
+}
+
 /* Header/Navbar auf Mobilgeräten: kompakt, Logo gut sichtbar */
 @media screen and (max-width: 991px) {
   .navbar {

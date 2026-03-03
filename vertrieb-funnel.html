@@ -539,6 +539,17 @@
     .perspective-funnel-form { overflow: visible; }
     .perspective-funnel-section .w-container,
     #vertrieb-funnel { overflow: visible; max-height: none; }
+    /* Nur ein Scroll (Seite): keine inneren Scroll-Container */
+    .perspective-funnel-section,
+    .perspective-funnel-section .w-container,
+    .perspective-funnel-form,
+    .perspective-funnel-scene,
+    .perspective-funnel-card,
+    .perspective-card-inner {
+      overflow: visible !important;
+      overflow-y: visible !important;
+      max-height: none !important;
+    }
     .perspective-funnel-scene {
       perspective: 1400px;
       perspective-origin: 50% 20%;
