@@ -8,10 +8,6 @@
     { "source": "/contact", "destination": "/", "permanent": true },
     { "source": "/features", "destination": "/", "permanent": true }
   ],
-<<<<<<< HEAD
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-=======
   "headers": [
     {
       "source": "/unb_vollmacht-2.pdf",
@@ -20,6 +16,5 @@
         { "key": "Content-Disposition", "value": "attachment; filename=\"unb_vollmacht-2.pdf\"" }
       ]
     }
->>>>>>> 731a6dc (Add BAFA form page and assets)
   ]
 }
