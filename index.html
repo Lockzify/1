@@ -170,6 +170,123 @@
         display: none;
       }
     }
+
+    /* Hero: eine Bildschirmhöhe unter der Nav – Titel größer, Logo-Slider unten im ersten Screen */
+    .home-hero.section.main {
+      --adl-nav-h: clamp(52px, 11vw, 86px);
+      /* Volle Viewport-Höhe unter der Nav (100vh/svh) */
+      min-height: calc(100svh - var(--adl-nav-h));
+      min-height: calc(100dvh - var(--adl-nav-h));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+      background-color: transparent !important;
+      /* Logo-Slider höher im ersten Screen */
+      padding-bottom: clamp(2rem, 7vh, 4.75rem);
+    }
+    .home-hero .main-bg {
+      position: absolute !important;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Unterkante des Bildes = Unterkante des Hero (100vh-Bereich); Skalierung von unten */
+      object-position: center bottom;
+      transform: scale(0.84);
+      transform-origin: center bottom;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .home-hero .background-video,
+    .home-hero .background-video-two {
+      position: absolute !important;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      /* Unten ausblenden, damit dasselbe Hero-Hintergrundbild (main-bg) hinter dem Logo-Slider sichtbar ist */
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 52%, rgba(0, 0, 0, 0.4) 72%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 52%, rgba(0, 0, 0, 0.4) 72%, transparent 100%);
+    }
+    .home-hero .container.main {
+      position: relative;
+      z-index: 2;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      max-width: min(1100px, 100%);
+      padding-left: clamp(1rem, 4vw, 2rem) !important;
+      padding-right: clamp(1rem, 4vw, 2rem) !important;
+      padding-top: clamp(0.75rem, 3vh, 3rem);
+      padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
+    }
+    .home-hero .main-heading.video-bg {
+      font-size: clamp(2.85rem, 8vw, 5.75rem) !important;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin-top: 0;
+      margin-bottom: 0.45em;
+    }
+    .home-hero .tag-bage > div {
+      font-size: clamp(1rem, 2.4vw, 1.45rem) !important;
+      line-height: 1.4;
+      padding: 0.55em 1.15em !important;
+    }
+    .home-hero > .section,
+    .home-hero .home-hero__marquee {
+      position: relative;
+      z-index: 2;
+      flex: 0 0 auto;
+      margin-top: auto;
+      width: 100%;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      background: transparent !important;
+      background-color: transparent !important;
+      /* Etwas weiter nach oben */
+      transform: translateY(calc(-1 * clamp(1rem, 3.2vh, 2.75rem)));
+    }
+    .home-hero > .section .w-container {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+    .home-hero .home-partner-marquee {
+      padding: 0.85rem 0 1.1rem;
+      background: transparent !important;
+      position: relative;
+    }
+    .home-hero .home-partner-marquee__viewport {
+      transform: rotateX(9deg);
+    }
+    .home-hero .home-partner-marquee__logo img {
+      height: clamp(34px, 4.2vh, 50px);
+      max-width: min(320px, 32vw);
+    }
+    @media (max-width: 767px) {
+      .home-hero.section.main {
+        --adl-nav-h: 56px;
+        min-height: calc(100svh - var(--adl-nav-h));
+      }
+      .home-hero .main-heading.video-bg {
+        font-size: clamp(2.35rem, 10.5vw, 3.35rem) !important;
+      }
+      .home-hero .home-partner-marquee__logo img {
+        height: 28px;
+        max-width: 40vw;
+      }
+    }
+    @media (max-width: 479px) {
+      .home-hero .tag-bage > div {
+        font-size: 0.92rem !important;
+      }
+    }
   </style>
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous" />
@@ -233,8 +350,8 @@
       </div>
     </div>
   </div>
-  <section data-wf--main--variant="base" data-w-id="4038ccb4-19ad-cbb4-5777-8312ad899083"
-    class="section main"><img src="images/ew.avif" loading="eager" data-w-id="8b95294d-43b9-d389-531e-bb20e3ee5491"
+  <section id="home-hero" data-wf--main--variant="base" data-w-id="4038ccb4-19ad-cbb4-5777-8312ad899083"
+    class="section main home-hero"><img src="images/ew.avif" loading="eager" data-w-id="8b95294d-43b9-d389-531e-bb20e3ee5491"
       sizes="(max-width: 3106px) 100vw, 3106px" alt="AdLions – Performance Marketing auf Beteiligung"
       srcset="images/ew-p-500.webp 500w, images/ew-p-800.webp 800w, images/ew-p-1080.webp 1080w, images/ew-p-1600.webp 1600w, images/ew.avif 3106w"
       class="main-bg" />
@@ -279,7 +396,7 @@
           data-wf-ignore="true" />
       </video></div>
 
-    <section class="section" >
+    <section class="section home-hero__marquee" aria-label="Partner-Logos">
       <div class="w-layout-blockcontainer container centred w-container">
         <div class="home-partner-marquee" aria-label="Logo-Leiste">
           <div class="home-partner-marquee__viewport">
