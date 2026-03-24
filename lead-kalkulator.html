@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lead-Kalkulator – AdLions</title>
+  <meta name="description"
+    content="Spielwiese: Tägliches Werbebudget, CPL, Auftragswert und Provision (%) – unverbindlich und interaktiv." />
+  <link href="bilder/adlions.webp" rel="icon" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #06080f;
+      --bg-card: rgba(18, 22, 36, 0.72);
+      --bg-card-solid: #12162a;
+      --border: rgba(255, 140, 66, 0.22);
+      --orange: #ff8c42;
+      --orange-dim: rgba(255, 140, 66, 0.15);
+      --orange-glow: rgba(255, 140, 66, 0.45);
+      --text: #f4f5f7;
+      --text-muted: #9aa3b8;
+      --success: #5ee4a8;
+      --track: rgba(255, 255, 255, 0.08);
+      --radius: 18px;
+      --font-display: "Bebas Neue", Impact, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg-deep);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 70% at 12% -20%, rgba(255, 140, 66, 0.18), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 88% 100%, rgba(94, 228, 168, 0.08), transparent 45%),
+        radial-gradient(ellipse 60% 40% at 50% 50%, rgba(99, 102, 241, 0.06), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 1.25rem clamp(1rem, 4vw, 2rem) 3rem;
+    }
+
+    /* Header */
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .top a.logo-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      opacity: 0.95;
+      transition: opacity 0.2s;
+    }
+
+    .top a.logo-link:hover {
+      opacity: 1;
+    }
+
+    .top img.logo {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    .top .meta {
+      text-align: right;
+    }
+
+    .top .meta span {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .top .meta strong {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--orange);
+      letter-spacing: 0.04em;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 9vw, 4.5rem);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      margin: 0 0 0.75rem;
+      text-wrap: balance;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--orange);
+      text-shadow: 0 0 40px var(--orange-glow);
+    }
+
+    .hero p.lead {
+      margin: 0 auto;
+      max-width: 34rem;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1.25rem, 3vw, 2rem);
+      align-items: start;
+    }
+
+    @media (max-width: 920px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius);
+      padding: clamp(1.25rem, 3vw, 1.75rem);
+      box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .panel h2 {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin: 0 0 0.35rem;
+      color: var(--text);
+    }
+
+    .panel .sub {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin: 0 0 1.5rem;
+      line-height: 1.45;
+    }
+
+    /* Slider row */
+    .field {
+      margin-bottom: 1.35rem;
+    }
+
+    .field:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .field-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .field-head label {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .field-head output {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--orange);
+      white-space: nowrap;
+    }
+
+    .field-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: -0.25rem 0 0.55rem;
+      line-height: 1.35;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--orange) 0%, var(--orange) var(--pct, 0%), var(--track) var(--pct, 0%));
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fff 0%, #e8e8e8 100%);
+      border: 2px solid var(--orange);
+      box-shadow:
+        0 0 0 4px var(--orange-dim),
+        0 4px 14px rgba(0, 0, 0, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="range"]:hover::-webkit-slider-thumb {
+      transform: scale(1.08);
+      box-shadow:
+        0 0 0 6px var(--orange-dim),
+        0 6px 18px rgba(255, 140, 66, 0.25);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fff 0%, #e8e8e8 100%);
+      border: 2px solid var(--orange);
+      box-shadow: 0 0 0 4px var(--orange-dim);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 8px;
+      border-radius: 99px;
+      background: var(--track);
+    }
+
+    /* Results */
+    .results-hero {
+      background: linear-gradient(135deg, rgba(255, 140, 66, 0.12) 0%, transparent 55%),
+        var(--bg-card-solid);
+      border-color: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .results-hero::after {
+      content: "";
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 60%;
+      height: 120%;
+      background: radial-gradient(circle, var(--orange-dim) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .results-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 480px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .kpi {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+    }
+
+    .kpi .kpi-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .kpi .kpi-value {
+      font-size: 1.45rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .kpi .kpi-value.highlight {
+      color: var(--success);
+      text-shadow: 0 0 28px rgba(94, 228, 168, 0.35);
+    }
+
+    .kpi .kpi-value.accent {
+      color: var(--orange);
+    }
+
+    .kpi.kpi-wide {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+
+    .kpi.kpi-wide .kpi-value {
+      font-size: 1.25rem;
+    }
+
+    /* Funnel */
+    .funnel-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin: 1.25rem 0 0.65rem;
+    }
+
+    .funnel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .funnel-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .funnel-bar-wrap {
+      height: 38px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .funnel-bar {
+      height: 100%;
+      border-radius: 9px;
+      min-width: 4px;
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      background: linear-gradient(90deg, var(--orange), #ffb347);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .funnel-row:nth-child(2) .funnel-bar {
+      background: linear-gradient(90deg, #c97bff, var(--orange));
+    }
+
+    .funnel-row:nth-child(3) .funnel-bar {
+      background: linear-gradient(90deg, var(--success), #3ec995);
+    }
+
+    .funnel-num {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.95rem;
+      min-width: 6.5rem;
+      text-align: right;
+      color: var(--text);
+    }
+
+    .funnel-label-small {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+      margin-top: -0.2rem;
+    }
+
+    /* Branchen-Orientierung Objektakquise */
+    .facts-benchmark {
+      margin-top: clamp(1.25rem, 3vw, 1.75rem);
+    }
+
+    .facts-benchmark .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem 1.25rem;
+      margin-top: 0.35rem;
+    }
+
+    .facts-benchmark .facts-grid--two {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 560px) {
+      .facts-benchmark .facts-grid--two {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .facts-benchmark article.facts-stat {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+      padding: 1.25rem 1.2rem 1.15rem;
+    }
+
+    .facts-benchmark .facts-stat-kicker {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .facts-benchmark .facts-stat-main {
+      font-family: var(--font-display);
+      font-size: clamp(2.35rem, 7.5vw, 3.85rem);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 0.95;
+      color: var(--text);
+      margin: 0 0 0.55rem;
+      text-shadow: 0 0 42px rgba(255, 140, 66, 0.12);
+    }
+
+    .facts-benchmark .facts-stat-main em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .facts-benchmark .facts-stat .facts-stat-hook {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.35;
+      color: rgba(244, 245, 247, 0.82);
+      font-weight: 500;
+    }
+
+    .facts-benchmark .facts-disclaimer {
+      margin: 1.1rem 0 0;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.74rem;
+      line-height: 1.4;
+      color: var(--text-muted);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="top">
+      <a href="index.html" class="logo-link" title="Zur AdLions-Startseite">
+        <img src="logo/Design ohne Titel-55.webp" alt="AdLions" class="logo" width="200" height="48" />
+      </a>
+      <div class="meta">
+        <span>Internes Tool</span>
+        <strong>Lead-Kalkulator</strong>
+      </div>
+    </header>
+
+    <header class="hero">
+      <h1>Was passiert, wenn du <em>jetzt</em> auf Ads gehst?</h1>
+      <p class="lead">Stell tägliches Werbebudget, Lead-Kosten, Abschlussquote sowie Auftragswert und Provisions-Satz
+        zusammen – die rechte Spalte rechnet mit <strong>30&nbsp;Tagen</strong> × Tagesbudget und zieht danach
+        konservative Abschläge bei Lead-Qualität und Abschlussrisiko ab.</p>
+    </header>
+
+    <div class="layout">
+      <section class="panel" aria-labelledby="controls-heading">
+        <h2 id="controls-heading">Deine Annahmen</h2>
+        <p class="sub">Schieberegler anpassen – die Zahlen rechts aktualisieren sich sofort.</p>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="budget">Tägliches Werbebudget</label>
+            <output id="budget-out" for="budget">35 € / Tag</output>
+          </div>
+          <p class="field-hint">Was du ungefähr pro Tag in Ads (Meta, Google, …) einplanst.</p>
+          <input type="range" id="budget" min="10" max="250" step="5" value="35" aria-valuemin="10"
+            aria-valuemax="250" aria-valuenow="35" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="cpl">Kosten pro Lead (CPL)</label>
+            <output id="cpl-out" for="cpl">50 €</output>
+          </div>
+          <p class="field-hint">Eher vorsichtig kalkulieren: alles inkl. Setup, Tooling und schwächere Tage.</p>
+          <input type="range" id="cpl" min="30" max="100" step="1" value="50" aria-valuemin="30" aria-valuemax="100"
+            aria-valuenow="50" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="conv">Lead → Auftrag (Conversion)</label>
+            <output id="conv-out" for="conv">7 %</output>
+          </div>
+          <p class="field-hint">Realistische Quote – von Lead bis unterschriebenem Auftrag (unabhängig vom CPL).</p>
+          <input type="range" id="conv" min="1" max="20" step="1" value="7" aria-valuemin="1" aria-valuemax="20"
+            aria-valuenow="7" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="dealvalue">Auftragswert (Kaufpreis Objekt)</label>
+            <output id="dealvalue-out" for="dealvalue">380.000 €</output>
+          </div>
+          <p class="field-hint">Typischer Kaufpreis im Segment – lieber unter- als überschätzen.</p>
+          <input type="range" id="dealvalue" min="100000" max="3000000" step="10000" value="380000" aria-valuemin="100000"
+            aria-valuemax="3000000" aria-valuenow="380000" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="provpct">Provision (vom Auftragswert)</label>
+            <output id="provpct-out" for="provpct">4,2 %</output>
+          </div>
+          <p class="field-hint">Konservativer Satz deines Anteils am Kaufpreis (nicht immer volle 7&nbsp;%).</p>
+          <input type="range" id="provpct" min="3" max="7" step="0.1" value="4.2" aria-valuemin="3" aria-valuemax="7"
+            aria-valuenow="4.2" />
+        </div>
+      </section>
+
+      <section class="panel results-hero" aria-labelledby="results-heading">
+        <div class="results-inner">
+          <h2 id="results-heading">Deine Demo-Rechnung</h2>
+          <p class="sub">Monatsbudget = tägliches Budget ×&nbsp;30&nbsp;Tage. Auf die Roh-Leads kommen Abschläge für
+            Qualität und Abschlussrisiko.</p>
+
+          <div class="kpi-grid">
+            <div class="kpi">
+              <div class="kpi-label">Nutzbare Leads (ca.)</div>
+              <div class="kpi-value accent" id="kpi-leads">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Erwartete Aufträge</div>
+              <div class="kpi-value accent" id="kpi-deals">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Provision gesamt (Brutto)</div>
+              <div class="kpi-value highlight" id="kpi-revenue">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Provision ÷ Werbeausgaben</div>
+              <div class="kpi-value" id="kpi-roas">—</div>
+            </div>
+            <div class="kpi kpi-wide">
+              <div class="kpi-label">Werbekosten pro gewonnenem Auftrag</div>
+              <div class="kpi-value accent" id="kpi-cpac">—</div>
+            </div>
+          </div>
+
+          <div class="funnel-title">Funnel auf einen Blick</div>
+          <div class="funnel">
+            <div class="funnel-row">
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" id="bar-budget" style="width: 100%;"></div>
+              </div>
+              <span class="funnel-num" id="txt-budget">—</span>
+            </div>
+            <span class="funnel-label-small">Werbebudget pro Monat (30&nbsp;Tage)</span>
+
+            <div class="funnel-row">
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" id="bar-leads" style="width: 50%;"></div>
+              </div>
+              <span class="funnel-num" id="txt-leads">—</span>
+            </div>
+            <span class="funnel-label-small">Leads (relativ zum Budget-Flow)</span>
+
+            <div class="funnel-row">
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" id="bar-deals" style="width: 25%;"></div>
+              </div>
+              <span class="funnel-num" id="txt-deals">—</span>
+            </div>
+            <span class="funnel-label-small">Geschlossene Aufträge</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel facts-benchmark" aria-labelledby="facts-heading">
+      <h2 id="facts-heading">Konservative Eckwerte Objektakquise</h2>
+      <p class="sub">Zum Einordnen im Rechner – ein fester, vorsichtiger Richtwert je Kennzahl.</p>
+      <div class="facts-grid facts-grid--two">
+        <article class="facts-stat">
+          <div class="facts-stat-kicker">CPL (Verkäufer-Lead, Paid)</div>
+          <p class="facts-stat-main"><em>70 €</em></p>
+          <p class="facts-stat-hook">Konservativer Durchschnitt für Paid-Verkäufer-Leads.</p>
+        </article>
+        <article class="facts-stat">
+          <div class="facts-stat-kicker">Conversion · Lead → Maklerauftrag</div>
+          <p class="facts-stat-main"><em>7 %</em></p>
+          <p class="facts-stat-hook">Unterhalb vieler Best Cases – realistisch für Cold Traffic.</p>
+        </article>
+      </div>
+      <p class="facts-disclaimer">Kein Marktversprechen; eigene CRM-Zahlen schlagen jeden Richtwert.</p>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const DAYS_PER_MONTH = 30;
+      /** Anteil der angefragten Leads, die wirklich pitchbar / qualifiziert sind */
+      const USABLE_LEAD_FACTOR = 0.86;
+      /** Reibung bis zum unterschriebenen Deal (Absagen, Delays, keine Finanzierung) */
+      const CLOSING_FRICTION = 0.9;
+
+      const fmt = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
+      const fmtMoney = (n) => fmt.format(Math.round(n)) + " €";
+      const fmtRatio = (n) => n.toFixed(2).replace(".", ",") + "×";
+      const fmtPctInt = (n) => n + " %";
+      const fmtPctDec = (n) => n.toFixed(1).replace(".", ",") + " %";
+
+      const budgetEl = document.getElementById("budget");
+      const cplEl = document.getElementById("cpl");
+      const convEl = document.getElementById("conv");
+      const dealvalueEl = document.getElementById("dealvalue");
+      const provpctEl = document.getElementById("provpct");
+
+      const outs = {
+        budget: document.getElementById("budget-out"),
+        cpl: document.getElementById("cpl-out"),
+        conv: document.getElementById("conv-out"),
+        dealvalue: document.getElementById("dealvalue-out"),
+        provpct: document.getElementById("provpct-out"),
+      };
+
+      const kpi = {
+        leads: document.getElementById("kpi-leads"),
+        deals: document.getElementById("kpi-deals"),
+        revenue: document.getElementById("kpi-revenue"),
+        roas: document.getElementById("kpi-roas"),
+        cpac: document.getElementById("kpi-cpac"),
+      };
+
+      const bar = {
+        leads: document.getElementById("bar-leads"),
+        deals: document.getElementById("bar-deals"),
+      };
+      const txt = {
+        budget: document.getElementById("txt-budget"),
+        leads: document.getElementById("txt-leads"),
+        deals: document.getElementById("txt-deals"),
+      };
+
+      function setRangeProgress(el) {
+        const min = +el.min;
+        const max = +el.max;
+        const val = +el.value;
+        const pct = max === min ? 0 : ((val - min) / (max - min)) * 100;
+        el.style.setProperty("--pct", pct + "%");
+      }
+
+      function recalc() {
+        const budgetDay = +budgetEl.value;
+        const budgetMonth = budgetDay * DAYS_PER_MONTH;
+        const cpl = +cplEl.value;
+        const convPct = +convEl.value;
+        const dealValue = +dealvalueEl.value;
+        const provPct = +provpctEl.value;
+
+        outs.budget.textContent = fmtMoney(budgetDay) + " / Tag";
+        outs.cpl.textContent = fmtMoney(cpl);
+        outs.conv.textContent = fmtPctInt(convPct);
+        outs.dealvalue.textContent = fmtMoney(dealValue);
+        outs.provpct.textContent = fmtPctDec(provPct);
+
+        budgetEl.setAttribute("aria-valuenow", String(budgetDay));
+        cplEl.setAttribute("aria-valuenow", String(cpl));
+        convEl.setAttribute("aria-valuenow", String(convPct));
+        dealvalueEl.setAttribute("aria-valuenow", String(dealValue));
+        provpctEl.setAttribute("aria-valuenow", String(provPct));
+
+        const provisionPerDeal = dealValue * (provPct / 100);
+        const rawLeads = cpl > 0 ? budgetMonth / cpl : 0;
+        const leads = rawLeads * USABLE_LEAD_FACTOR;
+        const deals = leads * (convPct / 100) * CLOSING_FRICTION;
+        const revenue = deals * provisionPerDeal;
+        const roas = budgetMonth > 0 ? revenue / budgetMonth : 0;
+        const cpac = deals > 0.0001 ? budgetMonth / deals : Infinity;
+
+        kpi.leads.textContent = fmt.format(Math.round(leads)) + " Leads";
+        kpi.deals.textContent =
+          deals < 10 ? deals.toFixed(1).replace(".", ",") + " Aufträge" : fmt.format(Math.round(deals)) + " Aufträge";
+        kpi.revenue.textContent = fmtMoney(revenue);
+        kpi.roas.textContent = fmtRatio(roas);
+        kpi.cpac.textContent =
+          Number.isFinite(cpac) && cpac > 0 ? fmtMoney(cpac) : "— (keine Aufträge)";
+
+        txt.budget.textContent = fmtMoney(budgetMonth);
+        txt.leads.textContent = fmt.format(Math.round(leads)) + " Leads";
+        txt.deals.textContent =
+          deals < 10 ? deals.toFixed(1).replace(".", ",") + " Deals" : fmt.format(Math.round(deals)) + " Deals";
+
+        /* Balken: Referenz nach konservativer Rechnung (rein visuell) */
+        const refLeads = 37;
+        const refDeals = 3.5;
+        bar.leads.style.width = Math.min(100, Math.max(8, (leads / refLeads) * 100)) + "%";
+        bar.deals.style.width = Math.min(100, Math.max(8, (deals / refDeals) * 100)) + "%";
+
+        [budgetEl, cplEl, convEl, dealvalueEl, provpctEl].forEach(setRangeProgress);
+      }
+
+      [budgetEl, cplEl, convEl, dealvalueEl, provpctEl].forEach((el) => {
+        el.addEventListener("input", recalc);
+        setRangeProgress(el);
+      });
+      recalc();
+    })();
+  </script>
+</body>
+
+</html>
