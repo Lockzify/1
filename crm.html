@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<!-- Simple private CRM (client-side) with Kanban. Stored data in localStorage. -->
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>AdLions CRM – Kanban</title>
+    <meta
+      name="description"
+      content="Privates Kanban-CRM für Objektakquise: Leads anlegen, Phasen verwalten, Drag&Drop."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <style>
+      :root {
+        --bg: #0b1433;
+        --panel: rgba(255, 255, 255, 0.1);
+        --panel2: rgba(255, 255, 255, 0.07);
+        --stroke: rgba(255, 255, 255, 0.14);
+        --stroke2: rgba(255, 255, 255, 0.22);
+        --text: #f4f5f7;
+        --muted: #9aa3b8;
+        --orange: #ff8c42;
+        --orange2: #ffb347;
+        --green: #5ee4a8;
+        --radius: 16px;
+        --shadow: 0 12px 50px rgba(0, 0, 0, 0.26);
+        --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Inter, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--text);
+        background: var(--bg);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 90% 70% at 10% -20%,
+            rgba(255, 140, 66, 0.36),
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 70% 50% at 88% 100%,
+            rgba(94, 228, 168, 0.2),
+            transparent 45%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .app {
+        position: relative;
+        z-index: 1;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        background: rgba(11, 20, 48, 0.78);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      }
+
+      .topbar-inner {
+        max-width: 1220px;
+        margin: 0 auto;
+        padding: 14px clamp(14px, 3vw, 22px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 220px;
+      }
+
+      .brand img {
+        height: 34px;
+        width: auto;
+        display: block;
+      }
+
+      .brand-title {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.05;
+      }
+
+      .brand-title strong {
+        font-size: 0.98rem;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-title span {
+        font-size: 0.74rem;
+        color: var(--muted);
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .input {
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        border-radius: 12px;
+        padding: 10px 12px;
+        min-width: 240px;
+      }
+
+      .btn {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        border-radius: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+        transition: transform 0.12s ease, background 0.12s ease,
+          border-color 0.12s ease;
+        user-select: none;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .btn-primary {
+        border-color: rgba(255, 140, 66, 0.35);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 140, 66, 0.22),
+          rgba(255, 140, 66, 0.08)
+        );
+      }
+
+      .btn-danger {
+        border-color: rgba(255, 80, 80, 0.4);
+        background: rgba(255, 80, 80, 0.08);
+      }
+
+      .content {
+        max-width: 1220px;
+        flex: 1 1 auto;
+        margin: 0 auto;
+        padding: 18px clamp(14px, 3vw, 22px) 30px;
+      }
+
+      .board {
+        display: flex;
+        gap: 14px;
+        align-items: stretch;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        height: 100%;
+      }
+
+      .column {
+        width: 290px;
+        flex: 0 0 auto;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .column-header {
+        padding: 12px 12px 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .column-title {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .column-title strong {
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+      }
+
+      .column-title span {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .column-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .icon-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+        cursor: pointer;
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+      }
+
+      .column-actions .icon-btn:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .column-body {
+        padding: 10px;
+        min-height: 0;
+        flex: 1 1 auto;
+        overflow-y: auto;
+      }
+
+      .drop-target {
+        outline: 2px dashed rgba(255, 140, 66, 0);
+        outline-offset: 4px;
+      }
+
+      .column.drop-active {
+        border-color: rgba(255, 140, 66, 0.45);
+        box-shadow: 0 0 0 1px rgba(255, 140, 66, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+
+      .card {
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.085);
+        padding: 12px;
+        margin-bottom: 10px;
+        cursor: grab;
+      }
+
+      .card:active {
+        cursor: grabbing;
+      }
+
+      .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .card h4 {
+        margin: 0;
+        font-size: 0.98rem;
+        letter-spacing: 0.01em;
+      }
+
+      .tag-value {
+        font-size: 0.76rem;
+        color: rgba(255, 255, 255, 0.9);
+        padding: 5px 8px;
+        border-radius: 999px;
+        background: rgba(255, 140, 66, 0.22);
+        border: 1px solid rgba(255, 140, 66, 0.42);
+        white-space: nowrap;
+      }
+
+      .card-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.25;
+      }
+
+      .card-meta strong {
+        color: rgba(244, 245, 247, 0.9);
+        font-weight: 600;
+      }
+
+      .column-footer {
+        padding: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mini {
+        color: var(--muted);
+        font-size: 0.74rem;
+      }
+
+      /* Login overlay */
+      .lock {
+        position: fixed;
+        inset: 0;
+        background: rgba(6, 8, 15, 0.72);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+      }
+
+      .lock-card {
+        width: min(520px, 100%);
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+
+      .lock-card h2 {
+        margin: 0 0 8px;
+        font-size: 1.45rem;
+        letter-spacing: 0.02em;
+      }
+
+      .lock-card p {
+        margin: 0 0 16px;
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 0.9rem;
+      }
+
+      .lock-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .lock-row input {
+        flex: 1 1 240px;
+      }
+
+      .lock-msg {
+        margin-top: 10px;
+        color: rgba(255, 140, 66, 0.9);
+        font-size: 0.86rem;
+        min-height: 1.2em;
+      }
+
+      /* Modal */
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1001;
+        background: rgba(0, 0, 0, 0.62);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+      }
+
+      .modal.open {
+        display: flex;
+      }
+
+      .modal-card {
+        width: min(720px, 100%);
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 18px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .modal-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+
+      .modal-close {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      @media (max-width: 680px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+
+      .field label {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Für den Lead-Dialog bewusst weniger transparent, damit es nicht „verschwindet“. */
+        background: rgba(0, 0, 0, 0.38);
+        color: var(--text);
+        border-radius: 12px;
+        padding: 10px 12px;
+        outline: none;
+      }
+
+      .field textarea {
+        min-height: 92px;
+        resize: vertical;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 20px;
+        transform: translateX(-50%);
+        z-index: 2000;
+        background: rgba(0, 0, 0, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        padding: 10px 14px;
+        color: rgba(244, 245, 247, 0.95);
+        font-size: 0.88rem;
+        display: none;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast.show {
+        display: inline-flex;
+      }
+
+      .kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 0.82rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.06);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app" id="crmApp">
+      <div class="topbar">
+        <div class="topbar-inner">
+          <div class="brand">
+            <img src="logo/Design ohne Titel-55.webp" alt="AdLions" />
+            <div class="brand-title">
+              <strong>CRM – Objektakquise</strong>
+              <span>Kanban • Leads • Phasen</span>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <input
+              class="input"
+              id="searchInput"
+              placeholder="Suche: Unternehmen, Ansprechpartner, Website…"
+            />
+            <button class="btn btn-primary" id="btnAddLead">
+              + Lead hinzufügen
+            </button>
+            <button class="btn" id="btnAddPhase">+ Phase</button>
+            <button class="btn" id="btnExport">Export</button>
+            <button class="btn" id="btnImport">Import</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="board" id="board"></div>
+      </div>
+    </div>
+
+    <div class="lock" id="lockScreen">
+      <div class="lock-card">
+        <h2>CRM geschützt</h2>
+        <p>
+          Passwort eingeben, um das Kanban-CRM zu öffnen. (Daten bleiben lokal
+          im Browser.)
+        </p>
+        <div class="lock-row">
+          <input
+            class="input"
+            id="pwInput"
+            type="password"
+            placeholder="Passwort"
+            autocomplete="current-password"
+          />
+          <button class="btn btn-primary" id="btnUnlock">Entriegeln</button>
+        </div>
+        <div class="lock-msg" id="lockMsg"></div>
+        <div class="lock-msg" style="color: var(--muted); margin-top: 8px;">
+          Hinweis: In dieser Version ist es ein Client-seitiger Schutz
+          (für internes Nutzen gedacht). Wenn du „echte“ Security willst,
+          sag Bescheid.
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="leadModal" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="leadModalTitle">Lead</h3>
+          <button class="modal-close" id="leadModalClose" aria-label="Schließen">
+            ✕
+          </button>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label>Unternehmen</label>
+            <input id="fName" type="text" placeholder="z.B. Muster GmbH" />
+          </div>
+          <div class="field">
+            <label>Ansprechpartner</label>
+            <input id="fCompany" type="text" placeholder="z.B. Herr Müller" />
+          </div>
+          <div class="field">
+            <label>Website</label>
+            <input
+              id="fWebsite"
+              type="url"
+              placeholder="https://example.de"
+            />
+          </div>
+          <div class="field">
+            <label>Telefon</label>
+            <input id="fPhone" type="tel" placeholder="+49 …" />
+          </div>
+          <div class="field">
+            <label>Deal-Wert (€)</label>
+            <input id="fValue" type="number" min="0" step="1000" />
+          </div>
+          <div class="field">
+            <label>Quelle</label>
+            <input id="fSource" type="text" placeholder="Ads / Empfehlung / Website…" />
+          </div>
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Notizen</label>
+            <textarea id="fNotes" placeholder="Kurz Details, Status, Next Steps…"></textarea>
+          </div>
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Phase</label>
+            <select id="fPhase"></select>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn" id="btnDeleteLead">Löschen</button>
+          <button class="btn btn-primary" id="btnSaveLead">Speichern</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="phaseModal" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Phase verwalten</h3>
+          <button class="modal-close" id="phaseModalClose" aria-label="Schließen">
+            ✕
+          </button>
+        </div>
+
+        <div class="grid2">
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>Neue Phase (Name)</label>
+            <input id="fPhaseName" type="text" placeholder="z.B. Akquise-Call geplant" />
+          </div>
+          <div class="field">
+            <label>Sortierung (Index)</label>
+            <input id="fPhaseIndex" type="number" min="0" step="1" value="999" />
+          </div>
+          <div class="field">
+            <label>Farbe (Accent)</label>
+            <select id="fPhaseColor">
+              <option value="orange">Orange</option>
+              <option value="green">Grün</option>
+              <option value="purple">Violett</option>
+              <option value="blue">Blau</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="btnAddPhaseConfirm">Phase hinzufügen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="importModal" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Import</h3>
+          <button class="modal-close" id="importModalClose" aria-label="Schließen">
+            ✕
+          </button>
+        </div>
+        <div class="field">
+          <label>JSON einfügen</label>
+          <textarea id="importText" placeholder='{"phases":[...], "leads":[...]}'></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn" id="btnImportApply">Importieren</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="exportModal" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Export</h3>
+          <button class="modal-close" id="exportModalClose" aria-label="Schließen">
+            ✕
+          </button>
+        </div>
+        <div class="field">
+          <label>JSON</label>
+          <textarea id="exportText" readonly></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="btnExportCopy">Kopieren</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">Gespeichert</div>
+
+    <script>
+      (function () {
+        // TODO: Setze ein Passwort, bevor du es „echt“ nutzt.
+        // Tipp: Nutz ein Passwort, das nicht im Repo steht – oder sag Bescheid, dann bauen wir serverseitig.
+        const CRM_PASSWORD = "password";
+
+        const LS_PHASES = "adlions_crm_phases_v1";
+        const LS_LEADS = "adlions_crm_leads_v1";
+        const LS_AUThed = "adlions_crm_authed_v1";
+
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        const lockScreen = $("#lockScreen");
+        const crmApp = $("#crmApp");
+        const pwInput = $("#pwInput");
+        const btnUnlock = $("#btnUnlock");
+        const lockMsg = $("#lockMsg");
+
+        const board = $("#board");
+        const searchInput = $("#searchInput");
+        const btnAddLead = $("#btnAddLead");
+        const btnAddPhase = $("#btnAddPhase");
+
+        const leadModal = $("#leadModal");
+        const leadModalClose = $("#leadModalClose");
+        const leadModalTitle = $("#leadModalTitle");
+        const btnSaveLead = $("#btnSaveLead");
+        const btnDeleteLead = $("#btnDeleteLead");
+
+        const fName = $("#fName");
+        const fCompany = $("#fCompany");
+        const fWebsite = $("#fWebsite");
+        const fPhone = $("#fPhone");
+        const fValue = $("#fValue");
+        const fSource = $("#fSource");
+        const fNotes = $("#fNotes");
+        const fPhase = $("#fPhase");
+
+        const phaseModal = $("#phaseModal");
+        const phaseModalClose = $("#phaseModalClose");
+        const fPhaseName = $("#fPhaseName");
+        const fPhaseIndex = $("#fPhaseIndex");
+        const fPhaseColor = $("#fPhaseColor");
+        const btnAddPhaseConfirm = $("#btnAddPhaseConfirm");
+
+        const importModal = $("#importModal");
+        const importModalClose = $("#importModalClose");
+        const importText = $("#importText");
+        const btnImport = $("#btnImportApply");
+
+        const exportModal = $("#exportModal");
+        const exportModalClose = $("#exportModalClose");
+        const exportText = $("#exportText");
+        const btnExportCopy = $("#btnExportCopy");
+
+        const btnExport = $("#btnExport");
+        const btnImportOpen = $("#btnImport");
+
+        const toast = $("#toast");
+        let toastTimer = null;
+
+        const defaults = {
+          phases: [
+            { id: "p1", name: "Neu", color: "orange", sort: 0 },
+            { id: "p2", name: "Kontakt aufgenommen", color: "blue", sort: 1 },
+            { id: "p3", name: "Qualifiziert", color: "green", sort: 2 },
+            { id: "p4", name: "Angebot/Termin", color: "purple", sort: 3 },
+            { id: "p5", name: "Verhandlung", color: "orange", sort: 4 },
+            { id: "p6", name: "Won", color: "green", sort: 5 },
+            { id: "p7", name: "Lost", color: "purple", sort: 6 },
+          ],
+          leads: [],
+        };
+
+        function uid(prefix = "id") {
+          return prefix + "_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
+        }
+
+        function loadPhases() {
+          try {
+            const raw = localStorage.getItem(LS_PHASES);
+            if (!raw) return defaults.phases.slice();
+            const parsed = JSON.parse(raw);
+            if (!Array.isArray(parsed)) return defaults.phases.slice();
+            return parsed;
+          } catch {
+            return defaults.phases.slice();
+          }
+        }
+
+        function loadLeads() {
+          try {
+            const raw = localStorage.getItem(LS_LEADS);
+            if (!raw) return defaults.leads.slice();
+            const parsed = JSON.parse(raw);
+            if (!Array.isArray(parsed)) return defaults.leads.slice();
+            return parsed;
+          } catch {
+            return defaults.leads.slice();
+          }
+        }
+
+        function savePhases(phases) {
+          localStorage.setItem(LS_PHASES, JSON.stringify(phases));
+        }
+
+        function saveLeads(leads) {
+          localStorage.setItem(LS_LEADS, JSON.stringify(leads));
+        }
+
+        let phases = loadPhases().sort((a, b) => a.sort - b.sort);
+        let leads = loadLeads();
+        let editingLeadId = null;
+
+        let authed = sessionStorage.getItem(LS_AUThed) === "1";
+        if (!authed) {
+          lockScreen.style.display = "flex";
+          crmApp.style.display = "none";
+        } else {
+          lockScreen.style.display = "none";
+          crmApp.style.display = "block";
+        }
+
+        // Sortierung: Karte ans „Ende“ der Phase setzen (visuell).
+        function nextSortForPhase(phaseId) {
+          const arr = leads.filter((l) => l.phaseId === phaseId);
+          const max = arr.reduce(
+            (m, x) => (typeof x.sort === "number" ? Math.max(m, x.sort) : m),
+            0
+          );
+          return max + 1;
+        }
+
+        function showToast(msg) {
+          toast.textContent = msg || "Gespeichert";
+          toast.classList.add("show");
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
+        }
+
+        function closeModal(modal) {
+          modal.classList.remove("open");
+        }
+
+        function openModal(modal) {
+          modal.classList.add("open");
+        }
+
+        function formatEUR(n) {
+          if (!Number.isFinite(n)) return "";
+          return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(n) + " €";
+        }
+
+        function getPhaseById(id) {
+          return phases.find((p) => p.id === id) || null;
+        }
+
+        function colorToCss(color) {
+          if (color === "green") return { border: "rgba(94, 228, 168, 0.25)", bg: "rgba(94, 228, 168, 0.10)" };
+          if (color === "purple") return { border: "rgba(201, 123, 255, 0.25)", bg: "rgba(201, 123, 255, 0.10)" };
+          if (color === "blue") return { border: "rgba(120, 170, 255, 0.28)", bg: "rgba(120, 170, 255, 0.12)" };
+          return { border: "rgba(255, 140, 66, 0.25)", bg: "rgba(255, 140, 66, 0.12)" };
+        }
+
+        function renderPhaseSelect() {
+          const current = fPhase.value;
+          fPhase.innerHTML = "";
+          const sorted = phases.slice().sort((a, b) => a.sort - b.sort);
+          for (const p of sorted) {
+            const opt = document.createElement("option");
+            opt.value = p.id;
+            opt.textContent = p.name;
+            fPhase.appendChild(opt);
+          }
+          if (current) fPhase.value = current;
+        }
+
+        function renderBoard() {
+          const q = (searchInput.value || "").trim().toLowerCase();
+          board.innerHTML = "";
+
+          const sortedPhases = phases.slice().sort((a, b) => a.sort - b.sort);
+          for (const phase of sortedPhases) {
+            const col = document.createElement("div");
+            col.className = "column drop-target";
+            col.dataset.phaseId = phase.id;
+
+            const { border, bg } = colorToCss(phase.color);
+
+            // Cards (inkl. Search-Filter) – damit Header-Counts/Werte zur Ansicht passen.
+            const phaseLeads = leads
+              .filter((l) => l.phaseId === phase.id)
+              .filter((l) => {
+                if (!q) return true;
+                const hay = [
+                  l.name,
+                  l.company,
+                  l.website || l.email,
+                  l.phone,
+                  l.source,
+                  l.notes,
+                ]
+                  .filter(Boolean)
+                  .join(" ")
+                  .toLowerCase();
+                return hay.includes(q);
+              })
+              .slice()
+              .sort((a, b) => (a.sort || 0) - (b.sort || 0));
+
+            const count = phaseLeads.length;
+            let totalValue = 0;
+            let hasAnyValue = false;
+            for (const l of phaseLeads) {
+              if (l.value === null || l.value === undefined || l.value === "") continue;
+              const n = typeof l.value === "number" ? l.value : Number(l.value);
+              if (!Number.isFinite(n)) continue;
+              totalValue += n;
+              hasAnyValue = true;
+            }
+
+            col.innerHTML = `
+              <div class="column-header" style="border-bottom-color: rgba(255,255,255,0.06);">
+                <div class="column-title">
+                  <strong>${escapeHtml(phase.name)}</strong>
+                  <span>
+                    ${count} Lead${count === 1 ? "" : "s"} • ${hasAnyValue ? "Σ " + formatEUR(totalValue) : "Σ —"}
+                  </span>
+                </div>
+                <div class="column-actions">
+                  <button class="icon-btn" data-act="rename" title="Phase umbenennen">✎</button>
+                  <button class="icon-btn" data-act="delete" title="Phase löschen">⌫</button>
+                </div>
+              </div>
+              <div class="column-body" aria-label="Spalte ${escapeHtml(phase.name)}"></div>
+              <div class="column-footer">
+                <div class="mini">Drag & Drop</div>
+                <button class="btn" style="padding: 8px 10px; border-radius: 12px; border-color:${border}; background:${bg};" data-act="addToPhase">+ Lead</button>
+              </div>
+            `;
+
+            const bodyEl = col.querySelector(".column-body");
+
+            if (phaseLeads.length === 0) {
+              bodyEl.innerHTML = `<div class="mini" style="padding: 8px 2px; color: rgba(154,163,184,0.85);">Keine Leads</div>`;
+            }
+
+            for (const lead of phaseLeads) {
+              bodyEl.appendChild(makeCard(lead));
+            }
+
+            col.addEventListener("dragover", (e) => {
+              e.preventDefault();
+              col.classList.add("drop-active");
+            });
+            col.addEventListener("dragleave", () => col.classList.remove("drop-active"));
+            col.addEventListener("drop", (e) => {
+              e.preventDefault();
+              col.classList.remove("drop-active");
+              const leadId = e.dataTransfer.getData("text/leadId");
+              if (!leadId) return;
+              const idx = leads.findIndex((l) => l.id === leadId);
+              if (idx === -1) return;
+              leads[idx].phaseId = phase.id;
+              leads[idx].sort = nextSortForPhase(phase.id);
+              saveLeads(leads);
+              renderBoard();
+              showToast("Lead verschoben");
+            });
+
+            // Column actions
+            col.querySelector('[data-act="rename"]').addEventListener("click", () => {
+              const next = prompt("Phasenname:", phase.name);
+              if (!next) return;
+              phase.name = next.trim();
+              savePhases(phases);
+              renderBoard();
+              showToast("Phase umbenannt");
+            });
+
+            col.querySelector('[data-act="delete"]').addEventListener("click", () => {
+              const ok = confirm(`Phase löschen: "${phase.name}"? (Leads werden in „Neu“ verschoben)`);
+              if (!ok) return;
+              const newPhases = phases.filter((p) => p.id !== phase.id);
+              const fallback = newPhases[0]?.id || defaults.phases[0].id;
+              phases = newPhases;
+              leads = leads.map((l) => (l.phaseId === phase.id ? { ...l, phaseId: fallback } : l));
+              savePhases(phases);
+              saveLeads(leads);
+              renderBoard();
+              showToast("Phase gelöscht");
+            });
+
+            col.querySelector('[data-act="addToPhase"]').addEventListener("click", () => {
+              openLeadModal({ phaseId: phase.id, leadId: null });
+            });
+
+            board.appendChild(col);
+          }
+        }
+
+        function makeCard(lead) {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.draggable = true;
+          card.dataset.leadId = lead.id;
+          card.setAttribute("role", "button");
+          card.setAttribute("tabindex", "0");
+
+          const phase = getPhaseById(lead.phaseId);
+          const { bg, border } = colorToCss(phase?.color || "orange");
+          card.style.borderColor = border;
+          card.style.background = bg;
+
+          card.innerHTML = `
+            <div class="card-top">
+              <h4>${escapeHtml(lead.name || "Unbenannt")}</h4>
+              <div class="tag-value">${lead.value ? formatEUR(lead.value) : "—"}</div>
+            </div>
+            <div class="card-meta">
+              ${lead.company ? `<div><strong>Ansprechpartner:</strong> ${escapeHtml(lead.company)}</div>` : ""}
+              ${lead.website || lead.email ? `<div><strong>Website:</strong> ${escapeHtml(lead.website || lead.email)}</div>` : ""}
+              ${lead.phone ? `<div><strong>Tel:</strong> ${escapeHtml(lead.phone)}</div>` : ""}
+              ${lead.source ? `<div><strong>Quelle:</strong> ${escapeHtml(lead.source)}</div>` : ""}
+            </div>
+          `;
+
+          card.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/leadId", lead.id);
+            e.dataTransfer.effectAllowed = "move";
+          });
+
+          card.addEventListener("click", () => openLeadModal({ leadId: lead.id, phaseId: lead.phaseId }));
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openLeadModal({ leadId: lead.id, phaseId: lead.phaseId });
+            }
+          });
+
+          return card;
+        }
+
+        function escapeHtml(s) {
+          return String(s ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        function resetLeadForm() {
+          fName.value = "";
+          fCompany.value = "";
+          fWebsite.value = "";
+          fPhone.value = "";
+          fValue.value = "";
+          fSource.value = "";
+          fNotes.value = "";
+          if (fPhase.options.length) fPhase.value = fPhase.options[0].value;
+        }
+
+        function openLeadModal({ leadId, phaseId }) {
+          editingLeadId = leadId;
+          renderPhaseSelect();
+          resetLeadForm();
+
+          if (leadId) {
+            const lead = leads.find((l) => l.id === leadId);
+            if (!lead) return;
+            leadModalTitle.textContent = "Lead bearbeiten";
+
+            fName.value = lead.name || "";
+            fCompany.value = lead.company || "";
+            fWebsite.value = lead.website || lead.email || "";
+            fPhone.value = lead.phone || "";
+            fValue.value = lead.value ?? "";
+            fSource.value = lead.source || "";
+            fNotes.value = lead.notes || "";
+            fPhase.value = lead.phaseId || (phaseId || phases[0].id);
+            btnDeleteLead.style.display = "inline-flex";
+          } else {
+            leadModalTitle.textContent = "Neuer Lead";
+            btnDeleteLead.style.display = "none";
+            fPhase.value = phaseId || phases[0].id;
+          }
+
+          openModal(leadModal);
+        }
+
+        function closeLeadModal() {
+          closeModal(leadModal);
+        }
+
+        function saveLead() {
+          const name = fName.value.trim();
+          const company = fCompany.value.trim();
+          const website = fWebsite.value.trim();
+          const phone = fPhone.value.trim();
+          const valueRaw = fValue.value;
+          const value = valueRaw === "" ? null : Math.max(0, Number(valueRaw));
+          const source = fSource.value.trim();
+          const notes = fNotes.value.trim();
+          const phaseId = fPhase.value;
+
+          if (!phaseId) {
+            alert("Bitte eine Phase auswählen.");
+            return;
+          }
+          if (!name && !company) {
+            alert("Bitte mindestens Unternehmen oder Ansprechpartner ausfüllen.");
+            return;
+          }
+
+          if (editingLeadId) {
+            const idx = leads.findIndex((l) => l.id === editingLeadId);
+            if (idx === -1) return;
+            leads[idx] = {
+              ...leads[idx],
+              name,
+              company,
+              website,
+              phone,
+              value,
+              source,
+              notes,
+              phaseId,
+            };
+          } else {
+            leads.push({
+              id: uid("lead"),
+              name: name || null,
+              company: company || null,
+              website: website || null,
+              phone: phone || null,
+              value: value ?? null,
+              source: source || null,
+              notes: notes || null,
+              phaseId,
+              sort: nextSortForPhase(phaseId),
+              createdAt: Date.now(),
+            });
+          }
+
+          saveLeads(leads);
+          renderBoard();
+          closeLeadModal();
+          showToast("Lead gespeichert");
+        }
+
+        function deleteLead() {
+          if (!editingLeadId) return;
+          const lead = leads.find((l) => l.id === editingLeadId);
+          const ok = confirm(`Lead löschen? ${lead?.name ? "• " + lead.name : ""}`);
+          if (!ok) return;
+
+          leads = leads.filter((l) => l.id !== editingLeadId);
+          saveLeads(leads);
+          closeLeadModal();
+          renderBoard();
+          showToast("Lead gelöscht");
+        }
+
+        // Phase modal
+        function openPhaseModal() {
+          fPhaseName.value = "";
+          fPhaseIndex.value = String(phases.length);
+          openModal(phaseModal);
+        }
+
+        function closePhaseModal() {
+          closeModal(phaseModal);
+        }
+
+        function addPhase() {
+          const name = fPhaseName.value.trim();
+          const sort = Number(fPhaseIndex.value);
+          const color = fPhaseColor.value;
+          if (!name) {
+            alert("Bitte einen Phasen-Namen eingeben.");
+            return;
+          }
+          const idx = Number.isFinite(sort) ? sort : phases.length;
+          phases.push({ id: uid("phase"), name, color, sort: idx });
+          phases = phases.sort((a, b) => a.sort - b.sort).map((p, i) => ({ ...p, sort: i }));
+          savePhases(phases);
+          renderBoard();
+          closePhaseModal();
+          showToast("Phase hinzugefügt");
+        }
+
+        // Export/Import/Reset
+        function getExportPayload() {
+          return {
+            exportedAt: new Date().toISOString(),
+            phases: phases.slice().sort((a, b) => a.sort - b.sort),
+            leads: leads.slice(),
+          };
+        }
+
+        function openExportModal() {
+          exportText.value = JSON.stringify(getExportPayload(), null, 2);
+          openModal(exportModal);
+        }
+
+        async function copyExport() {
+          try {
+            await navigator.clipboard.writeText(exportText.value);
+            showToast("Export kopiert");
+          } catch {
+            exportText.focus();
+            exportText.select();
+            showToast("Manuell kopieren");
+          }
+        }
+
+        function openImportModal() {
+          importText.value = "";
+          openModal(importModal);
+        }
+
+        function applyImport() {
+          let payload = null;
+          try {
+            payload = JSON.parse(importText.value || "{}");
+          } catch {
+            alert("JSON ungültig.");
+            return;
+          }
+          if (!payload || !Array.isArray(payload.phases) || !Array.isArray(payload.leads)) {
+            alert("JSON-Format: { phases: [], leads: [] }");
+            return;
+          }
+
+          phases = payload.phases
+            .map((p, i) => ({
+              id: String(p.id || uid("phase")),
+              name: String(p.name || "Phase " + (i + 1)),
+              color: String(p.color || "orange"),
+              sort: i,
+            }))
+            .sort((a, b) => a.sort - b.sort);
+
+          leads = payload.leads.map((l) => ({
+            id: String(l.id || uid("lead")),
+            name: l.name ?? null,
+            company: l.company ?? null,
+            website: l.website ?? l.email ?? null,
+            phone: l.phone ?? null,
+            value: l.value ?? null,
+            source: l.source ?? null,
+            notes: l.notes ?? null,
+            phaseId: String(l.phaseId || phases[0]?.id || "p1"),
+            sort: Number.isFinite(l.sort) ? l.sort : 0,
+            createdAt: l.createdAt ?? Date.now(),
+          }));
+
+          // Ensure phaseId exists
+          const phaseIds = new Set(phases.map((p) => p.id));
+          leads = leads.map((l) => ({ ...l, phaseId: phaseIds.has(l.phaseId) ? l.phaseId : phases[0].id }));
+
+          savePhases(phases);
+          saveLeads(leads);
+          closeModal(importModal);
+          renderBoard();
+          showToast("Import fertig");
+        }
+
+        // Bindings
+        btnUnlock.addEventListener("click", () => {
+          const pw = pwInput.value || "";
+          if (!CRM_PASSWORD || CRM_PASSWORD === "CHANGE_ME") {
+            lockMsg.textContent =
+              "Passwort noch nicht gesetzt. In crm.html oben CRM_PASSWORD ändern.";
+            return;
+          }
+          if (pw === CRM_PASSWORD) {
+            sessionStorage.setItem(LS_AUThed, "1");
+            lockMsg.textContent = "";
+            lockScreen.style.display = "none";
+            crmApp.style.display = "block";
+            renderBoard();
+          } else {
+            lockMsg.textContent = "Falsch – bitte erneut versuchen.";
+          }
+        });
+
+        pwInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") btnUnlock.click();
+        });
+
+        searchInput.addEventListener("input", () => renderBoard());
+
+        btnAddLead.addEventListener("click", () => openLeadModal({ leadId: null, phaseId: phases[0]?.id }));
+        btnAddPhase.addEventListener("click", openPhaseModal);
+
+        leadModalClose.addEventListener("click", closeLeadModal);
+        phaseModalClose.addEventListener("click", closePhaseModal);
+        importModalClose.addEventListener("click", () => closeModal(importModal));
+        exportModalClose.addEventListener("click", () => closeModal(exportModal));
+
+        btnSaveLead.addEventListener("click", saveLead);
+        btnDeleteLead.addEventListener("click", deleteLead);
+
+        btnAddPhaseConfirm.addEventListener("click", addPhase);
+
+        btnExport.addEventListener("click", openExportModal);
+        btnImportOpen.addEventListener("click", openImportModal);
+        btnImport.addEventListener("click", applyImport);
+        btnExportCopy.addEventListener("click", copyExport);
+
+        // Click outside modals to close
+        [leadModal, phaseModal, importModal, exportModal].forEach((m) => {
+          m.addEventListener("click", (e) => {
+            if (e.target === m) closeModal(m);
+          });
+        });
+
+        // Initial render
+        if (sessionStorage.getItem(LS_AUThed) === "1") {
+          renderBoard();
+        }
+      })();
+    </script>
+  </body>
+</html>
+
