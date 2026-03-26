@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mitarbeiter-Rechner – AdLions</title>
+  <meta name="description" content="Mitarbeiter-Rechner mit Ads-Budget und Bewerberpreis." />
+  <link href="bilder/adlions.webp" rel="icon" type="image/png" />
+  <style>
+    :root {
+      --bg: #0b1329;
+      --card: rgba(255,255,255,0.08);
+      --stroke: rgba(255,255,255,0.14);
+      --text: #f5f6f8;
+      --muted: #b6bfd1;
+      --accent: #5ee4a8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(120% 80% at 0% 0%, rgba(94,228,168,.2), transparent 55%),
+        radial-gradient(90% 70% at 100% 100%, rgba(99,102,241,.14), transparent 60%),
+        var(--bg);
+    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 40px; }
+    .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .top a { color: var(--muted); text-decoration: none; }
+    .card { border:1px solid var(--stroke); border-radius:18px; background: var(--card); padding: 18px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.35rem); }
+    .sub { margin: 0; color: var(--muted); line-height: 1.55; }
+    .grid { margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .kpi { border:1px solid var(--stroke); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.04); }
+    .kpi .l { margin-bottom: 6px; font-size: .68rem; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); }
+    .kpi .v { font-size: clamp(1.05rem,2.9vw,1.55rem); font-weight: 800; color: var(--accent); }
+    .controls { margin-top: 14px; }
+    .row { margin-bottom: 12px; }
+    .head { display:flex; justify-content:space-between; margin-bottom: 6px; gap:8px; }
+    .head span { color: var(--muted); font-size: .88rem; }
+    .head strong { font-variant-numeric: tabular-nums; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="index.html#leistungen-duo">← Zurück zu Service</a>
+      <strong>Mitarbeitergewinnung</strong>
+    </div>
+
+    <section class="card">
+      <h1>Mitarbeiter-Rechner</h1>
+      <p class="sub">Einfacher Schnellcheck nur mit Ads-Budget und Bewerberpreis.</p>
+      <div class="grid">
+        <article class="kpi"><p class="l">Ads-Budget / Monat</p><p class="v" id="kBudget">3.000 €</p></article>
+        <article class="kpi"><p class="l">Bewerberpreis</p><p class="v" id="kPrice">30 €</p></article>
+        <article class="kpi"><p class="l">Bewerbungen / Monat</p><p class="v" id="kApps">100</p></article>
+      </div>
+    </section>
+
+    <section class="card controls">
+      <div class="row">
+        <div class="head"><span>Ads-Budget / Monat</span><strong id="oBudget">3.000 €</strong></div>
+        <input id="sBudget" type="range" min="300" max="8000" step="50" value="3000" />
+      </div>
+      <div class="row" style="margin-bottom:0;">
+        <div class="head"><span>Bewerberpreis</span><strong id="oPrice">30 €</strong></div>
+        <input id="sPrice" type="range" min="5" max="60" step="1" value="30" />
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const fmt = new Intl.NumberFormat("de-DE");
+      const euro = (n) => fmt.format(Math.round(n)) + " €";
+
+      const sBudget = document.getElementById("sBudget");
+      const sPrice = document.getElementById("sPrice");
+      const oBudget = document.getElementById("oBudget");
+      const oPrice = document.getElementById("oPrice");
+      const kBudget = document.getElementById("kBudget");
+      const kPrice = document.getElementById("kPrice");
+      const kApps = document.getElementById("kApps");
+
+      function update() {
+        const budget = Number(sBudget.value) || 0;
+        const price = Number(sPrice.value) || 1;
+        const apps = budget / price;
+
+        oBudget.textContent = euro(budget);
+        oPrice.textContent = euro(price);
+        kBudget.textContent = euro(budget);
+        kPrice.textContent = euro(price);
+        kApps.textContent = fmt.format(Math.round(apps));
+      }
+
+      sBudget.addEventListener("input", update);
+      sPrice.addEventListener("input", update);
+      update();
+    })();
+  </script>
+</body>
+</html>
+

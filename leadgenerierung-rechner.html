@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Leadgenerierung Rechner – AdLions</title>
+  <meta name="description" content="Leadgenerierung Rechner mit Budget und Auftragswert. CPL steigt mit höherem Auftragswert." />
+  <link href="bilder/adlions.webp" rel="icon" type="image/png" />
+  <style>
+    :root {
+      --bg: #0b1022;
+      --card: rgba(255,255,255,0.08);
+      --stroke: rgba(255,255,255,0.14);
+      --text: #f5f6f8;
+      --muted: #b6bfd1;
+      --accent: #e67b33;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(120% 80% at 0% 0%, rgba(230,123,51,.2), transparent 55%),
+        radial-gradient(90% 70% at 100% 100%, rgba(99,102,241,.14), transparent 60%),
+        var(--bg);
+    }
+    .wrap { max-width: 1020px; margin: 0 auto; padding: 24px 16px 40px; }
+    .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .top a { color: var(--muted); text-decoration: none; }
+    .card { border:1px solid var(--stroke); border-radius:18px; background: var(--card); padding: 18px; }
+    h1 { margin: 0 0 8px; font-size: clamp(1.6rem, 4vw, 2.35rem); }
+    .sub { margin: 0; color: var(--muted); line-height: 1.55; }
+    .grid { margin-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .kpi { border:1px solid var(--stroke); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.04); }
+    .kpi .l { margin-bottom: 6px; font-size: .68rem; letter-spacing: .11em; text-transform: uppercase; color: var(--muted); }
+    .kpi .v { font-size: clamp(1.05rem,2.9vw,1.55rem); font-weight: 800; color: var(--accent); }
+    .controls { margin-top: 14px; }
+    .row { margin-bottom: 12px; }
+    .head { display:flex; justify-content:space-between; margin-bottom: 6px; gap:8px; }
+    .head span { color: var(--muted); font-size: .88rem; }
+    .head strong { font-variant-numeric: tabular-nums; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .foot {
+      margin-top: 12px;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid rgba(230,123,51,.35);
+      background: rgba(230,123,51,.13);
+    }
+    .foot strong { display:block; margin-top:4px; font-size: clamp(1.2rem, 3.8vw, 2rem); color: #ffd5b8; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="index.html#leistungen-duo">← Zurück zu Service</a>
+      <strong>Leadgenerierung</strong>
+    </div>
+
+    <section class="card">
+      <h1>Leadgen-Rechner</h1>
+      <p class="sub">Je höher der Auftragswert, desto höher der angenommene Leadpreis (CPL). Conversion bleibt in diesem Modell bei 17%.</p>
+      <div class="grid">
+        <article class="kpi"><p class="l">Budget / Monat</p><p class="v" id="kBudget">900 €</p></article>
+        <article class="kpi"><p class="l">Leadpreis (CPL)</p><p class="v" id="kCpl">70 €</p></article>
+        <article class="kpi"><p class="l">Leads / Monat</p><p class="v" id="kLeads">13</p></article>
+        <article class="kpi"><p class="l">Erwartete Aufträge</p><p class="v" id="kDeals">2,2</p></article>
+      </div>
+    </section>
+
+    <section class="card controls">
+      <div class="row">
+        <div class="head"><span>Ads-Budget / Monat</span><strong id="oBudget">900 €</strong></div>
+        <input id="sBudget" type="range" min="300" max="5000" step="50" value="900" />
+      </div>
+      <div class="row" style="margin-bottom:0;">
+        <div class="head"><span>Auftragswert pro Abschluss</span><strong id="oOrder">5.000 €</strong></div>
+        <input id="sOrder" type="range" min="5000" max="50000" step="500" value="5000" />
+      </div>
+      <div class="foot">
+        Potenzieller Monatsumsatz:
+        <strong id="kRevenue">10.950 €</strong>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const fmt = new Intl.NumberFormat("de-DE");
+      const euro = (n) => fmt.format(Math.round(n)) + " €";
+      const dec = (n) => n.toFixed(1).replace(".", ",");
+      const CONV = 0.17;
+      const MIN_ORDER = 5000;
+      const MAX_ORDER = 50000;
+      const MIN_CPL = 70;
+      const MAX_CPL = 150;
+
+      const sBudget = document.getElementById("sBudget");
+      const sOrder = document.getElementById("sOrder");
+      const oBudget = document.getElementById("oBudget");
+      const oOrder = document.getElementById("oOrder");
+      const kBudget = document.getElementById("kBudget");
+      const kCpl = document.getElementById("kCpl");
+      const kLeads = document.getElementById("kLeads");
+      const kDeals = document.getElementById("kDeals");
+      const kRevenue = document.getElementById("kRevenue");
+
+      function update() {
+        const budget = Number(sBudget.value) || 0;
+        const order = Number(sOrder.value) || 0;
+        const ratio = (order - MIN_ORDER) / (MAX_ORDER - MIN_ORDER);
+        const cpl = MIN_CPL + Math.max(0, Math.min(1, ratio)) * (MAX_CPL - MIN_CPL);
+        const leads = budget / cpl;
+        const deals = leads * CONV;
+        const revenue = deals * order;
+
+        oBudget.textContent = euro(budget);
+        oOrder.textContent = euro(order);
+        kBudget.textContent = euro(budget);
+        kCpl.textContent = euro(cpl);
+        kLeads.textContent = fmt.format(Math.round(leads));
+        kDeals.textContent = dec(deals);
+        kRevenue.textContent = euro(revenue);
+      }
+
+      sBudget.addEventListener("input", update);
+      sOrder.addEventListener("input", update);
+      update();
+    })();
+  </script>
+</body>
+</html>
+

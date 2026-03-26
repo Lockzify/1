@@ -269,6 +269,145 @@
       height: clamp(34px, 4.2vh, 50px);
       max-width: min(320px, 32vw);
     }
+    .adl-example-section {
+      position: relative;
+      padding-top: clamp(3rem, 8vh, 5.5rem);
+      padding-bottom: clamp(3rem, 8vh, 5.5rem);
+      overflow: hidden;
+    }
+    .adl-example-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(120% 85% at 10% 0%, rgba(255, 140, 66, 0.2), transparent 58%),
+        radial-gradient(90% 70% at 100% 100%, rgba(255, 179, 71, 0.16), transparent 58%),
+        linear-gradient(135deg, #0f1118 0%, #171923 52%, #1f222d 100%);
+      z-index: 0;
+    }
+    .adl-example-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: clamp(1.4rem, 3vw, 2rem);
+      border-radius: 22px;
+      border: 1px solid rgba(255, 140, 66, 0.34);
+      background: rgba(10, 11, 16, 0.55);
+      box-shadow:
+        0 24px 65px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .adl-example-eyebrow {
+      margin: 0 0 0.65rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(255, 255, 255, 0.72);
+    }
+    .adl-example-title {
+      margin: 0 0 0.75rem;
+      font-family: "Bebas Neue", "Inter", sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 3.9rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: #fff;
+      text-wrap: balance;
+    }
+    .adl-example-title .orange {
+      color: #ffb347;
+      text-shadow: 0 0 28px rgba(255, 179, 71, 0.35);
+    }
+    .adl-example-lead {
+      margin: 0 0 1.3rem;
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: clamp(1rem, 2vw, 1.14rem);
+      line-height: 1.5;
+    }
+    .adl-example-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin: 0 0 1rem;
+    }
+    .adl-example-kpi {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.85rem 0.8rem;
+      text-align: center;
+    }
+    .adl-example-kpi .k-label {
+      margin: 0 0 0.35rem;
+      font-size: 0.67rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.72);
+    }
+    .adl-example-kpi .k-value {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.1vw, 1.48rem);
+      font-weight: 700;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .adl-example-kpi .k-value.orange {
+      color: #ffb347;
+    }
+    .adl-example-foot {
+      margin: 0;
+      padding: 0.95rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 179, 71, 0.38);
+      background: linear-gradient(135deg, rgba(255, 179, 71, 0.2), rgba(255, 179, 71, 0.08));
+      font-size: 1.02rem;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.45;
+      text-align: center;
+    }
+    .adl-example-foot #adl-potential-revenue {
+      display: block;
+      margin-top: 0.3rem;
+      font-size: clamp(1.55rem, 4.2vw, 2.55rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 30px rgba(255, 179, 71, 0.35);
+    }
+    .adl-example-slider {
+      margin: 0 0 1rem;
+      padding: 0.85rem 0.95rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .adl-example-slider-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.8rem;
+      margin: 0 0 0.45rem;
+    }
+    .adl-example-slider-label {
+      margin: 0;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.75);
+    }
+    .adl-example-slider-value {
+      margin: 0;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #ffb347;
+    }
+    .adl-example-slider input[type="range"] {
+      width: 100%;
+      accent-color: #ff8c42;
+      cursor: pointer;
+    }
     @media (max-width: 767px) {
       .home-hero.section.main {
         --adl-nav-h: 56px;
@@ -280,6 +419,12 @@
       .home-hero .home-partner-marquee__logo img {
         height: 28px;
         max-width: 40vw;
+      }
+      .adl-example-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .adl-example-grid .adl-example-kpi:last-child {
+        grid-column: 1 / -1;
       }
     }
     @media (max-width: 479px) {
@@ -338,7 +483,7 @@
         </div>
       </a>
       <nav role="navigation" class="nav-menu w-nav-menu"><a href="#start" class="nav-link w-nav-link">Home</a><a
-          href="/#Bio" class="nav-link w-nav-link">Über Leander Jede</a><a
+          href="/#Bio" class="nav-link w-nav-link">Über uns</a><a
           href="/#kundenergebnisse" class="nav-link w-nav-link">Referenzen</a><a
           href="/#werte" class="nav-link w-nav-link">Werte</a>
         <a href="vertrieb-funnel.html" class="nav-link w-nav-link">Karriere</a>
@@ -426,8 +571,6 @@
     </section>
 
   </section>
-
-   
 
   <section id="Course-Showdown" class="section" aria-labelledby="course-showdown-heading">
     <div class="w-layout-blockcontainer container w-container">
@@ -529,6 +672,146 @@
     </div>
   </section>
 
+  <section class="section adl-example-section" aria-label="Beispielrechnung Leadgenerierung">
+    <div class="w-layout-blockcontainer container w-container">
+      <div class="adl-example-wrap">
+        <p class="adl-example-eyebrow"> Praxisbeispiel</p>
+        <h2 class="adl-example-title">
+          Mit <span class="orange" id="adl-cpl-title">70&nbsp;€ CPL</span> und
+          <span class="orange">17&nbsp;% Conversion</span> kann Akquise richtig skalieren.
+        </h2>
+        <p class="adl-example-lead">
+          Angenommen du investierst <strong class="orange" id="adl-budget-inline">900&nbsp;€</strong> im Monat in Ads. Dann entstehen aus den Leads und der Abschlussquote
+          in dieser Modellrechnung starke Umsatzhebel für dein Angebot.
+        </p>
+        <div class="adl-example-grid">
+          <article class="adl-example-kpi">
+            <p class="k-label">Ads-Budget / Monat</p>
+            <p class="k-value" id="adl-budget-kpi">900&nbsp;€</p>
+          </article>
+          <article class="adl-example-kpi">
+            <p class="k-label">Leadpreis (CPL)</p>
+            <p class="k-value orange" id="adl-cpl-kpi">70&nbsp;€</p>
+          </article>
+          <article class="adl-example-kpi">
+            <p class="k-label">Leads / Monat</p>
+            <p class="k-value" id="adl-leads-kpi">13</p>
+          </article>
+          <article class="adl-example-kpi">
+            <p class="k-label">Conversion</p>
+            <p class="k-value orange">17&nbsp;%</p>
+          </article>
+          <article class="adl-example-kpi">
+            <p class="k-label">Erwartete Aufträge</p>
+            <p class="k-value" id="adl-deals-kpi">~2,2</p>
+          </article>
+        </div>
+        <div class="adl-example-slider">
+          <div class="adl-example-slider-head">
+            <p class="adl-example-slider-label">Ads-Budget pro Monat</p>
+            <p class="adl-example-slider-value" id="adl-budget-output">900&nbsp;€</p>
+          </div>
+          <input
+            id="adl-budget-slider"
+            type="range"
+            min="300"
+            max="5000"
+            step="50"
+            value="900"
+            aria-label="Ads-Budget pro Monat"
+          />
+        </div>
+        <div class="adl-example-slider">
+          <div class="adl-example-slider-head">
+            <p class="adl-example-slider-label">Auftragswert pro Abschluss</p>
+            <p class="adl-example-slider-value" id="adl-order-value-output">5.000&nbsp;€</p>
+          </div>
+          <input
+            id="adl-order-value-slider"
+            type="range"
+            min="5000"
+            max="50000"
+            step="500"
+            value="5000"
+            aria-label="Auftragswert pro Abschluss"
+          />
+        </div>
+        <p class="adl-example-foot">
+          Bei <strong class="orange" id="adl-order-value-inline">5.000&nbsp;€</strong> Auftragswert pro Abschluss ergibt sich ein
+          potenzieller Monatsumsatz von
+          <strong class="orange" id="adl-potential-revenue">10.950&nbsp;€</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const budgetSlider = document.getElementById("adl-budget-slider");
+      const budgetOutput = document.getElementById("adl-budget-output");
+      const budgetInline = document.getElementById("adl-budget-inline");
+      const budgetKpi = document.getElementById("adl-budget-kpi");
+      const cplTitle = document.getElementById("adl-cpl-title");
+      const cplKpi = document.getElementById("adl-cpl-kpi");
+      const leadsKpi = document.getElementById("adl-leads-kpi");
+      const dealsKpi = document.getElementById("adl-deals-kpi");
+
+      const orderSlider = document.getElementById("adl-order-value-slider");
+      const out = document.getElementById("adl-order-value-output");
+      const inline = document.getElementById("adl-order-value-inline");
+      const revenue = document.getElementById("adl-potential-revenue");
+      if (
+        !budgetSlider ||
+        !budgetOutput ||
+        !budgetInline ||
+        !budgetKpi ||
+        !cplTitle ||
+        !cplKpi ||
+        !leadsKpi ||
+        !dealsKpi ||
+        !orderSlider ||
+        !out ||
+        !inline ||
+        !revenue
+      ) return;
+
+      const MIN_ORDER_VALUE = 5000;
+      const MAX_ORDER_VALUE = 50000;
+      const MIN_CPL = 70;
+      const MAX_CPL = 150;
+      const CONV = 0.17;
+      const fmt = new Intl.NumberFormat("de-DE");
+      const euro = (n) => fmt.format(Math.round(n)) + "\u00A0\u20AC";
+
+      const update = () => {
+        const budget = Number(budgetSlider.value) || 0;
+        const orderValue = Number(orderSlider.value) || 0;
+        const orderRatio = (orderValue - MIN_ORDER_VALUE) / (MAX_ORDER_VALUE - MIN_ORDER_VALUE);
+        const cpl = MIN_CPL + Math.max(0, Math.min(1, orderRatio)) * (MAX_CPL - MIN_CPL);
+
+        const leads = budget / cpl;
+        const deals = leads * CONV;
+        const potential = orderValue * deals;
+
+        budgetOutput.textContent = euro(budget);
+        budgetInline.textContent = euro(budget);
+        budgetKpi.textContent = euro(budget);
+        cplTitle.textContent = euro(cpl) + " CPL";
+        cplKpi.textContent = euro(cpl);
+        leadsKpi.textContent = fmt.format(Math.round(leads));
+        dealsKpi.textContent = "~" + deals.toFixed(1).replace(".", ",");
+
+        out.textContent = euro(orderValue);
+        inline.textContent = euro(orderValue);
+        revenue.textContent = euro(potential);
+      };
+
+      budgetSlider.addEventListener("input", update);
+      orderSlider.addEventListener("input", update);
+      update();
+    })();
+  </script>
+
   <section   id="leistungen-duo" class="section adl-leistungen-section" aria-labelledby="leistungen-duo-heading">
     <div class="adl-leistungen-section__glow" aria-hidden="true"></div>
     <div class="w-layout-blockcontainer container w-container adl-leistungen-section__inner">
@@ -539,6 +822,13 @@
           Kein „Entweder-oder“ – wir verbinden messbare Akquise mit starkem Employer Branding. Hier, wo es für dein Wachstum zählt.
         </p>
       </header>
+      <div class="adl-service-chooser" aria-label="Service Auswahl">
+        <p class="adl-service-chooser__label">Was interessiert dich gerade mehr?</p>
+        <div class="adl-service-chooser__actions">
+          <a class="adl-service-chooser__btn" href="leadgenerierung-rechner.html">Leadgenerierung-Rechner</a>
+          <a class="adl-service-chooser__btn adl-service-chooser__btn--alt" href="mitarbeitergewinnung-rechner.html">Mitarbeiter-Rechner</a>
+        </div>
+      </div>
       <div class="adl-leistungen-grid">
         <article class="adl-leistungen-card adl-leistungen-card--leads">
           <div class="adl-leistungen-card__accent" aria-hidden="true"></div>
@@ -568,6 +858,7 @@
               <span>Tracking, Attribution &amp; Reporting – nachvollziehbar für dein Team</span>
             </li>
           </ul>
+          <a href="leadgenerierung-rechner.html" class="adl-leistungen-card__cta">Zum Leadgen-Rechner →</a>
         </article>
         <article class="adl-leistungen-card adl-leistungen-card--team">
           <div class="adl-leistungen-card__accent adl-leistungen-card__accent--alt" aria-hidden="true"></div>
@@ -597,6 +888,7 @@
               <span>Mehr passende Bewerbungen, weniger Streuverlust im Hiring</span>
             </li>
           </ul>
+          <a href="mitarbeitergewinnung-rechner.html" class="adl-leistungen-card__cta">Zum Mitarbeiter-Rechner →</a>
         </article>
       </div>
     </div>
@@ -657,11 +949,58 @@
       margin: 0 auto;
       align-items: stretch;
     }
+    .adl-service-chooser {
+      max-width: 760px;
+      margin: 0 auto 1.5rem;
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(160deg, rgba(28, 28, 34, 0.9), rgba(15, 15, 20, 0.96));
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
+      text-align: center;
+    }
+    .adl-service-chooser__label {
+      margin: 0 0 0.85rem;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.92);
+    }
+    .adl-service-chooser__actions {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .adl-service-chooser__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.64rem 1rem;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      color: #1a1008;
+      background: linear-gradient(145deg, #f0a060 0%, #e67b33 100%);
+      border: 1px solid rgba(230, 123, 51, 0.4);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .adl-service-chooser__btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+    }
+    .adl-service-chooser__btn--alt {
+      color: #ffe9d6;
+      background: rgba(230, 123, 51, 0.15);
+      border-color: rgba(230, 123, 51, 0.28);
+    }
     @media (max-width: 991px) {
       .adl-leistungen-grid { grid-template-columns: 1fr; }
     }
     .adl-leistungen-card {
       position: relative;
+      cursor: pointer;
       border-radius: 26px;
       padding: 2.15rem 1.85rem 2.35rem;
       background: linear-gradient(160deg, rgba(38, 38, 44, 0.88) 0%, rgba(16, 16, 20, 0.96) 48%, rgba(12, 12, 16, 1) 100%);
@@ -800,6 +1139,22 @@
       border-color: rgba(255, 255, 255, 0.08);
     }
     .adl-leistungen-list svg { flex-shrink: 0; margin-top: 0.12rem; }
+    .adl-leistungen-card__cta {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      margin-top: 1rem;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #f2b07b;
+      text-decoration: none;
+      transition: transform 0.25s ease, color 0.25s ease;
+    }
+    .adl-leistungen-card__cta:hover {
+      color: #ffd0a6;
+      transform: translateX(2px);
+    }
     .adl-leistungen-more { margin-top: 1.25rem; margin-bottom: 0; }
     .adl-leistungen-more a {
       color: #e67b33;
@@ -812,6 +1167,25 @@
       .adl-leistungen-card:hover { transform: none; }
     }
   </style>
+  <script>
+    (function () {
+      const cards = document.querySelectorAll(".adl-leistungen-card[data-link]");
+      cards.forEach((card) => {
+        const href = card.getAttribute("data-link");
+        if (!href) return;
+        card.addEventListener("click", (e) => {
+          if (e.target.closest("a")) return;
+          window.location.href = href;
+        });
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            window.location.href = href;
+          }
+        });
+      });
+    })();
+  </script>
 
   <section id="kundenergebnisse" class="section adl-case-studies" aria-labelledby="kundenergebnisse-heading">
     <div class="adl-case-studies__glow" aria-hidden="true"></div>
@@ -1285,8 +1659,6 @@
       </article>
     </div>
   </section>
-
-
 
   <style>
     .hide {
