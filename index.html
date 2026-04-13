@@ -27,11 +27,7 @@
       overflow-x: clip;
     }
 
-    @media (prefers-reduced-motion: no-preference) {
-      html {
-        scroll-behavior: smooth;
-      }
-    }
+    /* Smooth-Scroll per JS (kurz gedeckelt) – siehe adlionsInitFasterNavScroll */
 
     #kontakt {
       scroll-margin-top: 100px;
@@ -2625,12 +2621,111 @@
       root.style.setProperty('display', 'block', 'important');
     }
 
+    var adlionsScrollAnimRaf = null;
+
+    function adlionsScrollToElement(el) {
+      var navOffset = 96;
+      var startY = window.scrollY || document.documentElement.scrollTop;
+      var endY =
+        el.getBoundingClientRect().top + startY - navOffset;
+      endY = Math.max(0, endY);
+      var dist = endY - startY;
+      if (Math.abs(dist) < 2) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.scrollTo(0, endY);
+        return;
+      }
+
+      if (adlionsScrollAnimRaf) {
+        cancelAnimationFrame(adlionsScrollAnimRaf);
+        adlionsScrollAnimRaf = null;
+      }
+
+      var maxDur = 240;
+      var minDur = 100;
+      var dur = Math.min(maxDur, Math.max(minDur, Math.abs(dist) / 10));
+      var t0 = null;
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var t = Math.min(1, (ts - t0) / dur);
+        window.scrollTo(0, startY + dist * easeOutCubic(t));
+        if (t < 1) {
+          adlionsScrollAnimRaf = requestAnimationFrame(step);
+        } else {
+          adlionsScrollAnimRaf = null;
+        }
+      }
+
+      adlionsScrollAnimRaf = requestAnimationFrame(step);
+    }
+
+    function adlionsInitFasterNavScroll() {
+      if (adlionsInitFasterNavScroll._done) return;
+      adlionsInitFasterNavScroll._done = true;
+
+      document.addEventListener(
+        'click',
+        function (e) {
+          var a = e.target.closest('a');
+          if (!a) return;
+          var href = a.getAttribute('href');
+          if (!href) return;
+          if (/^(mailto:|tel:|javascript:)/i.test(href)) return;
+
+          var hash = null;
+          var clean = href.trim();
+          if (clean.charAt(0) === '#') {
+            if (clean.length <= 1) return;
+            hash = clean;
+          } else if (clean.indexOf('#') !== -1) {
+            var m = clean.match(/^\/?(?:index\.html)?(#.+)$/i);
+            if (!m) return;
+            var path = window.location.pathname || '';
+            var onHome =
+              path === '/' || /\/index\.html$/i.test(path);
+            if (!onHome) return;
+            hash = m[1];
+          } else {
+            return;
+          }
+
+          var id = decodeURIComponent(hash.slice(1).split('#')[0]);
+          if (!id) return;
+          var target = document.getElementById(id);
+          if (!target) {
+            try {
+              target = document.querySelector(hash);
+            } catch (err) {
+              return;
+            }
+          }
+          if (!target) return;
+
+          e.preventDefault();
+          adlionsScrollToElement(target);
+          if (history.pushState) {
+            try {
+              history.pushState(null, '', hash);
+            } catch (err2) { }
+          }
+        },
+        true
+      );
+    }
+
     function runAfterDomReady() {
       removeHomepageVideos();
       optimizeOffscreenMedia();
       initCreativeMarquee();
       disableWebflowInteractions();
       ensureZweiBereicheSectionVisible();
+      adlionsInitFasterNavScroll();
     }
 
     if (document.readyState === 'loading') {
@@ -2643,6 +2738,7 @@
       initCreativeMarquee();
       disableWebflowInteractions();
       ensureZweiBereicheSectionVisible();
+      adlionsInitFasterNavScroll();
       requestAnimationFrame(function () {
         ensureZweiBereicheSectionVisible();
       });
