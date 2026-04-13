@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>BAFA-Förderanfrage | ADLIONS</title>
+  <meta name="description"
+    content="Antrag auf Unterstützung bei Ihrer BAFA-Förderanfrage – Angaben und Vollmacht für ADLIONS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet" />
+  <link href="/output-onlinepngtools-6.png" rel="icon" type="image/png" />
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0369a1;
+      --accent-hover: #0c4a6e;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+    }
+
+    .topbar-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar a.logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .topbar img {
+      height: 42px;
+      width: auto;
+    }
+
+    .nav-main {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.15rem 0.35rem;
+      justify-content: flex-end;
+    }
+
+    .nav-main a {
+      color: #334155;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0.45rem 0.65rem;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-main a:hover {
+      background: #f1f5f9;
+      color: var(--accent);
+    }
+
+    .nav-main a.cta {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      color: #fff;
+      font-weight: 600;
+      margin-left: 0.25rem;
+    }
+
+    .nav-main a.cta:hover {
+      filter: brightness(1.05);
+      color: #fff;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #082f49 0%, #0c4a6e 45%, #0369a1 100%);
+      color: #f8fafc;
+      padding: 2.25rem 1.25rem 2.75rem;
+    }
+
+    .hero-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.65rem, 4vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      max-width: 40rem;
+    }
+
+    main {
+      max-width: 720px;
+      margin: -1.5rem auto 0;
+      padding: 0 1.25rem 3.5rem;
+      position: relative;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: clamp(1.5rem, 4vw, 2.25rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .card h2 {
+      margin: 0 0 1rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      padding-bottom: 0.65rem;
+      border-bottom: 2px solid #e0f2fe;
+    }
+
+    .card h2:first-child {
+      margin-top: 0;
+    }
+
+    .vollmacht-box {
+      background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #bae6fd;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.35rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .vollmacht-box h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      border: none;
+      padding: 0;
+      color: #0c4a6e;
+    }
+
+    .vollmacht-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem 1.2rem;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: filter 0.15s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--accent);
+      border: 2px solid #7dd3fc;
+    }
+
+    .btn-secondary:hover {
+      background: #f0f9ff;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 1rem 1.25rem;
+    }
+
+    @media (min-width: 560px) {
+      .form-grid.cols-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.35rem;
+    }
+
+    label .req {
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      font: inherit;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0.35rem 0 0;
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      margin: 1.5rem 0;
+ padding: 1rem;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .checkbox-row input {
+      width: auto;
+      margin-top: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-weight: 500;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .submit-wrap {
+      margin-top: 1.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .submit-wrap .btn-primary {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      font-size: 16px;
+    }
+
+    .form-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2rem 1.25rem;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer strong {
+      color: #e2e8f0;
+      display: block;
+      margin-bottom: 0.75rem;
+      font-size: 15px;
+    }
+
+    footer nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1.25rem;
+    }
+
+    footer a {
+      color: #7dd3fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+      color: #bae6fd;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      max-width: min(420px, calc(100% - 2rem));
+      padding: 1rem 1.25rem;
+      background: #0f172a;
+      color: #f1f5f9;
+      border-radius: 12px;
+      font-size: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      z-index: 100;
+      opacity: 0;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 640px) {
+      .nav-main {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
+      <nav class="nav-main" aria-label="Hauptnavigation">
+        <a href="/index.html">Home</a>
+        <a href="/index.html#ueber-uns">Über uns</a>
+        <a href="/index.html#zwei-bereiche">Kernbereiche</a>
+        <a href="/index.html#fallstudien">Fallstudien</a>
+        <a href="/vertrieb-funnel.html">Karriere</a>
+        <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <h1>BAFA-Förderanfrage</h1>
+      <p>Bitte füllen Sie alle Pflichtfelder (<span style="color:#7dd3fc">*</span>) vollständig aus und senden Sie das
+        Formular ab. Die <strong style="color:#fff">unterschriebene Vollmacht</strong> hängen Sie bitte in einer
+        <strong style="color:#fff">separaten E-Mail</strong> an <strong style="color:#fff">info@adlions.de</strong> an
+        (kein Datei-Upload im Formular).</p>
+    </div>
+  </div>
+
+  <main>
+    <div class="card">
+      <div class="vollmacht-box">
+        <h2>Vollmacht</h2>
+        <p class="hint" style="margin:0 0 0.5rem;color:#334155">Laden Sie die Vollmacht herunter, unterschreiben Sie
+          sie und senden Sie die unterschriebene Datei <strong>per E-Mail</strong> an
+          <strong>info@adlions.de</strong> – im Formular selbst sind keine Dateien möglich.</p>
+        <div class="vollmacht-actions">
+          <a class="btn btn-secondary" href="/unb_vollmacht-2-3.pdf" download>Vollmacht (PDF) herunterladen</a>
+        </div>
+      </div>
+
+      <form id="bafa-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="d7aa098b-83d4-4a29-8a31-a336d22d12da" />
+        <input type="hidden" name="subject" value="Neue BAFA-Förderanfrage eingereicht" />
+        <input type="hidden" name="from_name" value="ADLIONS BAFA-Formular" />
+        <input type="hidden" name="redirect" value="bafa-foerderanfrage.html?danke=1" />
+        <input type="hidden" name="Meldung" value="Es wurde eine neue BAFA-Förderanfrage über das Online-Formular eingereicht." />
+        <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="display:none" />
+        <h2>Unternehmen</h2>
+        <div class="form-grid">
+          <div style="grid-column:1/-1">
+            <label for="firma-name">Unternehmensname <span class="req">*</span></label>
+            <input id="firma-name" name="Unternehmensname" type="text" required autocomplete="organization" />
+          </div>
+        </div>
+
+        <h2>Firmenanschrift</h2>
+        <div class="form-grid">
+          <div style="grid-column:1/-1">
+            <label for="addr1">Adresszeile 1 <span class="req">*</span></label>
+            <input id="addr1" name="Adresszeile_1" type="text" required autocomplete="address-line1" />
+          </div>
+          <div class="cols-2 form-grid" style="grid-column:1/-1">
+            <div>
+              <label for="stadt">Stadt <span class="req">*</span></label>
+              <input id="stadt" name="Stadt" type="text" required autocomplete="address-level2" />
+            </div>
+            <div>
+              <label for="region">Staat / Provinz / Region <span class="req">*</span></label>
+              <input id="region" name="Region" type="text" required autocomplete="address-level1" />
+            </div>
+            <div>
+              <label for="plz">PLZ <span class="req">*</span></label>
+              <input id="plz" name="PLZ" type="text" required autocomplete="postal-code" />
+            </div>
+            <div>
+              <label for="land">Land <span class="req">*</span></label>
+              <input id="land" name="Land" type="text" required value="Deutschland" autocomplete="country-name" />
+            </div>
+          </div>
+        </div>
+
+        <h2>Unternehmensdaten</h2>
+        <div class="form-grid cols-2">
+          <div>
+            <label for="rechtsform">Rechtsform der Gesellschaft <span class="req">*</span></label>
+            <select id="rechtsform" name="Rechtsform" required>
+              <option value="">Bitte wählen</option>
+              <option value="Natürliche Person">Natürliche Person</option>
+              <option value="Juristische Person">Juristische Person</option>
+            </select>
+          </div>
+          <div>
+            <label for="vst">Vorsteuerabzugsberechtigt <span class="req">*</span></label>
+            <select id="vst" name="Vorsteuerabzug" required>
+              <option value="">Bitte wählen</option>
+              <option value="Ja">Ja</option>
+              <option value="Nein">Nein</option>
+              <option value="Teilweise">Teilweise</option>
+            </select>
+          </div>
+          <div>
+            <label for="gruendung">Gründungsdatum <span class="req">*</span></label>
+            <input id="gruendung" name="Gruendungsdatum" type="date" required />
+          </div>
+          <div>
+            <label for="geburtsdatum">Geburtsdatum des Antragstellers <span class="req">*</span></label>
+            <input id="geburtsdatum" name="Geburtsdatum_Antragsteller" type="date" required />
+          </div>
+        </div>
+
+        <h2>Geschäftsführung</h2>
+        <div class="form-grid cols-2">
+          <div>
+            <label for="gf-titel">Titel</label>
+            <input id="gf-titel" name="GF_Titel" type="text" autocomplete="honorific-prefix" />
+          </div>
+          <div>
+            <label for="gf-vorname">Vorname <span class="req">*</span></label>
+            <input id="gf-vorname" name="GF_Vorname" type="text" required autocomplete="given-name" />
+          </div>
+          <div>
+            <label for="gf-nachname">Nachname <span class="req">*</span></label>
+            <input id="gf-nachname" name="GF_Nachname" type="text" required autocomplete="family-name" />
+          </div>
+          <div>
+            <label for="gf-telefon">Telefonnummer <span class="req">*</span></label>
+            <input id="gf-telefon" name="GF_Telefon" type="tel" required autocomplete="tel" />
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="gf-email">E-Mail-Adresse des Geschäftsführers <span class="req">*</span></label>
+            <input id="gf-email" name="email" type="email" required autocomplete="email"
+              title="E-Mail Geschäftsführung (wird als Antwort-Adresse genutzt)" />
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="unternehmenstyp">Unternehmenstyp <span class="req">*</span></label>
+            <select id="unternehmenstyp" name="Unternehmenstyp" required>
+              <option value="">Bitte wählen</option>
+              <option value="Eigenständiges Unternehmen">Eigenständiges Unternehmen</option>
+              <option value="Partnerunternehmen">Partnerunternehmen</option>
+              <option value="Verbundenes Unternehmen">Verbundenes Unternehmen</option>
+            </select>
+          </div>
+        </div>
+
+        <h2>Wirtschaftliche Kennzahlen</h2>
+        <div class="form-grid cols-2">
+          <div style="grid-column:1/-1">
+            <label for="zweck">Geschäftszweck <span class="req">*</span></label>
+            <textarea id="zweck" name="Geschaeftszweck" required></textarea>
+          </div>
+          <div>
+            <label for="mitarbeiter">Anzahl der Mitarbeiter <span class="req">*</span></label>
+            <input id="mitarbeiter" name="Mitarbeiter" type="number" min="0" step="1" required />
+          </div>
+          <div>
+            <label for="umsatz">Jahresumsatz (€) <span class="req">*</span></label>
+            <input id="umsatz" name="Jahresumsatz_EUR" type="text" required inputmode="decimal"
+              placeholder="z. B. 500000" />
+          </div>
+          <div style="grid-column:1/-1">
+            <label for="bilanz">Jahresbilanzsumme (€) <span class="req">*</span></label>
+            <input id="bilanz" name="Jahresbilanzsumme_EUR" type="text" required inputmode="decimal"
+              placeholder="z. B. 250000" />
+          </div>
+        </div>
+
+        <h2>Steuer</h2>
+        <div class="form-grid">
+          <div>
+            <label for="steuerid">Steuer-ID-Nummer (bei natürlichen Personen) <span class="req">*</span></label>
+            <input id="steuerid" name="SteuerID" type="text" required autocomplete="off" />
+            <p class="hint">Bei juristischen Personen ggf. Steuernummer des Unternehmens oder „n. a.“ – wir prüfen die
+              Angaben bei Rückfrage.</p>
+          </div>
+        </div>
+
+        <h2>Auszahlung der Fördermittel</h2>
+        <div class="form-grid cols-2">
+          <div style="grid-column:1/-1">
+            <label for="iban">IBAN <span class="req">*</span></label>
+            <input id="iban" name="IBAN" type="text" required autocomplete="off" spellcheck="false"
+              placeholder="DE89 3704 0044 0532 0130 00" />
+            <p class="hint">Konto, auf das eine etwaige Fördermittelauszahlung erfolgen soll (ohne Leerzeichen möglich).
+            </p>
+          </div>
+          <div>
+            <label for="bic">BIC (optional)</label>
+            <input id="bic" name="BIC" type="text" autocomplete="off" spellcheck="false" />
+          </div>
+          <div>
+            <label for="kontoinhaber">Kontoinhaber <span class="req">*</span></label>
+            <input id="kontoinhaber" name="Kontoinhaber" type="text" required
+              placeholder="Sofern abweichend vom Unternehmensnamen" />
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <input id="confirm" name="Bestaetigung" type="checkbox" value="ja" required />
+          <label for="confirm">Ich bestätige die Hinweise zur Bearbeitung meiner Förderanfrage und werde die
+            unterschriebene Vollmacht in einer <strong>separaten E-Mail</strong> an <strong>info@adlions.de</strong>
+            senden (als Anhang).</label>
+        </div>
+
+        <div class="submit-wrap">
+          <button type="submit" class="btn btn-primary">Anfrage absenden</button>
+          <p class="form-note">Ihre Angaben werden über <strong>Web3Forms</strong> an die bei Ihrem Zugang hinterlegte
+            E-Mail geschickt (nur Textfelder, keine Dateien). Die unterschriebene Vollmacht senden Sie bitte
+            <strong>zusätzlich per E-Mail</strong> an <strong>info@adlions.de</strong>.</p>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <strong>ADLIONS</strong>
+    <nav aria-label="Footer">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="mailto:info@adlions.de?subject=Karriere">Karriere</a>
+    </nav>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      var toast = document.getElementById('toast');
+      if (new URLSearchParams(window.location.search).get('danke') === '1') {
+        toast.textContent = 'Vielen Dank – Ihre Angaben wurden übermittelt. Bitte senden Sie die unterschriebene Vollmacht per E-Mail an info@adlions.de, falls noch nicht geschehen.';
+        toast.classList.add('show');
+        setTimeout(function () { toast.classList.remove('show'); }, 8000);
+        try {
+          history.replaceState(null, '', 'bafa-foerderanfrage.html');
+        } catch (e) { /* ignore */ }
+      }
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bewerbung Vertrieb – ADLIONS Karriere</title>
+  <meta name="description"
+    content="Karriere im Vertrieb bei ADLIONS in Berlin – Traineeprogramm, Vorteile und kurzer Bewerbungs-Funnel." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet" />
+  <link href="/output-onlinepngtools-6.png" rel="icon" type="image/png" />
+  <style>
+    :root {
+      --bg: #eef6ff;
+      --surface: #ffffff;
+      --text: #0c1929;
+      --muted: #5c6b7f;
+      --accent: #0284c7;
+      --accent-bright: #0ea5e9;
+      --accent-glow: #38bdf8;
+      --border: rgba(14, 165, 233, 0.22);
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(15, 23, 42, 0.07);
+      --glow-card: 0 0 0 1px rgba(56, 189, 248, 0.35),
+        0 4px 28px rgba(14, 165, 233, 0.12),
+        0 0 64px -8px rgba(56, 189, 248, 0.35);
+      --glow-card-hover: 0 0 0 1px rgba(56, 189, 248, 0.55),
+        0 8px 40px rgba(14, 165, 233, 0.18),
+        0 0 80px -6px rgba(56, 189, 248, 0.45);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--text);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 120% 80% at 0% -20%, rgba(56, 189, 248, 0.35), transparent 55%),
+        radial-gradient(ellipse 90% 70% at 100% 0%, rgba(139, 92, 246, 0.12), transparent 50%),
+        radial-gradient(ellipse 80% 50% at 50% 100%, rgba(14, 165, 233, 0.15), transparent 55%),
+        linear-gradient(180deg, #f0f9ff 0%, var(--bg) 38%, #e8f4fc 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 24px rgba(14, 165, 233, 0.08);
+    }
+
+    .topbar-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar a.logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .topbar img {
+      height: 42px;
+      width: auto;
+    }
+
+    .nav-main {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.15rem 0.35rem;
+      justify-content: flex-end;
+    }
+
+    .nav-main a {
+      color: #334155;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0.45rem 0.65rem;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-main a:hover {
+      background: rgba(224, 242, 254, 0.85);
+      color: var(--accent-bright);
+    }
+
+    .nav-main a.cta {
+      background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 45%, #0284c7 100%);
+      color: #fff;
+      font-weight: 600;
+      margin-left: 0.25rem;
+      box-shadow: 0 2px 16px rgba(14, 165, 233, 0.45), 0 0 24px rgba(56, 189, 248, 0.35);
+    }
+
+    .nav-main a.cta:hover {
+      filter: brightness(1.06);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(14, 165, 233, 0.55), 0 0 32px rgba(56, 189, 248, 0.4);
+    }
+
+    .nav-main a[aria-current="page"] {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0369a1 0%, #0c4a6e 32%, #082f49 58%, #0e7490 100%);
+      color: #f8fafc;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -40% -20% auto -20%;
+      height: 140%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(56, 189, 248, 0.55), transparent 55%),
+        radial-gradient(ellipse at 80% 60%, rgba(34, 211, 238, 0.25), transparent 45%),
+        radial-gradient(ellipse at 50% 100%, rgba(139, 92, 246, 0.2), transparent 40%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(8, 47, 73, 0.35) 100%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.65rem, 4vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      text-shadow: 0 0 40px rgba(56, 189, 248, 0.5), 0 2px 16px rgba(8, 47, 73, 0.4);
+    }
+
+    .hero p {
+      margin: 0 auto;
+      font-size: 1.05rem;
+      color: #e0f2fe;
+      max-width: 40rem;
+      text-shadow: 0 0 24px rgba(125, 211, 252, 0.35);
+    }
+
+    main {
+      max-width: 680px;
+      margin: -1.5rem auto 0;
+      padding: 0 1.25rem 3.5rem;
+      position: relative;
+      text-align: center;
+    }
+
+    main::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -0.5rem;
+      transform: translateX(-50%);
+      width: min(100%, 520px);
+      height: 120px;
+      background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.2), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .flow-progress {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0369a1;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 0 0 1.35rem;
+      text-align: center;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(224, 242, 254, 0.95), rgba(255, 255, 255, 0.9));
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.25), 0 2px 12px rgba(14, 165, 233, 0.12);
+    }
+
+    .flow-screen[hidden] {
+      display: none !important;
+    }
+
+    .inline-emoji {
+      margin-right: 0.4em;
+      font-style: normal;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    h2 .inline-emoji,
+    h3 .inline-emoji {
+      font-size: 1.08em;
+    }
+
+    .flow-card {
+      text-align: center;
+    }
+
+    .flow-card h2 {
+      text-align: center;
+    }
+
+    .flow-card .intro-lead {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .flow-card .benefit-list {
+      text-align: left;
+      margin-top: 0.5rem;
+    }
+
+    .btn-next {
+      max-width: 320px;
+      margin: 1.75rem auto 0;
+      display: flex;
+    }
+
+    @media (hover: hover) {
+      .card:hover {
+        transform: translateY(-2px);
+      }
+    }
+
+    .quiz-screen .choice-grid {
+      justify-content: center;
+    }
+
+    .quiz-screen h3 {
+      text-align: center;
+    }
+
+    .quiz-screen .hint {
+      text-align: center;
+    }
+
+    .funnel-contact {
+      text-align: left;
+    }
+
+    .funnel-contact h3 {
+      text-align: center;
+    }
+
+    .funnel-contact .hint {
+      text-align: center;
+    }
+
+    #form-result {
+      margin-top: 1rem;
+      font-size: 15px;
+      font-weight: 600;
+      min-height: 1.5em;
+    }
+
+    #form-result.ok {
+      color: #047857;
+    }
+
+    #form-result.err {
+      color: #b91c1c;
+    }
+
+    .card {
+      background: linear-gradient(165deg, #ffffff 0%, #f8fcff 100%);
+      border-radius: var(--radius);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: var(--glow-card);
+      padding: clamp(1.5rem, 4vw, 2rem);
+      margin-bottom: 1.5rem;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--glow-card-hover);
+      border-color: rgba(56, 189, 248, 0.65);
+    }
+
+    .card h2 {
+      margin: 0 0 1rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0c4a6e;
+      padding-bottom: 0.7rem;
+      border-bottom: none;
+      background: linear-gradient(90deg, #38bdf8, #22d3ee, rgba(139, 92, 246, 0.55)) left bottom /
+        100% 2px no-repeat;
+    }
+
+    .intro-lead {
+      margin: 0 0 1rem;
+      color: #334e68;
+      font-size: 1.05rem;
+    }
+
+    .benefit-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .benefit-list li {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      padding: 0.85rem 1rem;
+      background: linear-gradient(135deg, rgba(240, 249, 255, 0.9), rgba(255, 255, 255, 0.95));
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.08);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .benefit-list li:hover {
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.15);
+    }
+
+    .benefit-list .mark {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #22d3ee, #0ea5e9 50%, #0369a1);
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(14, 165, 233, 0.45), 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+
+    .benefit-list strong {
+      display: block;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+      font-size: 15px;
+    }
+
+    .benefit-list span.desc {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .hint {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .funnel-step h3,
+    .funnel-card h3 {
+      margin: 0 0 1rem;
+      font-size: 1.2rem;
+      color: #0c4a6e;
+      text-shadow: 0 0 40px rgba(56, 189, 248, 0.15);
+    }
+
+    .funnel-step[hidden] {
+      display: none !important;
+    }
+
+    .choice-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .choice-btn {
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 0.8rem 1.15rem;
+      border-radius: 12px;
+      border: 2px solid rgba(56, 189, 248, 0.35);
+      background: linear-gradient(180deg, #ffffff, #f0f9ff);
+      color: #0c4a6e;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.1s, box-shadow 0.2s;
+      text-align: left;
+      box-shadow: 0 2px 12px rgba(14, 165, 233, 0.08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.45rem;
+    }
+
+    .choice-btn:hover {
+      border-color: rgba(34, 211, 238, 0.85);
+      background: linear-gradient(180deg, #f0f9ff, #e0f2fe);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.25), 0 4px 16px rgba(14, 165, 233, 0.12);
+    }
+
+    .choice-btn:active {
+      transform: scale(0.98);
+    }
+
+    .funnel-contact .field {
+      margin-bottom: 1rem;
+    }
+
+    .funnel-contact label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: #334155;
+    }
+
+    .funnel-contact input,
+    .funnel-contact textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.95);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .funnel-contact input:focus,
+    .funnel-contact textarea:focus {
+      outline: none;
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), 0 0 20px rgba(14, 165, 233, 0.15);
+    }
+
+    .funnel-contact textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      margin: 1.25rem 0;
+    }
+
+    .checkbox-row input {
+      width: auto;
+      margin-top: 0.35rem;
+    }
+
+    .checkbox-row label {
+      font-weight: 500;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.95rem 1.35rem;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 40%, #0284c7 100%);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 24px rgba(14, 165, 233, 0.45), 0 0 32px rgba(56, 189, 248, 0.3);
+      transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 6px 32px rgba(14, 165, 233, 0.55), 0 0 40px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.99);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+      filter: grayscale(0.2);
+    }
+
+    .secure-note {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+    footer {
+      background: linear-gradient(180deg, #0c1929 0%, #0f172a 40%, #082f49 100%);
+      color: #94a3b8;
+      padding: 2rem 1.25rem;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 -8px 40px rgba(56, 189, 248, 0.12);
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    footer strong {
+      color: #f0f9ff;
+      display: block;
+      margin-bottom: 0.75rem;
+      font-size: 15px;
+      text-shadow: 0 0 24px rgba(56, 189, 248, 0.35);
+    }
+
+    footer nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1.25rem;
+    }
+
+    footer a {
+      color: #7dd3fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+      color: #bae6fd;
+    }
+
+    @media (max-width: 640px) {
+      .nav-main {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
+      <nav class="nav-main" aria-label="Hauptnavigation">
+        <a href="/index.html">Home</a>
+        <a href="/index.html#ueber-uns">Über uns</a>
+        <a href="/index.html#zwei-bereiche">Kernbereiche</a>
+        <a href="/index.html#fallstudien">Fallstudien</a>
+        <a href="/vertrieb-funnel.html" aria-current="page">Karriere</a>
+        <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <h1><span class="inline-emoji" aria-hidden="true">🚀</span>Bewerbung Vertrieb</h1>
+      <p><span class="inline-emoji" aria-hidden="true">✨</span>Kurz ein paar Fragen – dann melden wir uns bei dir.</p>
+    </div>
+  </div>
+
+  <main>
+    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 13</p>
+
+    <div class="flow-screen" data-flow-step="0">
+      <div class="card flow-card">
+        <h2><span class="inline-emoji" aria-hidden="true">👋</span>Hey, wir sind das Team von ADLIONS!</h2>
+        <p class="intro-lead"><span class="inline-emoji" aria-hidden="true">🏢</span>Werbeagentur aus Berlin – wir suchen Verstärkung im Vertrieb.</p>
+        <ul class="benefit-list">
+          <li><span class="mark" aria-hidden="true">1</span><div><strong>🤝 Dynamisches Team</strong><span class="desc">Du wirst Teil eines jungen, dynamischen Teams mit starkem Teamgeist. Bei uns zählt Zusammenarbeit auf Augenhöhe und offener Austausch.</span></div></li>
+          <li><span class="mark" aria-hidden="true">2</span><div><strong>📈 Spannendes Arbeitsumfeld</strong><span class="desc">Als stark wachsende Agentur in einem zukunftsorientierten Markt (Performance Marketing, digitale Kundengewinnung) bieten wir dir einen Arbeitsplatz mit Möglichkeiten und Perspektiven – mitten in Berlin.</span></div></li>
+          <li><span class="mark" aria-hidden="true">3</span><div><strong>🌟 Ambitionierte Atmosphäre</strong><span class="desc">In unserem Team wirst du dich wohlfühlen, wenn du ambitioniert bist und den Wunsch hast, dich persönlich weiterzuentwickeln.</span></div></li>
+          <li><span class="mark" aria-hidden="true">4</span><div><strong>🏆 Dein Erfolg ist unser Erfolg</strong><span class="desc">Wir fördern unsere Mitarbeiter und begegnen ihnen mit Offenheit, Respekt und Wertschätzung. Bei uns bist du ein geschätzter Teil des Teams – kein anonymes Rädchen.</span></div></li>
+        </ul>
+      </div>
+      <button type="button" class="btn-primary btn-next"><span class="inline-emoji" aria-hidden="true">➡️</span>Weiter</button>
+    </div>
+
+    <div class="flow-screen" data-flow-step="1" hidden>
+      <div class="card flow-card">
+        <h2><span class="inline-emoji" aria-hidden="true">🎁</span>Diese tollen Vorteile erwarten dich bei uns:</h2>
+        <ul class="benefit-list">
+          <li><span class="mark" aria-hidden="true">1</span><div><strong>💰 Faires Gehaltspaket</strong><span class="desc">Faires Einstiegsgehalt, attraktive Provisionen und die Möglichkeit, am Unternehmenserfolg zu partizipieren – wir honorieren deine Arbeit angemessen.</span></div></li>
+          <li><span class="mark" aria-hidden="true">2</span><div><strong>🎉 Erlebnisreiche Teamevents</strong><span class="desc">Bei uns wird Teamgeist großgeschrieben. Ob spannende Teambuilding-Aktivitäten oder unvergessliche Feiern – unsere Teamevents sind immer ein Highlight und stärken den Zusammenhalt.</span></div></li>
+          <li><span class="mark" aria-hidden="true">3</span><div><strong>🧗 Karriere- und Aufstiegschancen</strong><span class="desc">Mit unserem Wachstum öffnen sich dir viele Türen im Vertrieb. Nutze die Chance, dich in höheren Positionen zu etablieren.</span></div></li>
+          <li><span class="mark" aria-hidden="true">4</span><div><strong>🛣 Langfristige Perspektive</strong><span class="desc">Bei uns bist du kein kurzfristiger Mitarbeiter, sondern ein langfristiger Partner. Wir setzen auf dauerhafte Zusammenarbeit und bieten dir eine stabile, zukunftsorientierte Karriere.</span></div></li>
+          <li><span class="mark" aria-hidden="true">5</span><div><strong>📚 Persönliche Weiterentwicklung</strong><span class="desc">Wir unterstützen aktiv dein persönliches Wachstum durch individuelle Weiterbildungen. Mit uns entfaltest du dein volles Potenzial.</span></div></li>
+        </ul>
+      </div>
+      <button type="button" class="btn-primary btn-next"><span class="inline-emoji" aria-hidden="true">➡️</span>Weiter</button>
+    </div>
+
+    <div class="flow-screen" data-flow-step="2" hidden>
+      <div class="card flow-card">
+        <h2><span class="inline-emoji" aria-hidden="true">🎓</span>Das erwartet dich in unserem ADLIONS Traineeprogramm</h2>
+        <ul class="benefit-list">
+          <li><span class="mark" aria-hidden="true">1</span><div><strong>🔧 Hands-on-Ausbildung</strong><span class="desc">Erhalte eine hochwertige Ausbildung, direkt von der Geschäftsführung. Du wirst persönlich betreut und im 1-zu-1-Format begleitet, um dein Vertriebstalent optimal zu fördern.</span></div></li>
+          <li><span class="mark" aria-hidden="true">2</span><div><strong>⚡ Rasanter Einstieg</strong><span class="desc">Innerhalb weniger Wochen wirst du in die Kundenkommunikation eingeführt und schnell fit gemacht, um in das Vertriebsgeschehen einzutauchen.</span></div></li>
+          <li><span class="mark" aria-hidden="true">3</span><div><strong>📊 Karriere im Vertrieb</strong><span class="desc">Bereits nach einigen Monaten hast du die Möglichkeit, die nächste Stufe zu erklimmen. Gemeinsam erreichen wir Zwischenziele und ebnen deinen Weg zum Erfolg.</span></div></li>
+          <li><span class="mark" aria-hidden="true">4</span><div><strong>🎯 Vom Verkaufstalent zum Strategieberater</strong><span class="desc">Unser Ziel ist es, dein Verkaufstalent zu entfalten und dich zu einem erfolgreichen Strategieberater zu formen – für Performance Marketing und messbare Kundenergebnisse.</span></div></li>
+          <li><span class="mark" aria-hidden="true">5</span><div><strong>🏗️ Strukturierte Erfolgswege</strong><span class="desc">Profitiere von erprobten Strukturen, die dich im täglichen Geschäft erfolgreich machen. Bei uns bekommst du das Werkzeug an die Hand, um im Vertrieb zu glänzen.</span></div></li>
+        </ul>
+      </div>
+      <button type="button" class="btn-primary btn-next"><span class="inline-emoji" aria-hidden="true">➡️</span>Weiter</button>
+    </div>
+
+    <div class="flow-screen" data-flow-step="3" hidden>
+      <div class="card flow-card">
+        <h2><span class="inline-emoji" aria-hidden="true">📋</span>Diese Aufgaben erwarten dich als Trainee bei uns:</h2>
+        <ul class="benefit-list">
+          <li><span class="mark" aria-hidden="true">1</span><div><strong>📞 Kundenbeziehungen aufbauen</strong><span class="desc">Du wirst potenzielle Neukunden für unsere Dienstleistungen begeistern und überzeugen – vor allem durch zielgerichtete Telefonakquise.</span></div></li>
+          <li><span class="mark" aria-hidden="true">2</span><div><strong>📅 Die ersten Schritte ebnen</strong><span class="desc">Durch das Führen kostenloser Erstgespräche ermittelst du die Bedürfnisse unserer potenziellen Kunden und legst damit den Grundstein für eine erfolgreiche Zusammenarbeit.</span></div></li>
+          <li><span class="mark" aria-hidden="true">3</span><div><strong>💬 Bleib in Kontakt</strong><span class="desc">Mit bereits vorhandenen Kontakten nimmst du telefonisch erneut Kontakt auf und pflegst so bestehende Beziehungen.</span></div></li>
+          <li><span class="mark" aria-hidden="true">4</span><div><strong>💼 Unterstütze die Strategieberater</strong><span class="desc">Du übernimmst die Planung sowie die effektive Vor- und Nachbereitung der Termine unserer Strategieberater, damit sie sich voll und ganz auf ihre Arbeit konzentrieren können.</span></div></li>
+        </ul>
+      </div>
+      <button type="button" class="btn-primary btn-next"><span class="inline-emoji" aria-hidden="true">➡️</span>Weiter</button>
+    </div>
+
+    <div class="flow-screen" data-flow-step="4" hidden>
+      <div class="card flow-card">
+        <h2><span class="inline-emoji" aria-hidden="true">⭐</span>Für unser ambitioniertes Team suchen wir dich:</h2>
+        <ul class="benefit-list">
+          <li><span class="mark" aria-hidden="true">1</span><div><strong>💪 Du bist ein Go-Getter</strong><span class="desc">Du bist ambitioniert, hungrig nach Erfolg, überzeugend und absolut schlagfertig.</span></div></li>
+          <li><span class="mark" aria-hidden="true">2</span><div><strong>➕ Erfahrung ist ein Plus</strong><span class="desc">Vertriebserfahrung wäre von Vorteil, ist aber kein Muss. Wichtiger für uns ist dein Wille, Neues zu lernen und dich weiterzuentwickeln.</span></div></li>
+          <li><span class="mark" aria-hidden="true">3</span><div><strong>🔑 Motivation ist der Schlüssel</strong><span class="desc">Du bist bestrebt, stets dazu zu lernen und dich sowohl auf persönlicher Ebene als auch in deinem Erfahrungsschatz kontinuierlich zu verbessern.</span></div></li>
+          <li><span class="mark" aria-hidden="true">4</span><div><strong>😄 Spaß an der Arbeit</strong><span class="desc">Du findest Freude an der Beratung, dem Verkauf und der individuellen Arbeit mit Kunden. Deine Begeisterung ist ansteckend!</span></div></li>
+          <li><span class="mark" aria-hidden="true">5</span><div><strong>⚙️ Dein Arbeitsstil</strong><span class="desc">Du bist ein Teamplayer, der es auch genießt, eigenverantwortlich zu handeln und Entscheidungen zu treffen.</span></div></li>
+          <li><span class="mark" aria-hidden="true">6</span><div><strong>💖 Persönlichkeit zählt</strong><span class="desc">Du strahlst Positivität aus und hast ein sympathisches Auftreten gegenüber Kunden und Kollegen.</span></div></li>
+        </ul>
+      </div>
+      <button type="button" class="btn-primary btn-next"><span class="inline-emoji" aria-hidden="true">👆</span>Zu den Fragen</button>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="5" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">💼</span>Hast du bereits Erfahrung im Vertrieb?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="vertrieb_erfahrung" data-value="Ja, habe ich!"><span class="inline-emoji" aria-hidden="true">✅</span>Ja, habe ich!</button>
+          <button type="button" class="choice-btn" data-key="vertrieb_erfahrung" data-value="Noch nicht!"><span class="inline-emoji" aria-hidden="true">💡</span>Noch nicht!</button>
+        </div>
+        <p class="hint"><span class="inline-emoji" aria-hidden="true">💡</span>Auch wenn du noch keine Erfahrung im Vertrieb hast – wir sind hier, um dir alles beizubringen. Dein Ehrgeiz und Lernwille sind uns wichtiger als Vorkenntnisse.</p>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="6" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">🎓</span>Welchen höchsten Abschluss hast du?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="abschluss" data-value="Schulabschluss"><span class="inline-emoji" aria-hidden="true">📖</span>Schulabschluss</button>
+          <button type="button" class="choice-btn" data-key="abschluss" data-value="Ausbildung"><span class="inline-emoji" aria-hidden="true">🔧</span>Ausbildung</button>
+          <button type="button" class="choice-btn" data-key="abschluss" data-value="Studium"><span class="inline-emoji" aria-hidden="true">🎓</span>Studium</button>
+          <button type="button" class="choice-btn" data-key="abschluss" data-value="Sonstiges"><span class="inline-emoji" aria-hidden="true">📋</span>Sonstiges</button>
+        </div>
+        <p class="hint"><span class="inline-emoji" aria-hidden="true">🎊</span>P.S.: Trau dich und nimm die Herausforderung an! Wir wissen, dass junge Talente oft unsicher sind, besonders nach der Schule oder Ausbildung.</p>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="7" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">📈</span>Wie ist deine aktuelle berufliche Situation?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="situation" data-value="Angestellt"><span class="inline-emoji" aria-hidden="true">💼</span>Angestellt</button>
+          <button type="button" class="choice-btn" data-key="situation" data-value="Student"><span class="inline-emoji" aria-hidden="true">🧑‍🎓</span>Student</button>
+          <button type="button" class="choice-btn" data-key="situation" data-value="Selbstständig"><span class="inline-emoji" aria-hidden="true">🚀</span>Selbstständig</button>
+          <button type="button" class="choice-btn" data-key="situation" data-value="Sonstiges"><span class="inline-emoji" aria-hidden="true">📋</span>Sonstiges</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="8" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">📍</span>Wohnst du in Berlin oder bist du bereit, in Berlin zu arbeiten?</h3>
+        <p class="hint" style="margin-top:0"><span class="inline-emoji" aria-hidden="true">🏢</span>(Homeoffice ist nicht möglich)</p>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="berlin" data-value="Ja"><span class="inline-emoji" aria-hidden="true">✅</span>Ja</button>
+          <button type="button" class="choice-btn" data-key="berlin" data-value="Nein"><span class="inline-emoji" aria-hidden="true">❌</span>Nein</button>
+        </div>
+        <p class="hint"><span class="inline-emoji" aria-hidden="true">🗣️</span>Wir setzen auf persönliche Zusammenarbeit und Bürokultur, um unser Teamgefüge zu stärken und unseren Teamgeist lebendig zu halten. Homeoffice gibt es bei uns nicht.</p>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="9" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">🎯</span>Was ist dir bei der Arbeit besonders wichtig?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="wichtig" data-value="Guter Teamgeist"><span class="inline-emoji" aria-hidden="true">🤝</span>Guter Teamgeist</button>
+          <button type="button" class="choice-btn" data-key="wichtig" data-value="Verantwortung übernehmen"><span class="inline-emoji" aria-hidden="true">💪</span>Verantwortung übernehmen</button>
+          <button type="button" class="choice-btn" data-key="wichtig" data-value="Spannendes Tätigkeitsfeld"><span class="inline-emoji" aria-hidden="true">⚡</span>Spannendes Tätigkeitsfeld</button>
+          <button type="button" class="choice-btn" data-key="wichtig" data-value="Work-Life Balance"><span class="inline-emoji" aria-hidden="true">⚖️</span>Work-Life Balance</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="10" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">🗣️</span>Wie sicher sind deine Deutschkenntnisse?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="deutsch" data-value="Muttersprache"><span class="inline-emoji" aria-hidden="true">🗣️</span>Muttersprache</button>
+          <button type="button" class="choice-btn" data-key="deutsch" data-value="Sehr gut"><span class="inline-emoji" aria-hidden="true">⭐</span>Sehr gut</button>
+          <button type="button" class="choice-btn" data-key="deutsch" data-value="Mittelmäßig"><span class="inline-emoji" aria-hidden="true">📈</span>Mittelmäßig</button>
+          <button type="button" class="choice-btn" data-key="deutsch" data-value="Ich lerne noch"><span class="inline-emoji" aria-hidden="true">📚</span>Ich lerne noch</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="11" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">📆</span>Ab wann kannst du bei uns durchstarten?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="start" data-value="Sofort"><span class="inline-emoji" aria-hidden="true">⚡</span>Sofort</button>
+          <button type="button" class="choice-btn" data-key="start" data-value="In 1 Monat"><span class="inline-emoji" aria-hidden="true">📆</span>In 1 Monat</button>
+          <button type="button" class="choice-btn" data-key="start" data-value="In 2–3 Monaten"><span class="inline-emoji" aria-hidden="true">⏳</span>In 2–3 Monaten</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-screen funnel-contact" data-flow-step="12" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">🎉</span>Das sieht gut aus – wir möchten dich gerne kennenlernen!</h3>
+        <p class="hint"><span class="inline-emoji" aria-hidden="true">💬</span>Wie können wir dich am besten erreichen, um mit dir über die Trainee-Stelle zu sprechen?</p>
+        <div class="field">
+          <label for="k-name"><span class="inline-emoji" aria-hidden="true">👤</span>Name <span style="color:#b91c1c">*</span></label>
+          <input id="k-name" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="k-email"><span class="inline-emoji" aria-hidden="true">📧</span>E-Mail <span style="color:#b91c1c">*</span></label>
+          <input id="k-email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="k-tel"><span class="inline-emoji" aria-hidden="true">📞</span>Telefon</label>
+          <input id="k-tel" name="telefon" type="tel" autocomplete="tel" />
+        </div>
+        <div class="field">
+          <label for="k-msg"><span class="inline-emoji" aria-hidden="true">📝</span>Deine Nachricht (optional)</label>
+          <textarea id="k-msg" name="nachricht" placeholder="z. B. bevorzugte Erreichbarkeit"></textarea>
+        </div>
+        <div class="checkbox-row">
+          <input id="k-dsgvo" type="checkbox" required />
+          <label for="k-dsgvo">Ich akzeptiere die <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzbestimmungen</a>.</label>
+        </div>
+        <p class="secure-note"><span class="inline-emoji" aria-hidden="true">🛡️</span>Deine Informationen werden vertraulich und nur im Rahmen der Bewerbung behandelt.</p>
+        <button type="button" class="btn-primary" id="funnel-submit"><span class="inline-emoji" aria-hidden="true">📤</span>Bewerbung absenden</button>
+        <p id="form-result" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <strong>ADLIONS</strong>
+    <nav aria-label="Footer">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/vertrieb-funnel.html">Karriere</a>
+    </nav>
+  </footer>
+
+  
+  <script>
+    (function () {
+      var WEB3FORMS_KEY = "d7aa098b-83d4-4a29-8a31-a336d22d12da";
+      var TOTAL_STEPS = 13;
+      var INTRO_LAST = 4;
+      var QUIZ_FIRST = 5;
+      var QUIZ_LAST = 11;
+
+      var answers = {};
+      var flowStep = 0;
+      var progressEl = document.getElementById("flow-progress");
+      var resultEl = document.getElementById("form-result");
+
+      function showFlowStep(i) {
+        document.querySelectorAll(".flow-screen").forEach(function (el) {
+          el.hidden = Number(el.getAttribute("data-flow-step")) !== i;
+        });
+        progressEl.textContent =
+          "🎯 Schritt " + (i + 1) + " von " + TOTAL_STEPS;
+        var mainEl = document.querySelector("main");
+        if (mainEl && typeof mainEl.scrollIntoView === "function") {
+          mainEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      document.querySelectorAll(".btn-next").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (flowStep <= INTRO_LAST) {
+            flowStep++;
+            showFlowStep(flowStep);
+          }
+        });
+      });
+
+      document.querySelectorAll(".choice-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var key = btn.getAttribute("data-key");
+          var value = btn.getAttribute("data-value");
+          answers[key] = value;
+          if (flowStep >= QUIZ_FIRST && flowStep <= QUIZ_LAST) {
+            flowStep++;
+            showFlowStep(flowStep);
+          }
+        });
+      });
+
+      document.getElementById("funnel-submit").addEventListener("click", function () {
+        var name = document.getElementById("k-name").value.trim();
+        var email = document.getElementById("k-email").value.trim();
+        var tel = document.getElementById("k-tel").value.trim();
+        var msg = document.getElementById("k-msg").value.trim();
+        var dsgvo = document.getElementById("k-dsgvo").checked;
+        if (!name || !email) {
+          alert("Bitte Name und E-Mail ausfüllen.");
+          return;
+        }
+        if (!dsgvo) {
+          alert("Bitte die Datenschutzbestimmungen akzeptieren.");
+          return;
+        }
+
+        var lines = [];
+        lines.push("Bewerbung Vertrieb / Trainee – ADLIONS");
+        lines.push("");
+        lines.push("— Antworten —");
+        Object.keys(answers).forEach(function (k) {
+          lines.push(k + ": " + answers[k]);
+        });
+        lines.push("");
+        lines.push("— Kontakt —");
+        lines.push("Name: " + name);
+        lines.push("E-Mail: " + email);
+        if (tel) lines.push("Telefon: " + tel);
+        if (msg) lines.push("Nachricht: " + msg);
+        var messageBody = lines.join("\n");
+
+        var submitBtn = document.getElementById("funnel-submit");
+        submitBtn.disabled = true;
+        resultEl.textContent = "Wird gesendet …";
+        resultEl.className = "";
+
+        var payload = {
+          access_key: WEB3FORMS_KEY,
+          subject: "Bewerbung Vertrieb – " + name,
+          from_name: "ADLIONS Karriere-Funnel",
+          name: name,
+          email: email,
+          phone: tel,
+          message: messageBody,
+          botcheck: false
+        };
+        Object.keys(answers).forEach(function (k) {
+          payload["Antwort_" + k] = answers[k];
+        });
+
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify(payload)
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { ok: res.ok, data: data };
+            });
+          })
+          .then(function (out) {
+            if (out.ok && out.data && out.data.success) {
+              resultEl.textContent = "Danke! Deine Bewerbung wurde übermittelt.";
+              resultEl.className = "ok";
+            } else {
+              var errMsg =
+                (out.data && (out.data.message || out.data.error)) || "Unbekannter Fehler";
+              resultEl.textContent = "Senden fehlgeschlagen: " + errMsg;
+              resultEl.className = "err";
+              submitBtn.disabled = false;
+            }
+          })
+          .catch(function () {
+            resultEl.textContent = "Netzwerkfehler. Bitte später erneut versuchen.";
+            resultEl.className = "err";
+            submitBtn.disabled = false;
+          });
+      });
+
+      showFlowStep(0);
+    })();
+  </script>
+
+</body>
+
+</html>
