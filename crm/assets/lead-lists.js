@@ -144,11 +144,25 @@
       const v = input.value.trim();
       const uri = normalizeTelUri(v);
       const editing = wrap.classList.contains("lead-phone-wrap--editing");
-      if (editing || !uri) {
+      if (editing) {
         dialRow.classList.add("hidden");
+        input.readOnly = false;
+        input.removeAttribute("aria-hidden");
+        input.tabIndex = 0;
+        return;
+      }
+      if (!uri) {
+        dialRow.classList.add("hidden");
+        input.readOnly = false;
+        input.removeAttribute("aria-hidden");
+        input.tabIndex = 0;
         return;
       }
       dialRow.classList.remove("hidden");
+      /* Eingabe mit Nummer aus Screenreader/Heuristiken nehmen, solange die Schaltfläche darüber liegt. */
+      input.readOnly = true;
+      input.setAttribute("aria-hidden", "true");
+      input.tabIndex = -1;
       /* Keine Rohnummer im Button-Text – sonst erkennen Browser/Aircall einen Telefon-Link. */
       remoteBtn.textContent = "Zum Handy senden";
       remoteBtn.setAttribute("aria-label", `Rufnummer ${v} an andere Geräte mit diesem Konto senden`);
@@ -440,9 +454,11 @@
           const wrap = document.createElement("div");
           wrap.className = "lead-phone-wrap";
           const input = document.createElement("input");
-          input.type = "tel";
+          input.type = "text";
           input.inputMode = "tel";
-          input.autocomplete = "tel";
+          input.autocomplete = "off";
+          input.setAttribute("autocorrect", "off");
+          input.setAttribute("autocapitalize", "off");
           input.className = "lead-cell lead-cell-phone-input";
           input.setAttribute("data-col-key", col.key);
           input.value = row[col.key] ?? "";

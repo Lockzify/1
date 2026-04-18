@@ -213,7 +213,7 @@
       incomingCallNumber.textContent = it.phoneDisplay || "";
     }
     if (incomingCallDial) {
-      incomingCallDial.href = it.phoneUri || "#";
+      incomingCallDial.dataset.telHref = it.phoneUri || "";
       incomingCallDial.setAttribute("aria-label", `Nummer ${it.phoneDisplay} anrufen`);
     }
     if ("Notification" in window && Notification.permission === "granted") {
@@ -296,6 +296,10 @@
     }
     if (incomingCallDial && incomingCallModal) {
       incomingCallDial.addEventListener("click", () => {
+        const u = incomingCallDial.dataset.telHref;
+        if (u) {
+          window.location.assign(u);
+        }
         window.setTimeout(() => {
           if (typeof incomingCallModal.close === "function") {
             incomingCallModal.close();
