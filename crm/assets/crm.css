@@ -485,20 +485,6 @@ button[type="submit"] {
   color: #1f52cc;
 }
 
-.lead-tel-local {
-  flex-shrink: 0;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--muted);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  white-space: nowrap;
-}
-
-.lead-tel-local:hover {
-  color: var(--primary);
-}
-
 .incoming-call-number {
   font-size: 1.35rem;
   font-weight: 700;

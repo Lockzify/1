@@ -120,8 +120,8 @@
     }, 4500);
   }
 
-  function setupPhoneLeadCell(wrap, input, dialRow, remoteBtn, localLink, editBtn) {
-    /** Button statt <a>: sonst schnappen Erweiterungen (z. B. Aircall) den Klick und wählen am PC. */
+  function setupPhoneLeadCell(wrap, input, dialRow, remoteBtn, editBtn) {
+    /** Kein tel:-Link in der Tabelle – nur senden; Wählen nur im Dialog auf dem anderen Gerät. */
     remoteBtn.addEventListener("click", async (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -151,8 +151,7 @@
       dialRow.classList.remove("hidden");
       remoteBtn.textContent = v;
       remoteBtn.setAttribute("aria-label", `Nummer ${v} an anderes Gerät senden (z. B. Handy)`);
-      remoteBtn.title = "Wird nicht am PC gewählt – Anfrage an Ihre andere Sitzung (Handy)";
-      localLink.href = uri;
+      remoteBtn.title = "Kein Anruf auf diesem Gerät – Anfrage geht an Ihre andere Sitzung (Handy mit offenem CRM)";
     }
 
     editBtn.addEventListener("click", (e) => {
@@ -451,20 +450,15 @@
           const remoteBtn = document.createElement("button");
           remoteBtn.type = "button";
           remoteBtn.className = "lead-tel-remote";
-          const localLink = document.createElement("a");
-          localLink.className = "lead-tel-local";
-          localLink.textContent = "Dieses Gerät";
-          localLink.title = "Auf diesem Gerät wählen (z. B. Aircall, Skype)";
-          localLink.setAttribute("aria-label", "Auf diesem Gerät anrufen");
           const editBtn = document.createElement("button");
           editBtn.type = "button";
           editBtn.className = "lead-phone-edit-btn";
           editBtn.textContent = "\u270E";
           editBtn.title = "Nummer bearbeiten";
           editBtn.setAttribute("aria-label", "Nummer bearbeiten");
-          dialRow.append(remoteBtn, localLink, editBtn);
+          dialRow.append(remoteBtn, editBtn);
           wrap.append(input, dialRow);
-          setupPhoneLeadCell(wrap, input, dialRow, remoteBtn, localLink, editBtn);
+          setupPhoneLeadCell(wrap, input, dialRow, remoteBtn, editBtn);
           td.appendChild(wrap);
         } else {
           const input = document.createElement("input");
