@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 unset($attemptMap[$email], $lockMap[$email]);
                 $_SESSION[CRM_LOGIN_ATTEMPTS] = $attemptMap;
                 $_SESSION[CRM_LOGIN_LOCK] = $lockMap;
-                header('Location: /crm/');
+                header('Location: ' . crm_home_url());
                 exit;
             }
 
@@ -279,7 +279,7 @@ $bootstrap = [
           <header class="panel-head">
             <h2>Ihre Leads</h2>
           </header>
-          <p class="muted sidebar-hint">Leads sind pro Nutzer gespeichert. Spalten entsprechen <strong>globalen Feldern</strong> (für alle gleich). CSV-Import: Spalten zuordnen. Felder legt der Admin unter „Globale Felder“ fest. <strong>Telefon:</strong> Antippen öffnet den Anruf auf dem <em>jeweiligen Gerät</em> (Handy → Telefon-App; PC → ggf. Skype, Teams, FaceTime). Für den Handy-Dialog bitte im mobilen Browser dieselbe Nummer antippen.</p>
+          <p class="muted sidebar-hint">Leads sind pro Nutzer gespeichert. Spalten entsprechen <strong>globalen Feldern</strong> (für alle gleich). CSV-Import: Spalten zuordnen. Felder legt der Admin unter „Globale Felder“ fest. <strong>Telefon:</strong> Klick auf die Nummer sendet eine Anfrage an Ihre anderen Sitzungen (z. B. Handy mit demselben Login, CRM offen) – dort erscheint ein Hinweis zum Wählen. <strong>Dieses Gerät:</strong> direkt mit der Telefon-App wählen.</p>
           <ul class="lead-lists-menu" id="leadListsMenu"></ul>
         </aside>
         <section class="panel lead-lists-workspace">
@@ -518,6 +518,22 @@ $bootstrap = [
       </footer>
     </div>
   </dialog>
+
+  <dialog id="incomingCallModal" class="modal">
+    <div class="modal-card">
+      <header>
+        <h3>Anruf vom anderen Gerät</h3>
+        <p class="muted">Eine Telefonnummer wurde in <strong>Leads</strong> angeklickt. Wenn Sie hier mit demselben Konto angemeldet sind, können Sie direkt wählen.</p>
+      </header>
+      <p class="incoming-call-number" id="incomingCallNumber" aria-live="polite"></p>
+      <footer class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="incomingCallDismiss">Später</button>
+        <a class="btn btn-primary" id="incomingCallDial" href="#">Jetzt anrufen</a>
+      </footer>
+    </div>
+  </dialog>
+
+  <div id="crmAppToast" class="crm-app-toast hidden" role="status" aria-live="polite"></div>
 
   <template id="dealCardTemplate">
     <article class="deal-card" draggable="true">

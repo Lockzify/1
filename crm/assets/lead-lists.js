@@ -109,7 +109,35 @@
     return `tel:${body}`;
   }
 
-  function setupPhoneLeadCell(wrap, input, dialRow, link, editBtn) {
+  function showCrmAppToast(msg) {
+    const el = document.getElementById("crmAppToast");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.remove("hidden");
+    clearTimeout(showCrmAppToast._t);
+    showCrmAppToast._t = window.setTimeout(() => {
+      el.classList.add("hidden");
+    }, 4500);
+  }
+
+  function setupPhoneLeadCell(wrap, input, dialRow, remoteLink, localLink, editBtn) {
+    remoteLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const v = input.value.trim();
+      const uri = normalizeTelUri(v);
+      if (!uri) return;
+      try {
+        await api("call_intent_send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phoneDisplay: v, phoneUri: uri }),
+        });
+        showCrmAppToast("Anfrage gesendet – auf dem Handy erscheint eine Meldung, wenn das CRM dort offen ist.");
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "Senden fehlgeschlagen.");
+      }
+    });
+
     function syncDialUI() {
       const v = input.value.trim();
       const uri = normalizeTelUri(v);
@@ -119,9 +147,9 @@
         return;
       }
       dialRow.classList.remove("hidden");
-      link.href = uri;
-      link.textContent = v;
-      link.setAttribute("aria-label", `Nummer ${v} anrufen`);
+      remoteLink.textContent = v;
+      remoteLink.setAttribute("aria-label", `Nummer ${v} an anderes Gerät senden (z. B. Handy)`);
+      localLink.href = uri;
     }
 
     editBtn.addEventListener("click", (e) => {
@@ -417,17 +445,23 @@
           input.value = row[col.key] ?? "";
           const dialRow = document.createElement("div");
           dialRow.className = "lead-phone-dial-row";
-          const link = document.createElement("a");
-          link.className = "lead-tel-dial";
+          const remoteLink = document.createElement("a");
+          remoteLink.className = "lead-tel-remote";
+          remoteLink.href = "#";
+          const localLink = document.createElement("a");
+          localLink.className = "lead-tel-local";
+          localLink.textContent = "Dieses Gerät";
+          localLink.title = "Auf diesem Gerät wählen";
+          localLink.setAttribute("aria-label", "Auf diesem Gerät anrufen");
           const editBtn = document.createElement("button");
           editBtn.type = "button";
           editBtn.className = "lead-phone-edit-btn";
           editBtn.textContent = "\u270E";
           editBtn.title = "Nummer bearbeiten";
           editBtn.setAttribute("aria-label", "Nummer bearbeiten");
-          dialRow.append(link, editBtn);
+          dialRow.append(remoteLink, localLink, editBtn);
           wrap.append(input, dialRow);
-          setupPhoneLeadCell(wrap, input, dialRow, link, editBtn);
+          setupPhoneLeadCell(wrap, input, dialRow, remoteLink, localLink, editBtn);
           td.appendChild(wrap);
         } else {
           const input = document.createElement("input");

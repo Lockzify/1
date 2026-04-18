@@ -405,6 +405,44 @@ try {
         json_out(['ok' => true]);
     }
 
+    if ($action === 'call_intent_send' && $method === 'POST') {
+        require_csrf();
+        $user = current_user();
+        $raw = file_get_contents('php://input');
+        $body = json_decode($raw ?: 'null', true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($body)) {
+            json_out(['ok' => false, 'error' => 'Ungültige Nutzdaten.'], 422);
+        }
+        $phoneDisplay = trim((string) ($body['phoneDisplay'] ?? ''));
+        $phoneUri = trim((string) ($body['phoneUri'] ?? ''));
+        if ($phoneDisplay === '' || strlen($phoneDisplay) > 80) {
+            json_out(['ok' => false, 'error' => 'Ungültige Telefonnummer (Anzeige).'], 422);
+        }
+        if ($phoneUri === '' || strlen($phoneUri) > 120 || strpos($phoneUri, 'tel:') !== 0) {
+            json_out(['ok' => false, 'error' => 'Ungültige Rufnummer.'], 422);
+        }
+        $digits = preg_replace('/\D/', '', substr($phoneUri, 4));
+        if ($digits === '' || strlen($digits) < 5) {
+            json_out(['ok' => false, 'error' => 'Rufnummer zu kurz.'], 422);
+        }
+        $sid = session_id();
+        if ($sid === '') {
+            json_out(['ok' => false, 'error' => 'Sitzung ungültig.'], 401);
+        }
+        CrmDatabase::createCallIntent((int) $user['id'], $sid, $phoneDisplay, $phoneUri);
+        json_out(['ok' => true]);
+    }
+
+    if ($action === 'call_intent_poll' && $method === 'GET') {
+        $user = current_user();
+        $sid = session_id();
+        if ($sid === '') {
+            json_out(['ok' => false, 'error' => 'Sitzung ungültig.'], 401);
+        }
+        $intents = CrmDatabase::claimCallIntentsForOtherSessions((int) $user['id'], $sid);
+        json_out(['ok' => true, 'intents' => $intents]);
+    }
+
     json_out(['ok' => false, 'error' => 'Unbekannte Aktion.'], 404);
 } catch (\Throwable $e) {
     json_out(['ok' => false, 'error' => 'Serverfehler.'], 500);

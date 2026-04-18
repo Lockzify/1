@@ -194,6 +194,98 @@
     renderApp();
   }
 
+  const incomingCallModal = document.getElementById("incomingCallModal");
+  const incomingCallNumber = document.getElementById("incomingCallNumber");
+  const incomingCallDial = document.getElementById("incomingCallDial");
+  const incomingCallDismiss = document.getElementById("incomingCallDismiss");
+
+  const incomingCallQueue = [];
+  let incomingCallDialogBusy = false;
+
+  function pumpIncomingCallQueue() {
+    if (incomingCallDialogBusy || incomingCallQueue.length === 0 || !incomingCallModal) {
+      return;
+    }
+    incomingCallDialogBusy = true;
+    const it = incomingCallQueue.shift();
+    if (incomingCallNumber) {
+      incomingCallNumber.textContent = it.phoneDisplay || "";
+    }
+    if (incomingCallDial) {
+      incomingCallDial.href = it.phoneUri || "#";
+      incomingCallDial.setAttribute("aria-label", `Nummer ${it.phoneDisplay} anrufen`);
+    }
+    if ("Notification" in window && Notification.permission === "granted") {
+      try {
+        new Notification("ADLIONS CRM – Anruf", {
+          body: String(it.phoneDisplay || ""),
+          tag: `crm-call-${it.id}`,
+        });
+      } catch (_) {
+        /* ignore */
+      }
+    }
+    if (typeof incomingCallModal.showModal === "function") {
+      incomingCallModal.showModal();
+    }
+  }
+
+  function enqueueIncomingCalls(intents) {
+    if (!Array.isArray(intents) || intents.length === 0) {
+      return;
+    }
+    incomingCallQueue.push(...intents);
+    pumpIncomingCallQueue();
+  }
+
+  async function pollIncomingCalls() {
+    if (!currentUser) {
+      return;
+    }
+    try {
+      const data = await apiFetch("call_intent_poll", { method: "GET" });
+      if (data.intents && data.intents.length) {
+        enqueueIncomingCalls(data.intents);
+      }
+    } catch (_) {
+      /* offline / nicht angemeldet */
+    }
+  }
+
+  function startCallIntentPoller() {
+    if (!currentUser) {
+      return;
+    }
+    void pollIncomingCalls();
+    window.setInterval(() => {
+      if (document.visibilityState === "visible") {
+        void pollIncomingCalls();
+      }
+    }, 3000);
+    if (incomingCallModal) {
+      incomingCallModal.addEventListener("close", () => {
+        incomingCallDialogBusy = false;
+        pumpIncomingCallQueue();
+      });
+    }
+    if (incomingCallDismiss && incomingCallModal) {
+      incomingCallDismiss.addEventListener("click", () => {
+        if (typeof incomingCallModal.close === "function") {
+          incomingCallModal.close();
+        }
+      });
+    }
+    if (incomingCallDial && incomingCallModal) {
+      incomingCallDial.addEventListener("click", () => {
+        window.setTimeout(() => {
+          if (typeof incomingCallModal.close === "function") {
+            incomingCallModal.close();
+          }
+        }, 400);
+      });
+    }
+  }
+
   async function boot() {
     await hydrateFromServer();
     if (!state.deals.length && !state.contacts.length) {
@@ -206,11 +298,23 @@
     }
     bindEvents();
     renderApp();
+    startCallIntentPoller();
   }
 
-  boot();
+  boot().catch(console.error);
 
   function bindEvents() {
+    document.body.addEventListener(
+      "click",
+      () => {
+        if (!("Notification" in window) || Notification.permission !== "default") {
+          return;
+        }
+        void Notification.requestPermission();
+      },
+      { once: true, capture: true },
+    );
+
     document.getElementById("openDealModal").addEventListener("click", () => openDealModal());
     const openContactBtn = document.getElementById("openContactModal");
     if (openContactBtn) {

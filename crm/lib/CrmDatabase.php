@@ -73,7 +73,79 @@ final class CrmDatabase
         );
         $pdo->exec('CREATE INDEX IF NOT EXISTS idx_lead_variables_sort ON lead_variables(sort_order)');
 
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS call_intents (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                creator_session_id TEXT NOT NULL,
+                phone_display TEXT NOT NULL,
+                phone_uri TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                delivered_at TEXT NULL
+            )'
+        );
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_call_intents_user_pending ON call_intents(user_id, delivered_at)');
+
         self::ensureLeadVariablesSeed($pdo);
+    }
+
+    /**
+     * @return list<array{id:int, phoneDisplay:string, phoneUri:string, createdAt:string}>
+     */
+    public static function claimCallIntentsForOtherSessions(int $userId, string $currentSessionId): array
+    {
+        $pdo = self::pdo();
+        $pdo->beginTransaction();
+        try {
+            $stmt = $pdo->prepare(
+                'SELECT id, phone_display, phone_uri, created_at FROM call_intents
+                 WHERE user_id = :uid AND creator_session_id != :csid AND delivered_at IS NULL
+                 ORDER BY id ASC LIMIT 20'
+            );
+            $stmt->execute([':uid' => $userId, ':csid' => $currentSessionId]);
+            /** @var list<array<string, mixed>> $rows */
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if ($rows !== []) {
+                $now = gmdate('c');
+                $ids = array_map(static fn (array $r): int => (int) $r['id'], $rows);
+                $placeholders = implode(',', array_fill(0, count($ids), '?'));
+                $upd = $pdo->prepare("UPDATE call_intents SET delivered_at = ? WHERE id IN ({$placeholders})");
+                $upd->execute(array_merge([$now], $ids));
+            }
+            $pdo->commit();
+            $out = [];
+            foreach ($rows as $r) {
+                $out[] = [
+                    'id' => (int) $r['id'],
+                    'phoneDisplay' => (string) $r['phone_display'],
+                    'phoneUri' => (string) $r['phone_uri'],
+                    'createdAt' => (string) $r['created_at'],
+                ];
+            }
+
+            return $out;
+        } catch (\Throwable $e) {
+            $pdo->rollBack();
+            throw $e;
+        }
+    }
+
+    public static function createCallIntent(int $userId, string $creatorSessionId, string $phoneDisplay, string $phoneUri): int
+    {
+        $now = gmdate('c');
+        $stmt = self::pdo()->prepare(
+            'INSERT INTO call_intents (user_id, creator_session_id, phone_display, phone_uri, created_at, delivered_at)
+             VALUES (:uid, :csid, :pd, :pu, :c, NULL)'
+        );
+        $stmt->execute([
+            ':uid' => $userId,
+            ':csid' => $creatorSessionId,
+            ':pd' => $phoneDisplay,
+            ':pu' => $phoneUri,
+            ':c' => $now,
+        ]);
+
+        return (int) self::pdo()->lastInsertId();
     }
 
     private static function ensureLeadVariablesSeed(\PDO $pdo): void
