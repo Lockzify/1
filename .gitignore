@@ -2,3 +2,9 @@
 *.log
 .env
 .env.*
+
+# CRM SQLite (Nutzer & Pipeline)
+crm/data/*.sqlite
+crm/data/*.sqlite-journal
+crm/data/*.sqlite-wal
+crm/data/*.sqlite-shm

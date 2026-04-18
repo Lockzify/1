@@ -151,9 +151,21 @@ button[type="submit"] {
   backdrop-filter: blur(8px);
 }
 
+.topbar-left {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
 .topbar-left h1 {
   margin: 0.5rem 0 0;
   font-size: 1.4rem;
+}
+
+.user-chip {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .topbar-right {
@@ -164,10 +176,405 @@ button[type="submit"] {
   justify-content: flex-end;
 }
 
+.topbar-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.btn-danger-text {
+  color: var(--danger) !important;
+  border-color: rgba(214, 64, 69, 0.35);
+}
+
+.crm-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.5rem 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.crm-single-panel .panel {
+  min-height: 400px;
+}
+
+.activity-panel-full .activity-feed-page {
+  max-height: min(75vh, 900px);
+  margin: 0;
+  padding: 0.55rem 0.8rem 0.9rem;
+}
+
+.crm-nav-link {
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px 10px 0 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.crm-nav-link:hover {
+  color: var(--text);
+  background: rgba(42, 103, 255, 0.06);
+}
+
+.crm-nav-link.is-active {
+  color: var(--primary);
+  background: var(--panel);
+  border-color: var(--line);
+  border-bottom-color: var(--panel);
+  margin-bottom: -1px;
+}
+
+.lead-lists-page {
+  padding-top: 0.5rem;
+}
+
+.lead-lists-shell {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 0.9rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .lead-lists-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lead-lists-sidebar .panel-head {
+  border-bottom: none;
+  padding-bottom: 0.35rem;
+}
+
+.sidebar-hint {
+  margin: 0 0.8rem 0.6rem;
+  font-size: 0.82rem;
+}
+
+.lead-lists-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem 0.75rem;
+  display: grid;
+  gap: 0.35rem;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.lead-list-menu-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.45rem 0.55rem;
+  background: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.lead-list-menu-btn:hover {
+  border-color: rgba(42, 103, 255, 0.35);
+}
+
+.lead-list-menu-btn.is-active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.lead-list-menu-meta {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+.lead-lists-head .panel-head {
+  flex-wrap: wrap;
+}
+
+.lead-lists-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1rem;
+  width: 100%;
+}
+
+.lead-list-name-label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  flex: 1;
+  min-width: 200px;
+}
+
+.lead-list-name-input {
+  font-weight: 600;
+}
+
+.lead-list-meta {
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.lead-lists-toolbar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.8rem 0.65rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.toolbar-hint {
+  margin: 0;
+  flex: 1;
+  min-width: 200px;
+  font-size: 0.8rem;
+}
+
+.lead-sheet-wrap {
+  max-height: min(70vh, 720px);
+  margin: 0.75rem 0.8rem 0.9rem;
+}
+
+.lead-sheet-table {
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.84rem;
+}
+
+.lead-sheet-table th,
+.lead-sheet-table td {
+  border: 1px solid var(--line);
+  padding: 0;
+  vertical-align: middle;
+}
+
+.lead-sheet-table thead th {
+  background: #f4f8ff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.lead-th-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem;
+}
+
+.lead-col-label {
+  flex: 1;
+  min-width: 72px;
+  border: none !important;
+  border-radius: 6px;
+  padding: 0.35rem 0.4rem !important;
+  background: transparent;
+  font-weight: 600;
+}
+
+.lead-col-remove {
+  flex-shrink: 0;
+  width: 1.65rem;
+  height: 1.65rem;
+  border: none;
+  border-radius: 6px;
+  background: rgba(214, 64, 69, 0.12);
+  color: var(--danger);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lead-col-remove:hover {
+  background: rgba(214, 64, 69, 0.22);
+}
+
+.lead-cell {
+  width: 100%;
+  min-width: 120px;
+  border: none !important;
+  border-radius: 0;
+  padding: 0.45rem 0.5rem !important;
+  background: #fff;
+}
+
+.lead-phone-wrap {
+  position: relative;
+  min-width: 120px;
+}
+
+.lead-phone-wrap .lead-cell-phone-input {
+  width: 100%;
+}
+
+.lead-phone-dial-row {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 0.35rem 0 0.45rem;
+  gap: 0.35rem;
+  background: #fff;
+  z-index: 2;
+}
+
+.lead-phone-wrap.lead-phone-wrap--editing .lead-phone-dial-row {
+  display: none;
+}
+
+.lead-phone-dial-row.hidden {
+  display: none !important;
+}
+
+.lead-tel-dial {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font: inherit;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.lead-tel-dial:hover {
+  color: #1f52cc;
+}
+
+.lead-phone-edit-btn {
+  flex-shrink: 0;
+  border: none;
+  background: rgba(42, 103, 255, 0.1);
+  color: var(--primary);
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.lead-phone-edit-btn:hover {
+  background: rgba(42, 103, 255, 0.18);
+}
+
+.empty-lead-sheet {
+  padding: 1rem 0.8rem;
+}
+
+.lead-th-readonly .lead-col-label-readonly {
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.4rem;
+  display: block;
+}
+
+.import-step-file {
+  padding: 0 0.25rem;
+}
+
+.import-mapping-wrap {
+  margin-top: 0.75rem;
+}
+
+.import-map-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.import-map-table th,
+.import-map-table td {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.import-map-table select.import-map-select {
+  width: 100%;
+  min-width: 200px;
+}
+
+.import-sample {
+  color: var(--muted);
+  font-size: 0.8rem;
+  max-width: 280px;
+}
+
+.fields-table-wrap {
+  max-height: 360px;
+  margin-bottom: 1rem;
+}
+
+.fields-def-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.fields-def-table th,
+.fields-def-table td {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.5rem;
+  vertical-align: middle;
+}
+
+.field-key-cell {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.field-edit-label,
+.field-edit-sort {
+  width: 100%;
+  min-width: 120px;
+}
+
+.field-actions {
+  white-space: nowrap;
+}
+
+.field-actions .link-btn {
+  margin-right: 0.15rem;
+}
+
+.new-field-form {
+  border-top: 1px solid var(--line);
+  padding-top: 0.85rem;
+  margin-top: 0.25rem;
+}
+
 .crm-layout {
   display: grid;
   gap: 1rem;
   padding: 1rem 1.5rem 1.7rem;
+}
+
+/* Pipeline: Kanban bleibt im Layout-Rahmen (kein „Herauswachsen“ über den Bereich) */
+#viewPipeline #crmApp.crm-layout {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .stats-grid {
@@ -234,26 +641,39 @@ button[type="submit"] {
   border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: var(--shadow);
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+  overscroll-behavior-x: contain;
 }
 
 .pipeline-board {
   display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
   gap: 0.8rem;
-  min-height: 420px;
+  min-height: min(420px, 55vh);
+  max-height: min(72vh, 900px);
   padding: 0.9rem;
+  width: max-content;
+  box-sizing: border-box;
 }
 
 .phase-column {
-  width: min(320px, 80vw);
-  min-width: 250px;
+  width: min(320px, 85vw);
+  min-width: 220px;
+  max-width: min(320px, 100%);
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 0.65rem;
   background: #f8fbff;
   border: 1px solid #d8e6fa;
   border-radius: 14px;
   padding: 0.65rem;
+  min-height: 0;
+  max-height: 100%;
+  box-sizing: border-box;
 }
 
 .phase-head {
@@ -288,9 +708,14 @@ button[type="submit"] {
 
 .phase-dropzone {
   min-height: 80px;
+  min-width: 0;
   display: grid;
   gap: 0.58rem;
-  align-content: flex-start;
+  align-content: start;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .phase-dropzone.drag-over {
@@ -307,18 +732,26 @@ button[type="submit"] {
   padding: 0.68rem;
   display: grid;
   gap: 0.5rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  box-sizing: border-box;
 }
 
 .deal-card header {
   display: flex;
   justify-content: space-between;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .deal-card h4 {
   margin: 0;
   font-size: 0.94rem;
   line-height: 1.3;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .deal-company,
@@ -327,6 +760,17 @@ button[type="submit"] {
   margin: 0;
   font-size: 0.83rem;
   color: #41597e;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.deal-audit {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .priority-pill {
@@ -463,6 +907,11 @@ th {
   font-size: 0.84rem;
 }
 
+.activity-body {
+  color: var(--text);
+  font-size: 0.92rem;
+}
+
 .activity-time {
   color: var(--muted);
   margin-bottom: 0.3rem;
@@ -511,6 +960,110 @@ th {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
+}
+
+.modal-wide {
+  width: min(960px, 96vw);
+}
+
+.deal-comments-panel {
+  border-top: 1px solid var(--line);
+  padding-top: 0.85rem;
+  margin-top: 0.35rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.comments-heading {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.comments-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.deal-comments-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.deal-comment-item {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+  background: #fafcff;
+}
+
+.deal-comment-head {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.deal-comment-text {
+  margin: 0;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.comments-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.users-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .users-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.users-panel h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.users-table-wrap {
+  max-height: 320px;
+}
+
+.users-table {
+  font-size: 0.88rem;
+}
+
+.user-form-actions {
+  justify-content: flex-end;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.muted {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.hidden {
+  display: none !important;
 }
 
 @media (max-width: 1040px) {
