@@ -86,48 +86,78 @@ final class CrmDatabase
         );
         $pdo->exec('CREATE INDEX IF NOT EXISTS idx_call_intents_user_pending ON call_intents(user_id, delivered_at)');
 
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS call_intent_seen (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                intent_id INTEGER NOT NULL,
+                consumer_session_id TEXT NOT NULL,
+                seen_at TEXT NOT NULL,
+                UNIQUE(intent_id, consumer_session_id)
+            )'
+        );
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_call_intent_seen_consumer ON call_intent_seen(consumer_session_id)');
+
         self::ensureLeadVariablesSeed($pdo);
     }
 
     /**
+     * Alle anderen Sitzungen desselben Nutzers erhalten dieselbe Anfrage, bis jede sie quittiert hat.
+     *
      * @return list<array{id:int, phoneDisplay:string, phoneUri:string, createdAt:string}>
      */
-    public static function claimCallIntentsForOtherSessions(int $userId, string $currentSessionId): array
+    public static function fetchPendingCallIntentsForConsumer(int $userId, string $consumerSessionId): array
+    {
+        $stmt = self::pdo()->prepare(
+            'SELECT i.id, i.phone_display, i.phone_uri, i.created_at FROM call_intents i
+             WHERE i.user_id = :uid
+               AND i.creator_session_id != :consumer
+               AND i.delivered_at IS NULL
+               AND NOT EXISTS (
+                 SELECT 1 FROM call_intent_seen s
+                 WHERE s.intent_id = i.id AND s.consumer_session_id = :consumer2
+               )
+             ORDER BY i.id ASC
+             LIMIT 20'
+        );
+        $stmt->execute([
+            ':uid' => $userId,
+            ':consumer' => $consumerSessionId,
+            ':consumer2' => $consumerSessionId,
+        ]);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $out = [];
+        foreach ($rows as $r) {
+            $out[] = [
+                'id' => (int) $r['id'],
+                'phoneDisplay' => (string) $r['phone_display'],
+                'phoneUri' => (string) $r['phone_uri'],
+                'createdAt' => (string) $r['created_at'],
+            ];
+        }
+
+        return $out;
+    }
+
+    public static function acknowledgeCallIntent(int $intentId, int $userId, string $consumerSessionId): void
     {
         $pdo = self::pdo();
-        $pdo->beginTransaction();
-        try {
-            $stmt = $pdo->prepare(
-                'SELECT id, phone_display, phone_uri, created_at FROM call_intents
-                 WHERE user_id = :uid AND creator_session_id != :csid AND delivered_at IS NULL
-                 ORDER BY id ASC LIMIT 20'
-            );
-            $stmt->execute([':uid' => $userId, ':csid' => $currentSessionId]);
-            /** @var list<array<string, mixed>> $rows */
-            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            if ($rows !== []) {
-                $now = gmdate('c');
-                $ids = array_map(static fn (array $r): int => (int) $r['id'], $rows);
-                $placeholders = implode(',', array_fill(0, count($ids), '?'));
-                $upd = $pdo->prepare("UPDATE call_intents SET delivered_at = ? WHERE id IN ({$placeholders})");
-                $upd->execute(array_merge([$now], $ids));
-            }
-            $pdo->commit();
-            $out = [];
-            foreach ($rows as $r) {
-                $out[] = [
-                    'id' => (int) $r['id'],
-                    'phoneDisplay' => (string) $r['phone_display'],
-                    'phoneUri' => (string) $r['phone_uri'],
-                    'createdAt' => (string) $r['created_at'],
-                ];
-            }
-
-            return $out;
-        } catch (\Throwable $e) {
-            $pdo->rollBack();
-            throw $e;
+        $stmt = $pdo->prepare(
+            'SELECT id, creator_session_id FROM call_intents WHERE id = :id AND user_id = :uid LIMIT 1'
+        );
+        $stmt->execute([':id' => $intentId, ':uid' => $userId]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (!$row) {
+            throw new \InvalidArgumentException('Eintrag nicht gefunden.');
         }
+        if ((string) $row['creator_session_id'] === $consumerSessionId) {
+            return;
+        }
+        $now = gmdate('c');
+        $ins = $pdo->prepare(
+            'INSERT OR IGNORE INTO call_intent_seen (intent_id, consumer_session_id, seen_at)
+             VALUES (:iid, :csid, :t)'
+        );
+        $ins->execute([':iid' => $intentId, ':csid' => $consumerSessionId, ':t' => $now]);
     }
 
     public static function createCallIntent(int $userId, string $creatorSessionId, string $phoneDisplay, string $phoneUri): int

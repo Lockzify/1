@@ -439,8 +439,32 @@ try {
         if ($sid === '') {
             json_out(['ok' => false, 'error' => 'Sitzung ungültig.'], 401);
         }
-        $intents = CrmDatabase::claimCallIntentsForOtherSessions((int) $user['id'], $sid);
+        $intents = CrmDatabase::fetchPendingCallIntentsForConsumer((int) $user['id'], $sid);
         json_out(['ok' => true, 'intents' => $intents]);
+    }
+
+    if ($action === 'call_intent_ack' && $method === 'POST') {
+        require_csrf();
+        $user = current_user();
+        $sid = session_id();
+        if ($sid === '') {
+            json_out(['ok' => false, 'error' => 'Sitzung ungültig.'], 401);
+        }
+        $raw = file_get_contents('php://input');
+        $body = json_decode($raw ?: 'null', true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($body)) {
+            json_out(['ok' => false, 'error' => 'Ungültige Nutzdaten.'], 422);
+        }
+        $id = (int) ($body['id'] ?? 0);
+        if ($id <= 0) {
+            json_out(['ok' => false, 'error' => 'Ungültige ID.'], 422);
+        }
+        try {
+            CrmDatabase::acknowledgeCallIntent($id, (int) $user['id'], $sid);
+        } catch (\InvalidArgumentException $e) {
+            json_out(['ok' => false, 'error' => $e->getMessage()], 404);
+        }
+        json_out(['ok' => true]);
     }
 
     json_out(['ok' => false, 'error' => 'Unbekannte Aktion.'], 404);

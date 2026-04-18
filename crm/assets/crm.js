@@ -208,6 +208,7 @@
     }
     incomingCallDialogBusy = true;
     const it = incomingCallQueue.shift();
+    incomingCallModal.dataset.pendingIntentId = String(it.id);
     if (incomingCallNumber) {
       incomingCallNumber.textContent = it.phoneDisplay || "";
     }
@@ -264,8 +265,26 @@
     }, 3000);
     if (incomingCallModal) {
       incomingCallModal.addEventListener("close", () => {
-        incomingCallDialogBusy = false;
-        pumpIncomingCallQueue();
+        void (async () => {
+          const raw = incomingCallModal.dataset.pendingIntentId;
+          if (raw) {
+            delete incomingCallModal.dataset.pendingIntentId;
+            const id = Number.parseInt(raw, 10);
+            if (id > 0) {
+              try {
+                await apiFetch("call_intent_ack", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ id }),
+                });
+              } catch (_) {
+                /* offline */
+              }
+            }
+          }
+          incomingCallDialogBusy = false;
+          pumpIncomingCallQueue();
+        })();
       });
     }
     if (incomingCallDismiss && incomingCallModal) {

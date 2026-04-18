@@ -149,9 +149,10 @@
         return;
       }
       dialRow.classList.remove("hidden");
-      remoteBtn.textContent = v;
-      remoteBtn.setAttribute("aria-label", `Nummer ${v} an anderes Gerät senden (z. B. Handy)`);
-      remoteBtn.title = "Kein Anruf auf diesem Gerät – Anfrage geht an Ihre andere Sitzung (Handy mit offenem CRM)";
+      /* Keine Rohnummer im Button-Text – sonst erkennen Browser/Aircall einen Telefon-Link. */
+      remoteBtn.textContent = "Zum Handy senden";
+      remoteBtn.setAttribute("aria-label", `Rufnummer ${v} an andere Geräte mit diesem Konto senden`);
+      remoteBtn.title = `Nummer: ${v} – wird auf diesem PC nicht gewählt; tippen Sie auf dem Handy im CRM auf „Jetzt anrufen“.`;
     }
 
     editBtn.addEventListener("click", (e) => {

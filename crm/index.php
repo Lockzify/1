@@ -279,7 +279,7 @@ $bootstrap = [
           <header class="panel-head">
             <h2>Ihre Leads</h2>
           </header>
-          <p class="muted sidebar-hint">Leads sind pro Nutzer gespeichert. Spalten entsprechen <strong>globalen Feldern</strong> (für alle gleich). CSV-Import: Spalten zuordnen. Felder legt der Admin unter „Globale Felder“ fest. <strong>Telefon:</strong> In der Tabelle gibt es keinen Anruf-Link – Klick sendet die Nummer an Ihre andere Sitzung (Handy, CRM offen). Dort erscheint <strong>Jetzt anrufen</strong> mit Telefon-Link.</p>
+          <p class="muted sidebar-hint">Leads sind pro Nutzer gespeichert. Spalten entsprechen <strong>globalen Feldern</strong> (für alle gleich). CSV-Import: Spalten zuordnen. Felder legt der Admin unter „Globale Felder“ fest. <strong>Telefon:</strong> „Zum Handy senden“ ist <em>kein</em> Anruf-Link – die Nummer erscheint nur im Hinweis auf anderen Geräten mit demselben Konto (CRM offen). Dort gibt es <strong>Jetzt anrufen</strong> (<code>tel:</code>).</p>
           <ul class="lead-lists-menu" id="leadListsMenu"></ul>
         </aside>
         <section class="panel lead-lists-workspace">
