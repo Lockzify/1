@@ -1,0 +1,3 @@
+# Apache: CRM-Startseite und Verzeichnisliste aus (ohne PHP schickt der Server .php oft als Download)
+Options -Indexes
+DirectoryIndex index.php index.html
