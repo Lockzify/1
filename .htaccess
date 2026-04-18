@@ -1,0 +1,5 @@
+# Projektroot (Document Root = dieser Ordner): /crm mit Slash, damit der Ordner-Index greift
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^crm$ /crm/ [R=301,L]
+</IfModule>

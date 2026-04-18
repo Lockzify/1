@@ -1,3 +1,8 @@
-# Apache: CRM-Startseite und Verzeichnisliste aus (ohne PHP schickt der Server .php oft als Download)
+# CRM braucht PHP. Ohne PHP bietet der Browser index.php oft als „Download“ an.
 Options -Indexes
 DirectoryIndex index.php index.html
+
+# Wenn dein Hoster PHP per Apache-Modul ausliefert und .php trotzdem lädt statt anzuzeigen,
+# eine der folgenden Zeilen ausprobieren (nur eine; sonst ggf. 500-Fehler – dann wieder auskommentieren):
+# AddHandler application/x-httpd-php .php
+# AddType application/x-httpd-php .php
