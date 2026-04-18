@@ -472,6 +472,13 @@ button[type="submit"] {
   font: inherit;
   font-size: 0.84rem;
   cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .lead-tel-remote:hover {
