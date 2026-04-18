@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/crm",
+      "destination": "https://crm.adlions.de/",
+      "permanent": false
+    },
+    {
+      "source": "/crm/:path*",
+      "destination": "https://crm.adlions.de/:path*",
+      "permanent": false
+    }
+  ]
+}
