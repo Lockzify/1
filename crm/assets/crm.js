@@ -76,8 +76,16 @@
   let state = structuredClone(baseState);
 
   async function apiFetch(action, options = {}) {
-    const url = `${apiPhpUrl}?action=${encodeURIComponent(action)}`;
-    const init = { credentials: "same-origin", ...options };
+    const q = new URLSearchParams();
+    q.set("action", action);
+    const query = options.query;
+    const rest = { ...options };
+    delete rest.query;
+    if (query && typeof query === "object") {
+      Object.entries(query).forEach(([k, v]) => q.set(k, String(v)));
+    }
+    const url = `${apiPhpUrl}?${q.toString()}`;
+    const init = { credentials: "same-origin", ...rest };
     init.headers = { ...(init.headers || {}), "X-CSRF-Token": csrfToken };
     const res = await fetch(url, init);
     let data;
@@ -196,47 +204,382 @@
 
   const incomingCallModal = document.getElementById("incomingCallModal");
   const incomingCallNumber = document.getElementById("incomingCallNumber");
+  const incomingCallCopy = document.getElementById("incomingCallCopy");
   const incomingCallDial = document.getElementById("incomingCallDial");
   const incomingCallDismiss = document.getElementById("incomingCallDismiss");
 
+  /** Server-Markierung: nur Text (Firmenname), kein Telefon-Intent */
+  const CRM_INTENT_TEXT_ONLY_URI = "tel:00000000000";
+
   const incomingCallQueue = [];
   let incomingCallDialogBusy = false;
+  let lastCallIntentPollSince = "";
+  const CALL_INTENT_POLL_MS = 800;
+  /** Sofort nach erfolgreichem dismiss: blockiert Race mit noch laufendem Poll. */
+  const clientDismissedIntentIds = new Set();
+  /** Modal + OS-Benachrichtigung je Intent-ID nur einmal pro Tab/Sitzung. */
+  const intentShownOnceOnDevice = new Set();
+
+  function callIntentDoneStorageKey() {
+    const id = currentUser && currentUser.id != null ? String(currentUser.id) : "";
+    return id ? `adl_crm_intent_done_${id}` : "adl_crm_intent_done";
+  }
+
+  function loadPersistedDismissedIntentIds() {
+    try {
+      const raw = sessionStorage.getItem(callIntentDoneStorageKey());
+      if (!raw) {
+        return;
+      }
+      const arr = JSON.parse(raw);
+      if (!Array.isArray(arr)) {
+        return;
+      }
+      arr.forEach((x) => {
+        const n = Number(x);
+        if (Number.isFinite(n) && n > 0) {
+          clientDismissedIntentIds.add(n);
+        }
+      });
+    } catch (_) {
+      /* sessionStorage / JSON */
+    }
+  }
+
+  function persistDismissedIntentIdLocal(id) {
+    if (!Number.isFinite(id) || id <= 0) {
+      return;
+    }
+    try {
+      const key = callIntentDoneStorageKey();
+      const raw = sessionStorage.getItem(key);
+      const arr = raw ? JSON.parse(raw) : [];
+      const list = Array.isArray(arr) ? arr : [];
+      if (!list.includes(id)) {
+        list.push(id);
+      }
+      while (list.length > 120) {
+        list.shift();
+      }
+      sessionStorage.setItem(key, JSON.stringify(list));
+    } catch (_) {
+      /* private mode o.Ä. */
+    }
+  }
+
+  /** Nummer optisch gleich, technisch ohne durchgehende Ziffernfolge (weniger Auto-Linking). */
+  function crmPhoneDisplayForUi(raw) {
+    const s = String(raw || "");
+    if (!s) return "";
+    return s.split("").join("\u200b\u2060");
+  }
+
+  function showCrmGlobalToast(msg) {
+    const el = document.getElementById("crmAppToast");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.remove("hidden");
+    clearTimeout(showCrmGlobalToast._t);
+    showCrmGlobalToast._t = window.setTimeout(() => {
+      el.classList.add("hidden");
+    }, 3200);
+  }
+
+  async function crmCopyPlainText(text) {
+    const t = String(text || "");
+    if (!t) return;
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(t);
+      return;
+    }
+    const ta = document.createElement("textarea");
+    ta.value = t;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+  }
+
+  function setIntentModalActionsEnabled(enabled) {
+    if (incomingCallDismiss) incomingCallDismiss.disabled = !enabled;
+    if (incomingCallCopy) incomingCallCopy.disabled = !enabled;
+    if (incomingCallDial) {
+      if (enabled) {
+        incomingCallDial.removeAttribute("aria-disabled");
+        incomingCallDial.style.pointerEvents = "";
+      } else {
+        incomingCallDial.setAttribute("aria-disabled", "true");
+        incomingCallDial.style.pointerEvents = "none";
+      }
+    }
+  }
+
+  function preferDialIntentPrimary() {
+    try {
+      if (window.matchMedia("(pointer: coarse)").matches) {
+        return true;
+      }
+      if (window.matchMedia("(max-width: 640px)").matches) {
+        return true;
+      }
+    } catch (_) {
+      /* matchMedia */
+    }
+    return false;
+  }
+
+  /** Echte tel:-Intents: auf Touch/kleinem Viewport nur „Anrufen“, sonst Kopieren + Anrufen. */
+  function syncIncomingCallModalActions(uri) {
+    const dialable =
+      typeof uri === "string" && uri.startsWith("tel:") && uri !== CRM_INTENT_TEXT_ONLY_URI;
+    const preferDial = dialable && preferDialIntentPrimary();
+    if (incomingCallDial) {
+      if (dialable) {
+        incomingCallDial.setAttribute("href", uri);
+        incomingCallDial.classList.remove("hidden");
+      } else {
+        incomingCallDial.setAttribute("href", "#");
+        incomingCallDial.classList.add("hidden");
+      }
+    }
+    if (incomingCallCopy) {
+      if (!dialable) {
+        incomingCallCopy.classList.remove("hidden");
+      } else if (preferDial) {
+        incomingCallCopy.classList.add("hidden");
+      } else {
+        incomingCallCopy.classList.remove("hidden");
+      }
+    }
+  }
+
+  function purgeIntentIdFromQueue(intentId) {
+    if (!Number.isFinite(intentId) || intentId <= 0) {
+      return;
+    }
+    for (let i = incomingCallQueue.length - 1; i >= 0; i--) {
+      if (Number(incomingCallQueue[i].id) === intentId) {
+        incomingCallQueue.splice(i, 1);
+      }
+    }
+  }
+
+  function isLeadFirmaIntent(it) {
+    return String(it?.phoneUri || "") === CRM_INTENT_TEXT_ONLY_URI;
+  }
+
+  /** Pro Browser-Sitzung: Intent aus der Poll-Liste nehmen (ohne globales Beenden). */
+  function fireCallIntentAck(intentId) {
+    if (!Number.isFinite(intentId) || intentId <= 0) {
+      return;
+    }
+    void apiFetch("call_intent_ack", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: intentId }),
+    }).catch(() => {});
+  }
+
+  function collapseLegacyTextLeadIntentsInBatch(intents) {
+    const nonFirma = intents.filter((it) => !isLeadFirmaIntent(it));
+    const firmas = intents.filter((it) => isLeadFirmaIntent(it));
+    if (firmas.length <= 1) {
+      return intents;
+    }
+    const sorted = [...firmas].sort((a, b) => Number(a.id) - Number(b.id));
+    for (let i = 0; i < sorted.length - 1; i++) {
+      const oid = Number(sorted[i].id);
+      if (oid > 0) {
+        fireCallIntentAck(oid);
+      }
+    }
+    return [...nonFirma, sorted[sorted.length - 1]];
+  }
+
+  function collapseSameTelUriInBatch(intents) {
+    const fixed = [];
+    const byUri = new Map();
+    for (const it of intents) {
+      const u = String(it?.phoneUri || "");
+      if (!u.startsWith("tel:") || u === CRM_INTENT_TEXT_ONLY_URI) {
+        fixed.push(it);
+        continue;
+      }
+      const id = Number(it.id);
+      const prev = byUri.get(u);
+      if (!prev || id > Number(prev.id)) {
+        if (prev) {
+          fireCallIntentAck(Number(prev.id));
+        }
+        byUri.set(u, it);
+      } else if (id > 0) {
+        fireCallIntentAck(id);
+      }
+    }
+    return fixed.concat([...byUri.values()]);
+  }
+
+  function normalizeLeadIntentPollBatch(intents) {
+    return collapseSameTelUriInBatch(collapseLegacyTextLeadIntentsInBatch(intents));
+  }
 
   function pumpIncomingCallQueue() {
     if (incomingCallDialogBusy || incomingCallQueue.length === 0 || !incomingCallModal) {
       return;
     }
+    if (incomingCallModal.open) {
+      return;
+    }
     incomingCallDialogBusy = true;
     const it = incomingCallQueue.shift();
+    const intentId = Number(it?.id);
+    if (!Number.isFinite(intentId) || intentId <= 0) {
+      incomingCallDialogBusy = false;
+      pumpIncomingCallQueue();
+      return;
+    }
+    if (intentShownOnceOnDevice.has(intentId)) {
+      incomingCallDialogBusy = false;
+      pumpIncomingCallQueue();
+      return;
+    }
+    intentShownOnceOnDevice.add(intentId);
+    setIntentModalActionsEnabled(true);
     incomingCallModal.dataset.pendingIntentId = String(it.id);
+    const raw = String(it.phoneDisplay || "");
+    const uri = String(it.phoneUri || "");
+    const DISPLAY_SEP = "\u001f";
+    let copyPlain;
+    let modalText;
+    let notifBody;
+    if (uri === CRM_INTENT_TEXT_ONLY_URI) {
+      copyPlain = raw;
+      modalText = raw;
+      notifBody = raw;
+    } else {
+      const si = raw.indexOf(DISPLAY_SEP);
+      if (si >= 0) {
+        const firm = raw.slice(0, si).trim();
+        copyPlain = raw.slice(si + 1).trim();
+        modalText = firm && copyPlain ? `${firm}\n${copyPlain}` : raw.replace(DISPLAY_SEP, "\n");
+        notifBody = firm && copyPlain ? `${firm} · ${copyPlain}` : raw.replace(DISPLAY_SEP, " · ");
+      } else {
+        copyPlain = raw;
+        modalText = raw;
+        notifBody = raw;
+      }
+    }
+    const dialable = uri.startsWith("tel:") && uri !== CRM_INTENT_TEXT_ONLY_URI;
+    incomingCallModal.dataset.phonePlain = copyPlain;
     if (incomingCallNumber) {
-      incomingCallNumber.textContent = it.phoneDisplay || "";
+      incomingCallNumber.textContent = crmPhoneDisplayForUi(modalText);
+      incomingCallNumber.classList.toggle("incoming-call-firma-text", uri === CRM_INTENT_TEXT_ONLY_URI);
+      incomingCallNumber.classList.toggle("incoming-call-tel-display", dialable);
     }
-    if (incomingCallDial) {
-      incomingCallDial.dataset.telHref = it.phoneUri || "";
-      incomingCallDial.setAttribute("aria-label", `Nummer ${it.phoneDisplay} anrufen`);
-    }
+    syncIncomingCallModalActions(uri);
     if ("Notification" in window && Notification.permission === "granted") {
       try {
-        new Notification("ADLIONS CRM – Anruf", {
-          body: String(it.phoneDisplay || ""),
+        new Notification(dialable ? "ADLIONS CRM – Rückruf" : "ADLIONS CRM – Leads", {
+          body: notifBody,
           tag: `crm-call-${it.id}`,
         });
       } catch (_) {
         /* ignore */
       }
     }
-    if (typeof incomingCallModal.showModal === "function") {
-      incomingCallModal.showModal();
+    try {
+      if (typeof incomingCallModal.showModal === "function" && !incomingCallModal.open) {
+        incomingCallModal.showModal();
+      }
+    } catch (_) {
+      intentShownOnceOnDevice.delete(intentId);
+      incomingCallDialogBusy = false;
+      pumpIncomingCallQueue();
+      return;
     }
+    fireCallIntentAck(intentId);
   }
 
   function enqueueIncomingCalls(intents) {
     if (!Array.isArray(intents) || intents.length === 0) {
       return;
     }
-    incomingCallQueue.push(...intents);
+    intents = normalizeLeadIntentPollBatch(intents);
+    const queuedIds = new Set(incomingCallQueue.map((x) => Number(x.id)));
+    const pendingRaw = incomingCallModal?.dataset.pendingIntentId;
+    const pendingId = pendingRaw ? Number.parseInt(pendingRaw, 10) : NaN;
+    const modalOpen = Boolean(incomingCallModal?.open);
+    for (const it of intents) {
+      const id = Number(it?.id);
+      if (!Number.isFinite(id) || id <= 0) {
+        continue;
+      }
+      if (clientDismissedIntentIds.has(id)) {
+        continue;
+      }
+      if (intentShownOnceOnDevice.has(id)) {
+        continue;
+      }
+      if (modalOpen && id === pendingId) {
+        continue;
+      }
+      if (queuedIds.has(id)) {
+        continue;
+      }
+      const telU = String(it.phoneUri || "");
+      if (telU.startsWith("tel:") && telU !== CRM_INTENT_TEXT_ONLY_URI) {
+        for (let i = incomingCallQueue.length - 1; i >= 0; i--) {
+          const qu = String(incomingCallQueue[i].phoneUri || "");
+          if (qu === telU) {
+            const oldId = Number(incomingCallQueue[i].id);
+            incomingCallQueue.splice(i, 1);
+            queuedIds.delete(oldId);
+            if (oldId > 0) {
+              fireCallIntentAck(oldId);
+            }
+          }
+        }
+      }
+      if (isLeadFirmaIntent(it)) {
+        for (let i = incomingCallQueue.length - 1; i >= 0; i--) {
+          const q = incomingCallQueue[i];
+          if (!isLeadFirmaIntent(q)) {
+            continue;
+          }
+          const oldId = Number(q.id);
+          incomingCallQueue.splice(i, 1);
+          queuedIds.delete(oldId);
+          if (oldId > 0) {
+            fireCallIntentAck(oldId);
+          }
+        }
+      }
+      incomingCallQueue.push(it);
+      queuedIds.add(id);
+    }
     pumpIncomingCallQueue();
+  }
+
+  function handleDismissedCallIntents(ids) {
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return;
+    }
+    const dismissed = new Set(ids.map((x) => Number(x)));
+    for (let i = incomingCallQueue.length - 1; i >= 0; i--) {
+      if (dismissed.has(Number(incomingCallQueue[i].id))) {
+        incomingCallQueue.splice(i, 1);
+      }
+    }
+    const pendingRaw = incomingCallModal?.dataset.pendingIntentId;
+    if (pendingRaw && dismissed.has(Number.parseInt(pendingRaw, 10)) && incomingCallModal) {
+      incomingCallModal.dataset.intentClosedRemotely = "1";
+      if (typeof incomingCallModal.close === "function") {
+        incomingCallModal.close();
+      }
+    }
   }
 
   async function pollIncomingCalls() {
@@ -244,7 +587,17 @@
       return;
     }
     try {
-      const data = await apiFetch("call_intent_poll", { method: "GET" });
+      const pollOpts = { method: "GET" };
+      if (lastCallIntentPollSince) {
+        pollOpts.query = { since: lastCallIntentPollSince };
+      }
+      const data = await apiFetch("call_intent_poll", pollOpts);
+      if (Array.isArray(data.dismissedIntentIds) && data.dismissedIntentIds.length) {
+        handleDismissedCallIntents(data.dismissedIntentIds);
+      }
+      if (typeof data.serverTime === "string" && data.serverTime) {
+        lastCallIntentPollSince = data.serverTime;
+      }
       if (data.intents && data.intents.length) {
         enqueueIncomingCalls(data.intents);
       }
@@ -254,31 +607,49 @@
   }
 
   function startCallIntentPoller() {
+    if (startCallIntentPoller._started) {
+      return;
+    }
     if (!currentUser) {
       return;
     }
+    startCallIntentPoller._started = true;
+    loadPersistedDismissedIntentIds();
     void pollIncomingCalls();
+    /* Festes Intervall auch bei inaktivem Tab, damit andere Geräte die Nummer zeitnah bekommen. */
     window.setInterval(() => {
-      if (document.visibilityState === "visible") {
-        void pollIncomingCalls();
-      }
-    }, 3000);
+      void pollIncomingCalls();
+    }, CALL_INTENT_POLL_MS);
     if (incomingCallModal) {
       incomingCallModal.addEventListener("close", () => {
         void (async () => {
+          const closedRemotely = incomingCallModal.dataset.intentClosedRemotely === "1";
+          const skipDismissInCloseHandler = incomingCallModal.dataset.skipDismissInCloseHandler === "1";
+          delete incomingCallModal.dataset.intentClosedRemotely;
+          delete incomingCallModal.dataset.skipDismissInCloseHandler;
+          delete incomingCallModal.dataset.phonePlain;
           const raw = incomingCallModal.dataset.pendingIntentId;
+          let closedId = 0;
           if (raw) {
             delete incomingCallModal.dataset.pendingIntentId;
             const id = Number.parseInt(raw, 10);
-            if (id > 0) {
+            closedId = id > 0 ? id : 0;
+            if (closedId > 0) {
+              clientDismissedIntentIds.add(closedId);
+              intentShownOnceOnDevice.add(closedId);
+              purgeIntentIdFromQueue(closedId);
+              fireCallIntentAck(closedId);
+              persistDismissedIntentIdLocal(closedId);
+            }
+            if (closedId > 0 && !closedRemotely && !skipDismissInCloseHandler) {
               try {
-                await apiFetch("call_intent_ack", {
+                await apiFetch("call_intent_dismiss", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ id }),
+                  body: JSON.stringify({ id: closedId }),
                 });
               } catch (_) {
-                /* offline */
+                /* offline — lokal bereits blockiert */
               }
             }
           }
@@ -288,23 +659,83 @@
       });
     }
     if (incomingCallDismiss && incomingCallModal) {
-      incomingCallDismiss.addEventListener("click", () => {
+      incomingCallDismiss.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (incomingCallDismiss.disabled) {
+          return;
+        }
+        const raw = incomingCallModal.dataset.pendingIntentId;
+        const id = raw ? Number.parseInt(raw, 10) : 0;
+        setIntentModalActionsEnabled(false);
+        if (id > 0) {
+          purgeIntentIdFromQueue(id);
+          clientDismissedIntentIds.add(id);
+        }
+        incomingCallModal.dataset.skipDismissInCloseHandler = "1";
         if (typeof incomingCallModal.close === "function") {
           incomingCallModal.close();
         }
+        if (id > 0) {
+          void (async () => {
+            try {
+              await apiFetch("call_intent_dismiss", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id }),
+              });
+            } catch (_) {
+              showCrmGlobalToast(
+                "Hier geschlossen. Andere Geräte aktualisieren sich, sobald die Verbindung wieder steht.",
+              );
+            }
+          })();
+        }
       });
     }
-    if (incomingCallDial && incomingCallModal) {
-      incomingCallDial.addEventListener("click", () => {
-        const u = incomingCallDial.dataset.telHref;
-        if (u) {
-          window.location.assign(u);
-        }
-        window.setTimeout(() => {
+    if (incomingCallCopy && incomingCallModal) {
+      incomingCallCopy.addEventListener("click", () => {
+        void (async () => {
+          if (incomingCallCopy.disabled || incomingCallCopy.classList.contains("hidden")) {
+            return;
+          }
+          const raw = incomingCallModal.dataset.pendingIntentId;
+          const id = raw ? Number.parseInt(raw, 10) : 0;
+          setIntentModalActionsEnabled(false);
+          const plain = incomingCallModal.dataset.phonePlain || "";
+          try {
+            if (plain) {
+              await crmCopyPlainText(plain);
+              showCrmGlobalToast("Kopiert.");
+            }
+          } catch (_) {
+            setIntentModalActionsEnabled(true);
+            alert("Kopieren fehlgeschlagen. Bitte Text manuell übernehmen oder „Schließen“ nutzen.");
+            return;
+          }
+          if (id > 0) {
+            purgeIntentIdFromQueue(id);
+            clientDismissedIntentIds.add(id);
+          }
+          incomingCallModal.dataset.skipDismissInCloseHandler = "1";
           if (typeof incomingCallModal.close === "function") {
             incomingCallModal.close();
           }
-        }, 400);
+          if (id > 0) {
+            void (async () => {
+              try {
+                await apiFetch("call_intent_dismiss", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ id }),
+                });
+              } catch (_) {
+                showCrmGlobalToast(
+                  "Hier geschlossen. Andere Geräte aktualisieren sich, sobald die Verbindung wieder steht.",
+                );
+              }
+            })();
+          }
+        })();
       });
     }
   }
@@ -337,6 +768,25 @@
       },
       { once: true, capture: true },
     );
+
+    const pipelineTopbarDetails = document.getElementById("pipelineTopbarDetails");
+    if (pipelineTopbarDetails) {
+      try {
+        const saved = localStorage.getItem("adlions_pipeline_topbar_open");
+        if (saved === "0") {
+          pipelineTopbarDetails.open = false;
+        }
+      } catch (_) {
+        /* ignore */
+      }
+      pipelineTopbarDetails.addEventListener("toggle", () => {
+        try {
+          localStorage.setItem("adlions_pipeline_topbar_open", pipelineTopbarDetails.open ? "1" : "0");
+        } catch (_) {
+          /* ignore */
+        }
+      });
+    }
 
     document.getElementById("openDealModal").addEventListener("click", () => openDealModal());
     const openContactBtn = document.getElementById("openContactModal");
@@ -384,27 +834,18 @@
   const VIEW_TITLES = {
     pipeline: "Pipeline",
     activity: "Aktivitätsfeed",
-    leadlists: "Leads",
   };
 
   function setMainView(view) {
-    const v = ["pipeline", "leadlists", "activity"].includes(view) ? view : "pipeline";
+    const v = ["pipeline", "activity"].includes(view) ? view : "pipeline";
     const viewPipeline = document.getElementById("viewPipeline");
-    const viewLeadLists = document.getElementById("viewLeadLists");
     const viewActivity = document.getElementById("viewActivity");
-    const toolbarPipeline = document.getElementById("toolbarPipeline");
-    const toolbarLeadLists = document.getElementById("toolbarLeadLists");
     const titleEl = document.getElementById("crmPageTitle");
 
     if (viewPipeline) viewPipeline.classList.toggle("hidden", v !== "pipeline");
-    if (viewLeadLists) viewLeadLists.classList.toggle("hidden", v !== "leadlists");
     if (viewActivity) viewActivity.classList.toggle("hidden", v !== "activity");
 
-    const isLeadLists = v === "leadlists";
-    if (toolbarPipeline) toolbarPipeline.classList.toggle("hidden", isLeadLists);
-    if (toolbarLeadLists) toolbarLeadLists.classList.toggle("hidden", !isLeadLists);
-
-    document.querySelectorAll(".crm-nav-link").forEach((link) => {
+    document.querySelectorAll(".crm-nav-link[data-crm-view]").forEach((link) => {
       link.classList.toggle("is-active", link.getAttribute("data-crm-view") === v);
     });
 

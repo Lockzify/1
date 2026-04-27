@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no,address=no,email=no">
+  <title>Leads bearbeiten – ADLIONS CRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="light only">
+  <link href="assets/crm.css" rel="stylesheet" type="text/css">
+  <style>
+    .leads-page-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 0.75rem 2rem;
+    }
+    .leads-toolbar-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 2 1 280px;
+    }
+    .leads-phone-inline-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0.35rem;
+      padding: 0.25rem 0.35rem;
+      background: #fff;
+      min-width: 0;
+    }
+    .leads-phone-inline-input {
+      flex: 1;
+      min-width: 0;
+      font-weight: 700;
+      color: #0d47a1 !important;
+    }
+    .leads-phone-send-icon {
+      flex-shrink: 0;
+      align-self: center;
+      padding: 0.35rem 0.55rem;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .leads-page-hint {
+      margin: 0.35rem 0 0;
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body class="crm-body" x-apple-data-detectors="false">
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand-pill">ADLIONS CRM</span>
+      <h1>Leads bearbeiten</h1>
+      <span class="user-chip" id="leadsUserChip" title="Angemeldet"></span>
+    </div>
+    <div class="topbar-right">
+      <a class="btn btn-secondary" href="index.php">Zurück zum CRM</a>
+      <form method="post" action="index.php" class="inline">
+        <input type="hidden" name="csrf_token" id="logoutCsrf" value="">
+        <button class="btn btn-ghost" type="submit" name="logout" value="1">Logout</button>
+      </form>
+    </div>
+  </header>
+
+  <div class="leads-page-shell">
+    <p class="muted leads-page-hint">
+      <strong>Telefon:</strong> Nummer im blauen Feld; <strong>Senden-Symbol</strong> überträgt die Nummer an alle angemeldeten Geräte mit Ihrem Konto. Auf dem Handy öffnet „Anrufen“ die native Telefon-App.
+    </p>
+
+    <main class="crm-layout lead-lists-page">
+      <div class="lead-lists-shell">
+        <aside class="panel lead-lists-sidebar">
+          <header class="panel-head">
+            <h2>Ihre Listen</h2>
+          </header>
+          <p class="muted sidebar-hint">Hier dieselben Lead-Listen wie im CRM. Auf dieser Seite können Sie Zeilen bearbeiten, CSV importieren und speichern.</p>
+          <ul class="lead-lists-menu" id="leadsListMenu"></ul>
+        </aside>
+        <section class="panel lead-lists-workspace">
+          <header class="panel-head lead-lists-head">
+            <div class="lead-lists-title-row">
+              <label class="lead-list-name-label">Listen-Name
+                <input type="text" id="leadsListName" class="lead-list-name-input" maxlength="200" autocomplete="off" placeholder="Name der Liste">
+              </label>
+              <span class="lead-list-meta muted" id="leadsListMeta"></span>
+            </div>
+          </header>
+          <div class="lead-lists-toolbar-inner">
+            <p class="muted toolbar-hint">CSV-Import, Zeilen, Speichern. Telefon: blaues Feld + Senden-Symbol.</p>
+            <div class="leads-toolbar-btn-row">
+              <button type="button" class="btn btn-secondary hidden" id="leadsManageFields">Globale Felder</button>
+              <button type="button" class="btn btn-secondary" id="leadsNewList">Neue Liste</button>
+              <button type="button" class="btn btn-secondary" id="leadsOpenImport">CSV importieren</button>
+              <button type="button" class="btn btn-secondary" id="leadsExportCsv">CSV exportieren</button>
+              <button type="button" class="btn btn-secondary" id="leadsAddRow">+ Zeile</button>
+              <button type="button" class="btn btn-primary" id="leadsSave">Speichern</button>
+              <button type="button" class="btn btn-ghost btn-danger-text" id="leadsDeleteList">Liste löschen</button>
+            </div>
+          </div>
+          <div class="table-wrap lead-sheet-wrap">
+            <table class="lead-sheet-table" id="leadsSheetTable">
+              <thead id="leadsSheetHead"></thead>
+              <tbody id="leadsSheetBody"></tbody>
+            </table>
+          </div>
+          <p class="muted empty-lead-sheet hidden" id="leadsSheetEmpty">Laden…</p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="leadsImportModal" class="modal modal-wide">
+    <div class="modal-card">
+      <header>
+        <h3>CSV importieren</h3>
+        <p class="muted">Erste Zeile = Spaltenüberschriften. Ordnen Sie jede CSV-Spalte einem <strong>globalen Feld</strong> zu.</p>
+      </header>
+      <div class="import-step-file">
+        <label class="full-width">Datei
+          <input type="file" id="leadsImportFile" accept=".csv,text/csv,text/plain">
+        </label>
+      </div>
+      <div id="leadsImportMappingWrap" class="hidden import-mapping-wrap">
+        <div class="table-wrap">
+          <table class="import-map-table">
+            <thead>
+            <tr>
+              <th>CSV-Spalte (Datei)</th>
+              <th>Vorschau</th>
+              <th>Ziel-Feld (global)</th>
+            </tr>
+            </thead>
+            <tbody id="leadsImportMappingBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="leadsImportCancel">Abbrechen</button>
+        <button type="button" class="btn btn-primary" id="leadsImportApply" disabled>Import übernehmen</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog id="leadsFieldsModal" class="modal modal-wide">
+    <div class="modal-card">
+      <header>
+        <h3>Globale Lead-Felder</h3>
+        <p class="muted">Diese Felder gelten für <strong>alle Nutzer</strong>. Technischer Name bleibt fest, Anzeige und Reihenfolge sind änderbar.</p>
+      </header>
+      <div class="table-wrap fields-table-wrap">
+        <table class="fields-def-table">
+          <thead>
+          <tr>
+            <th>Technischer Name</th>
+            <th>Anzeige</th>
+            <th>Sortierung</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody id="leadsFieldsTableBody"></tbody>
+        </table>
+      </div>
+      <form id="leadsNewFieldForm" class="modal-grid new-field-form">
+        <h4 class="full-width">Neues Feld</h4>
+        <label>Technischer Name <span class="muted">(z. B. linkedin)</span>
+          <input name="key" id="leadsNewFieldKey" type="text" pattern="[a-z][a-z0-9_]*" maxlength="64" placeholder="nur_kleinbuchstaben" required autocomplete="off">
+        </label>
+        <label>Anzeige im CRM
+          <input name="label" id="leadsNewFieldLabel" type="text" maxlength="200" placeholder="LinkedIn-Profil" required autocomplete="off">
+        </label>
+        <div class="modal-actions full-width">
+          <button type="submit" class="btn btn-primary">Feld anlegen</button>
+        </div>
+      </form>
+      <footer class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="leadsFieldsClose">Schließen</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <dialog id="incomingCallModal" class="modal modal--intent-announce">
+    <div class="modal-card modal-card--intent-announce">
+      <header>
+        <h3>Rückruf aus Leads</h3>
+        <p class="muted">Telefonnummer an dieses Konto übermittelt. Auf dem Handy: „Anrufen“ startet die native Telefon-App.</p>
+      </header>
+      <p class="incoming-call-number crm-no-autolink" id="incomingCallNumber" x-apple-data-detectors="false" translate="no" aria-live="polite"></p>
+      <footer class="modal-actions modal-actions--intent-call">
+        <button type="button" class="btn btn-ghost" id="incomingCallDismiss">Schließen</button>
+        <button type="button" class="btn btn-secondary" id="incomingCallCopy">Nummer kopieren</button>
+        <a class="btn btn-primary hidden" id="incomingCallDial" href="#">Anrufen</a>
+      </footer>
+    </div>
+  </dialog>
+
+  <div id="leadsAppToast" class="crm-app-toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="assets/leads-page.js"></script>
+</body>
+</html>

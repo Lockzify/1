@@ -56,7 +56,17 @@ $action = isset($_GET['action']) ? (string) $_GET['action'] : '';
 try {
     if ($action === 'me' && $method === 'GET') {
         $user = current_user();
-        json_out(['ok' => true, 'user' => user_public($user)]);
+        $script = (string) ($_SERVER['SCRIPT_NAME'] ?? '/crm/api.php');
+        $basePath = rtrim(str_replace('\\', '/', dirname($script)), '/');
+        if ($basePath === '.' || $basePath === '/') {
+            $basePath = '';
+        }
+        json_out([
+            'ok' => true,
+            'user' => user_public($user),
+            'csrfToken' => (string) ($_SESSION['csrf_token'] ?? ''),
+            'basePath' => $basePath,
+        ]);
     }
 
     if ($action === 'state' && $method === 'GET') {
@@ -413,17 +423,24 @@ try {
         if (!is_array($body)) {
             json_out(['ok' => false, 'error' => 'Ungültige Nutzdaten.'], 422);
         }
+        $messageType = isset($body['messageType']) ? (string) $body['messageType'] : '';
         $phoneDisplay = trim((string) ($body['phoneDisplay'] ?? ''));
         $phoneUri = trim((string) ($body['phoneUri'] ?? ''));
-        if ($phoneDisplay === '' || strlen($phoneDisplay) > 80) {
-            json_out(['ok' => false, 'error' => 'Ungültige Telefonnummer (Anzeige).'], 422);
+        $dispLen = function_exists('mb_strlen') ? mb_strlen($phoneDisplay, 'UTF-8') : strlen($phoneDisplay);
+        if ($phoneDisplay === '' || $dispLen > 280) {
+            json_out(['ok' => false, 'error' => 'Ungültiger Hinweistext.'], 422);
         }
-        if ($phoneUri === '' || strlen($phoneUri) > 120 || strpos($phoneUri, 'tel:') !== 0) {
-            json_out(['ok' => false, 'error' => 'Ungültige Rufnummer.'], 422);
-        }
-        $digits = preg_replace('/\D/', '', substr($phoneUri, 4));
-        if ($digits === '' || strlen($digits) < 5) {
-            json_out(['ok' => false, 'error' => 'Rufnummer zu kurz.'], 422);
+        if ($messageType === 'lead_firma') {
+            /* Nur Text (Firmenname); kein echter Anruf – Platzhalter für bestehende DB-Spalte phone_uri */
+            $phoneUri = 'tel:00000000000';
+        } else {
+            if ($phoneUri === '' || strlen($phoneUri) > 120 || strpos($phoneUri, 'tel:') !== 0) {
+                json_out(['ok' => false, 'error' => 'Ungültige Rufnummer.'], 422);
+            }
+            $digits = preg_replace('/\D/', '', substr($phoneUri, 4));
+            if ($digits === '' || strlen($digits) < 5) {
+                json_out(['ok' => false, 'error' => 'Rufnummer zu kurz.'], 422);
+            }
         }
         $sid = session_id();
         if ($sid === '') {
@@ -440,7 +457,37 @@ try {
             json_out(['ok' => false, 'error' => 'Sitzung ungültig.'], 401);
         }
         $intents = CrmDatabase::fetchPendingCallIntentsForConsumer((int) $user['id'], $sid);
-        json_out(['ok' => true, 'intents' => $intents]);
+        $since = trim((string) ($_GET['since'] ?? ''));
+        $dismissedIds = [];
+        if ($since !== '') {
+            $dismissedIds = CrmDatabase::listDismissedCallIntentIdsAfter((int) $user['id'], $since);
+        }
+        json_out([
+            'ok' => true,
+            'intents' => $intents,
+            'dismissedIntentIds' => $dismissedIds,
+            'serverTime' => gmdate('c'),
+        ]);
+    }
+
+    if ($action === 'call_intent_dismiss' && $method === 'POST') {
+        require_csrf();
+        $user = current_user();
+        $raw = file_get_contents('php://input');
+        $body = json_decode($raw ?: 'null', true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($body)) {
+            json_out(['ok' => false, 'error' => 'Ungültige Nutzdaten.'], 422);
+        }
+        $id = (int) ($body['id'] ?? 0);
+        if ($id <= 0) {
+            json_out(['ok' => false, 'error' => 'Ungültige ID.'], 422);
+        }
+        try {
+            CrmDatabase::dismissCallIntentForUser($id, (int) $user['id']);
+        } catch (\InvalidArgumentException $e) {
+            json_out(['ok' => false, 'error' => $e->getMessage()], 404);
+        }
+        json_out(['ok' => true]);
     }
 
     if ($action === 'call_intent_ack' && $method === 'POST') {

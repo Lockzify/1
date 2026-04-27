@@ -24,6 +24,23 @@ body.crm-body {
   min-height: 100vh;
 }
 
+/* Keine automatischen Telefon-/Adress-Links (Safari iOS); optisch keine Link-Darstellung */
+.crm-no-autolink a,
+.crm-no-autolink a:hover,
+.crm-no-autolink a:visited {
+  color: inherit !important;
+  font: inherit !important;
+  font-weight: inherit !important;
+  text-decoration: none !important;
+}
+
+.crm-no-autolink a[href^="tel:"],
+.crm-no-autolink a[href^="sms:"],
+.crm-no-autolink a[href^="mailto:"] {
+  pointer-events: none;
+  cursor: default;
+}
+
 .login-page {
   min-height: 100vh;
   display: grid;
@@ -218,6 +235,12 @@ button[type="submit"] {
   cursor: pointer;
 }
 
+a.crm-nav-link {
+  text-decoration: none;
+  display: inline-block;
+  color: var(--muted);
+}
+
 .crm-nav-link:hover {
   color: var(--text);
   background: rgba(42, 103, 255, 0.06);
@@ -320,6 +343,12 @@ button[type="submit"] {
   min-width: 200px;
 }
 
+.lead-list-name-input[readonly] {
+  cursor: default;
+  background: #f4f7fb;
+  color: var(--muted);
+}
+
 .lead-list-name-input {
   font-weight: 600;
 }
@@ -414,24 +443,79 @@ button[type="submit"] {
   background: #fff;
 }
 
+.lead-cell-view {
+  padding: 0.45rem 0.5rem;
+  min-height: 2.35em;
+  word-break: break-word;
+  font-size: 0.84rem;
+  color: var(--text);
+  background: #fff;
+}
+
+.lead-cell-view--empty {
+  color: var(--muted);
+}
+
+.lead-firma-send-btn.lead-firma-view-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  color: #b71c1c !important;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-touch-callout: none;
+}
+
+.lead-firma-send-btn.lead-firma-view-btn:hover {
+  text-decoration: underline;
+  text-decoration-color: rgba(183, 28, 28, 0.45);
+}
+
+.lead-firma-missing-cell {
+  padding: 0.5rem 0.75rem !important;
+  background: #fff8f0;
+  border-top: 1px solid #f0d8c8;
+}
+
+.lead-phone-broadcast-missing-cell {
+  padding: 0.5rem 0.75rem !important;
+  background: #f3f7ff;
+  border-top: 1px solid #c5d4f0;
+}
+
 .lead-phone-wrap {
   position: relative;
   min-width: 120px;
+}
+
+.lead-phone-wrap.crm-no-autolink {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .lead-phone-wrap .lead-cell-phone-input {
   width: 100%;
 }
 
+/* Gültige Nummer: echtes <input> ausblenden, nur die Schaltfläche zeigt (kein OS-Telefon-Link auf dem Feld). */
+.lead-phone-wrap.lead-phone-wrap--masked .lead-cell-phone-input {
+  display: none !important;
+}
+
 .lead-phone-dial-row {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
-  padding: 0 0.35rem 0 0.45rem;
+  padding: 0.45rem 0.5rem;
   gap: 0.35rem;
   background: #fff;
-  z-index: 2;
+  min-height: calc(0.45rem * 2 + 1.35em);
 }
 
 .lead-phone-wrap.lead-phone-wrap--editing .lead-phone-dial-row {
@@ -448,16 +532,25 @@ button[type="submit"] {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--primary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: var(--text);
+  text-decoration: none;
   font: inherit;
   font-size: 0.84rem;
+  font-weight: 600;
   cursor: pointer;
+  margin: 0;
+  padding: 0.15rem 0.25rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-touch-callout: none;
 }
 
 .lead-tel-dial:hover {
-  color: #1f52cc;
+  background: rgba(17, 32, 56, 0.06);
 }
 
 .lead-tel-remote {
@@ -493,6 +586,28 @@ button[type="submit"] {
   letter-spacing: 0.02em;
   margin: 0.5rem 0 1rem;
   word-break: break-all;
+}
+
+.incoming-call-number.incoming-call-firma-text {
+  color: #b71c1c;
+}
+
+.incoming-call-number.incoming-call-tel-display {
+  color: #0d47a1;
+}
+
+.modal-actions--intent-call {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.modal-actions--intent-call a.btn.btn-primary {
+  text-decoration: none;
+}
+
+.modal-actions--intent-call a.btn.btn-primary[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.55;
 }
 
 .crm-app-toast {
@@ -630,6 +745,139 @@ button[type="submit"] {
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
+}
+
+#viewPipeline #crmApp.crm-layout:has(.pipeline-topbar-details:not([open])) {
+  gap: 0.55rem;
+}
+
+.pipeline-topbar-details {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 1px 0 rgba(24, 55, 114, 0.06);
+  overflow: hidden;
+}
+
+.pipeline-topbar-details > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0.65rem 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  user-select: none;
+}
+
+.pipeline-topbar-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pipeline-topbar-summary__title {
+  color: var(--text);
+}
+
+.pipeline-topbar-summary__chev {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 6px;
+  background: rgba(42, 103, 255, 0.08);
+  position: relative;
+}
+
+.pipeline-topbar-summary__chev::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-right: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.pipeline-topbar-details[open] .pipeline-topbar-summary__chev::after {
+  top: 55%;
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.pipeline-topbar-details > summary:hover {
+  background: rgba(42, 103, 255, 0.05);
+  color: var(--text);
+}
+
+.pipeline-topbar-body {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0 0.55rem 0.55rem;
+}
+
+.pipeline-topbar-body .stats-grid {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.45rem;
+}
+
+.pipeline-topbar-body .stat-card {
+  padding: 0.5rem 0.6rem;
+  border-radius: 11px;
+  box-shadow: 0 4px 14px rgba(24, 55, 114, 0.07);
+}
+
+.pipeline-topbar-body .stat-card p {
+  font-size: 0.72rem;
+}
+
+.pipeline-topbar-body .stat-card strong {
+  font-size: 1.02rem;
+  margin-top: 0.2rem;
+}
+
+.pipeline-topbar-body .filter-bar {
+  padding: 0.45rem 0.55rem;
+  gap: 0.45rem;
+  border-radius: 11px;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  box-shadow: 0 4px 14px rgba(24, 55, 114, 0.07);
+}
+
+.pipeline-topbar-body .filter-group label {
+  font-size: 0.72rem;
+}
+
+.pipeline-topbar-body .filter-group input,
+.pipeline-topbar-body .filter-group select {
+  padding: 0.38rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 9px;
+}
+
+.pipeline-topbar-body .filter-actions {
+  gap: 0.35rem;
+}
+
+.pipeline-topbar-body .filter-actions .btn,
+.pipeline-topbar-body .filter-actions .import-label.btn {
+  padding: 0.38rem 0.55rem;
+  font-size: 0.76rem;
+  border-radius: 9px;
+}
+
+#viewPipeline .crm-layout > .pipeline-topbar-details:not([open]) + .board-section .pipeline-board {
+  max-height: min(86vh, 980px);
+  min-height: min(520px, 62vh);
+}
+
+body.crm-body:has(#viewPipeline:not(.hidden)) #toolbarPipeline .btn {
+  padding: 0.48rem 0.72rem;
+  font-size: 0.82rem;
+  border-radius: 10px;
 }
 
 .stats-grid {
@@ -987,6 +1235,38 @@ th {
   backdrop-filter: blur(2px);
 }
 
+/* Lead-/Intent-Meldung: grauer Hintergrund, Karte von oben */
+.modal--intent-announce::backdrop {
+  background: rgba(30, 41, 59, 0.58);
+  backdrop-filter: blur(4px);
+  animation: crmIntentBackdropIn 0.32s ease-out;
+}
+
+.modal--intent-announce .modal-card--intent-announce {
+  animation: crmIntentCardSlideIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+@keyframes crmIntentBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes crmIntentCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .modal-card {
   background: #fff;
   border: 1px solid var(--line);
@@ -1131,6 +1411,28 @@ th {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+    padding: 0.65rem 0.85rem;
+    gap: 0.55rem;
+  }
+
+  .topbar-left h1 {
+    font-size: 1.15rem;
+    margin: 0.35rem 0 0;
+  }
+
+  .user-chip {
+    font-size: 0.78rem;
+  }
+
+  .crm-subnav {
+    padding: 0.32rem 0.75rem 0;
+    gap: 0.28rem;
+  }
+
+  .crm-nav-link {
+    padding: 0.34rem 0.55rem;
+    font-size: 0.82rem;
+    border-radius: 8px 8px 0 0;
   }
 
   .filter-actions {
@@ -1139,5 +1441,60 @@ th {
 
   .crm-layout {
     padding: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding: 0.45rem 0.55rem;
+    gap: 0.4rem;
+  }
+
+  .topbar-left {
+    gap: 0.15rem;
+  }
+
+  .brand-pill {
+    font-size: 0.7rem;
+    padding: 0.18rem 0.5rem;
+  }
+
+  .topbar-left h1 {
+    font-size: 1rem;
+    margin: 0.2rem 0 0;
+    line-height: 1.2;
+  }
+
+  .user-chip {
+    font-size: 0.68rem;
+    line-height: 1.25;
+  }
+
+  .topbar-right {
+    gap: 0.3rem;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .topbar-right .btn {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.78rem;
+  }
+
+  .topbar-actions-group .btn {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.78rem;
+  }
+
+  .crm-subnav {
+    padding: 0.22rem 0.45rem 0;
+    gap: 0.15rem;
+  }
+
+  .crm-nav-link {
+    padding: 0.28rem 0.42rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    border-radius: 7px 7px 0 0;
   }
 }

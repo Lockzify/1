@@ -101,7 +101,8 @@ final class CrmDatabase
     }
 
     /**
-     * Alle anderen Sitzungen desselben Nutzers erhalten dieselbe Anfrage, bis jede sie quittiert hat.
+     * Alle Sitzungen desselben Nutzers (alle eingeloggten Browser/Tabs mit eigener PHP-Session)
+     * erhalten dieselbe Anfrage, bis jede sie quittiert hat – inkl. des Geräts, das gesendet hat.
      *
      * @return list<array{id:int, phoneDisplay:string, phoneUri:string, createdAt:string}>
      */
@@ -110,7 +111,6 @@ final class CrmDatabase
         $stmt = self::pdo()->prepare(
             'SELECT i.id, i.phone_display, i.phone_uri, i.created_at FROM call_intents i
              WHERE i.user_id = :uid
-               AND i.creator_session_id != :consumer
                AND i.delivered_at IS NULL
                AND NOT EXISTS (
                  SELECT 1 FROM call_intent_seen s
@@ -121,7 +121,6 @@ final class CrmDatabase
         );
         $stmt->execute([
             ':uid' => $userId,
-            ':consumer' => $consumerSessionId,
             ':consumer2' => $consumerSessionId,
         ]);
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -142,15 +141,12 @@ final class CrmDatabase
     {
         $pdo = self::pdo();
         $stmt = $pdo->prepare(
-            'SELECT id, creator_session_id FROM call_intents WHERE id = :id AND user_id = :uid LIMIT 1'
+            'SELECT id FROM call_intents WHERE id = :id AND user_id = :uid LIMIT 1'
         );
         $stmt->execute([':id' => $intentId, ':uid' => $userId]);
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         if (!$row) {
             throw new \InvalidArgumentException('Eintrag nicht gefunden.');
-        }
-        if ((string) $row['creator_session_id'] === $consumerSessionId) {
-            return;
         }
         $now = gmdate('c');
         $ins = $pdo->prepare(
@@ -158,6 +154,41 @@ final class CrmDatabase
              VALUES (:iid, :csid, :t)'
         );
         $ins->execute([':iid' => $intentId, ':csid' => $consumerSessionId, ':t' => $now]);
+    }
+
+    /**
+     * Meldung für alle Sitzungen dieses Nutzers beenden (delivered_at setzen).
+     */
+    public static function dismissCallIntentForUser(int $intentId, int $userId): void
+    {
+        $pdo = self::pdo();
+        $stmt = $pdo->prepare(
+            'SELECT id FROM call_intents WHERE id = :id AND user_id = :uid LIMIT 1'
+        );
+        $stmt->execute([':id' => $intentId, ':uid' => $userId]);
+        if (!$stmt->fetch(\PDO::FETCH_ASSOC)) {
+            throw new \InvalidArgumentException('Eintrag nicht gefunden.');
+        }
+        $now = gmdate('c');
+        $upd = $pdo->prepare(
+            'UPDATE call_intents SET delivered_at = :t WHERE id = :id AND user_id = :uid'
+        );
+        $upd->execute([':t' => $now, ':id' => $intentId, ':uid' => $userId]);
+    }
+
+    /**
+     * @return list<int>
+     */
+    public static function listDismissedCallIntentIdsAfter(int $userId, string $sinceIso): array
+    {
+        $stmt = self::pdo()->prepare(
+            'SELECT id FROM call_intents
+             WHERE user_id = :uid AND delivered_at IS NOT NULL AND delivered_at > :since
+             ORDER BY id ASC'
+        );
+        $stmt->execute([':uid' => $userId, ':since' => $sinceIso]);
+
+        return array_map(static fn (array $r): int => (int) $r['id'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     public static function createCallIntent(int $userId, string $creatorSessionId, string $phoneDisplay, string $phoneUri): int
@@ -264,7 +295,7 @@ final class CrmDatabase
                         'plz' => '10115',
                         'ort' => 'Berlin',
                         'quelle' => 'Automatisch angelegt',
-                        'notizen' => 'Zum Testen: Eigene Mobilnummer in „Telefon“ eintragen und speichern. CRM auf dem Handy öffnen, dieselbe Liste wählen, Nummer antippen → Anruf-Dialog. Am PC löst der Klick nur dort die Telefonie aus (nicht zuverlässig auf dem Handy).',
+                        'notizen' => 'Zum Testen: Telefonnummer in „Telefon“ eintragen, Senden-Symbol tippen → Popup auf allen CRM-Sitzungen; auf dem Handy „Anrufen“ für natives Wählen.',
                     ],
                 ]);
             } catch (\Throwable) {

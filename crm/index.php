@@ -128,7 +128,7 @@ $bootstrap = [
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="format-detection" content="telephone=no">
+  <meta name="format-detection" content="telephone=no,address=no,email=no">
   <title>ADLIONS CRM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,7 +136,7 @@ $bootstrap = [
   <meta name="color-scheme" content="light only">
   <link href="<?php echo htmlspecialchars(crm_asset_url('assets/crm.css'), ENT_QUOTES, 'UTF-8'); ?>" rel="stylesheet" type="text/css">
 </head>
-<body class="crm-body">
+<body class="crm-body" x-apple-data-detectors="false">
 <?php if (!$isAuthenticated): ?>
   <main class="login-page">
     <section class="login-card">
@@ -180,16 +180,6 @@ $bootstrap = [
                <button class="btn btn-primary" id="openDealModal" type="button">+ Deal anlegen</button>
         <button class="btn btn-secondary" id="openPhaseModal" type="button">+ Phase anlegen</button>
       </div>
-      <div class="topbar-actions-group hidden" id="toolbarLeadLists">
-        <button class="btn btn-secondary" type="button" id="llNewList">+ Neue Lead-Liste</button>
-        <button class="btn btn-secondary" type="button" id="llOpenImport">CSV importieren</button>
-        <?php if ($sessionUser['role'] === 'admin'): ?>
-          <button class="btn btn-secondary" type="button" id="llManageFields">Globale Felder</button>
-        <?php endif; ?>
-        <button class="btn btn-primary" type="button" id="llSaveList">Speichern</button>
-        <button class="btn btn-secondary" type="button" id="llExportCsv">CSV exportieren</button>
-        <button class="btn btn-ghost btn-danger-text" type="button" id="llDeleteList">Lead-Liste löschen</button>
-      </div>
       <form method="post">
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
         <button class="btn btn-ghost" type="submit" name="logout" value="1">Logout</button>
@@ -200,61 +190,69 @@ $bootstrap = [
   <nav class="crm-subnav" aria-label="Hauptbereiche">
     <button type="button" class="crm-nav-link is-active" data-crm-view="pipeline">Pipeline</button>
     <button type="button" class="crm-nav-link" data-crm-view="activity">Aktivitätsfeed</button>
-    <button type="button" class="crm-nav-link" data-crm-view="leadlists">Leads</button>
+    <a class="crm-nav-link" href="<?php echo htmlspecialchars(crm_asset_url('leads.html'), ENT_QUOTES, 'UTF-8'); ?>">Leads</a>
   </nav>
 
   <div id="viewPipeline" class="crm-view">
   <main class="crm-layout" id="crmApp">
-    <section class="stats-grid">
-      <article class="stat-card">
-        <p>Offene Deals</p>
-        <strong id="statDealsOpen">0</strong>
-      </article>
-      <article class="stat-card">
-        <p>Pipeline-Wert</p>
-        <strong id="statPipelineValue">0 EUR</strong>
-      </article>
-      <article class="stat-card">
-        <p>Gewichtete Forecast</p>
-        <strong id="statForecastValue">0 EUR</strong>
-      </article>
-      <article class="stat-card">
-        <p>Gewinnquote</p>
-        <strong id="statWinRate">0%</strong>
-      </article>
-    </section>
+    <details class="pipeline-topbar-details" id="pipelineTopbarDetails" open>
+      <summary class="pipeline-topbar-summary">
+        <span class="pipeline-topbar-summary__title">Kennzahlen &amp; Filter</span>
+        <span class="pipeline-topbar-summary__chev" aria-hidden="true"></span>
+      </summary>
+      <div class="pipeline-topbar-body">
+        <section class="stats-grid">
+          <article class="stat-card">
+            <p>Offene Deals</p>
+            <strong id="statDealsOpen">0</strong>
+          </article>
+          <article class="stat-card">
+            <p>Pipeline-Wert</p>
+            <strong id="statPipelineValue">0 EUR</strong>
+          </article>
+          <article class="stat-card">
+            <p>Gewichtete Forecast</p>
+            <strong id="statForecastValue">0 EUR</strong>
+          </article>
+          <article class="stat-card">
+            <p>Gewinnquote</p>
+            <strong id="statWinRate">0%</strong>
+          </article>
+        </section>
 
-    <section class="filter-bar">
-      <div class="filter-group">
-        <label for="searchInput">Suche</label>
-        <input id="searchInput" type="search" placeholder="Deal, Firma, Tag …">
+        <section class="filter-bar">
+          <div class="filter-group">
+            <label for="searchInput">Suche</label>
+            <input id="searchInput" type="search" placeholder="Deal, Firma, Tag …">
+          </div>
+          <div class="filter-group">
+            <label for="phaseFilter">Phase</label>
+            <select id="phaseFilter"></select>
+          </div>
+          <div class="filter-group">
+            <label for="ownerFilter">Owner</label>
+            <select id="ownerFilter"></select>
+          </div>
+          <div class="filter-group">
+            <label for="priorityFilter">Priorität</label>
+            <select id="priorityFilter">
+              <option value="">Alle</option>
+              <option value="hoch">Hoch</option>
+              <option value="mittel">Mittel</option>
+              <option value="niedrig">Niedrig</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-secondary" id="exportJson" type="button">Export JSON</button>
+            <label class="btn btn-secondary import-label">
+              Import JSON
+              <input type="file" id="importJson" accept="application/json" hidden>
+            </label>
+            <button class="btn btn-ghost" id="resetFilters" type="button">Filter zurücksetzen</button>
+          </div>
+        </section>
       </div>
-      <div class="filter-group">
-        <label for="phaseFilter">Phase</label>
-        <select id="phaseFilter"></select>
-      </div>
-      <div class="filter-group">
-        <label for="ownerFilter">Owner</label>
-        <select id="ownerFilter"></select>
-      </div>
-      <div class="filter-group">
-        <label for="priorityFilter">Priorität</label>
-        <select id="priorityFilter">
-          <option value="">Alle</option>
-          <option value="hoch">Hoch</option>
-          <option value="mittel">Mittel</option>
-          <option value="niedrig">Niedrig</option>
-        </select>
-      </div>
-      <div class="filter-actions">
-        <button class="btn btn-secondary" id="exportJson">Export JSON</button>
-        <label class="btn btn-secondary import-label">
-          Import JSON
-          <input type="file" id="importJson" accept="application/json" hidden>
-        </label>
-        <button class="btn btn-ghost" id="resetFilters">Filter zurücksetzen</button>
-      </div>
-    </section>
+    </details>
 
     <section class="board-section">
       <div id="pipelineBoard" class="pipeline-board"></div>
@@ -272,112 +270,6 @@ $bootstrap = [
       </article>
     </main>
   </div>
-
-  <div id="viewLeadLists" class="crm-view hidden">
-    <main class="crm-layout lead-lists-page">
-      <div class="lead-lists-shell">
-        <aside class="panel lead-lists-sidebar">
-          <header class="panel-head">
-            <h2>Ihre Leads</h2>
-          </header>
-          <p class="muted sidebar-hint">Leads sind pro Nutzer gespeichert. Spalten entsprechen <strong>globalen Feldern</strong> (für alle gleich). CSV-Import: Spalten zuordnen. Felder legt der Admin unter „Globale Felder“ fest. <strong>Telefon:</strong> „Zum Handy senden“ ist <em>kein</em> Anruf-Link – die Nummer erscheint nur im Hinweis auf anderen Geräten mit demselben Konto (CRM offen). Dort gibt es <strong>Jetzt anrufen</strong> (<code>tel:</code>).</p>
-          <ul class="lead-lists-menu" id="leadListsMenu"></ul>
-        </aside>
-        <section class="panel lead-lists-workspace">
-          <header class="panel-head lead-lists-head">
-            <div class="lead-lists-title-row">
-              <label class="lead-list-name-label">Name der Lead-Liste
-                <input type="text" id="leadListName" class="lead-list-name-input" placeholder="z. B. Messe Leipzig 04/2026" maxlength="200">
-              </label>
-              <span class="lead-list-meta muted" id="leadListMeta"></span>
-            </div>
-          </header>
-          <div class="lead-lists-toolbar-inner">
-            <button type="button" class="btn btn-secondary" id="llAddRow">+ Zeile</button>
-            <p class="muted toolbar-hint">Kopfzeilen sind die <strong>globalen Feldnamen</strong> (nur Admin änderbar). Zellen bearbeiten, CSV importieren mit Zuordnung. Mit <strong>Speichern</strong> sichern.</p>
-          </div>
-          <div class="table-wrap lead-sheet-wrap">
-            <table class="lead-sheet-table" id="leadSheetTable">
-              <thead id="leadSheetHead"></thead>
-              <tbody id="leadSheetBody"></tbody>
-            </table>
-          </div>
-          <p class="muted empty-lead-sheet hidden" id="leadSheetEmpty">Wählen Sie eine Lead-Liste oder legen Sie eine neue an.</p>
-        </section>
-      </div>
-    </main>
-  </div>
-
-  <dialog id="llImportModal" class="modal modal-wide">
-    <div class="modal-card">
-      <header>
-        <h3>CSV importieren</h3>
-        <p class="muted">Erste Zeile = Spaltenüberschriften. Ordnen Sie jede CSV-Spalte einem <strong>globalen Feld</strong> zu oder wählen Sie „Nicht importieren“.</p>
-      </header>
-      <div class="import-step-file">
-        <label class="full-width">Datei
-          <input type="file" id="llImportFile" accept=".csv,text/csv,text/plain">
-        </label>
-      </div>
-      <div id="llImportMappingWrap" class="hidden import-mapping-wrap">
-        <div class="table-wrap">
-          <table class="import-map-table">
-            <thead>
-            <tr>
-              <th>CSV-Spalte (Datei)</th>
-              <th>Vorschau</th>
-              <th>Ziel-Feld (global)</th>
-            </tr>
-            </thead>
-            <tbody id="llImportMappingBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <footer class="modal-actions">
-        <button type="button" class="btn btn-ghost" id="llImportCancel">Abbrechen</button>
-        <button type="button" class="btn btn-primary" id="llImportApply" disabled>Import übernehmen</button>
-      </footer>
-    </div>
-  </dialog>
-
-  <?php if ($sessionUser['role'] === 'admin'): ?>
-  <dialog id="llFieldsModal" class="modal modal-wide">
-    <div class="modal-card">
-      <header>
-        <h3>Globale Lead-Felder</h3>
-        <p class="muted">Diese Felder gelten für <strong>alle Nutzer</strong> (einheitliche Spalten unter „Leads“). Technischer Name bleibt fest, Anzeige und Reihenfolge sind änderbar.</p>
-      </header>
-      <div class="table-wrap fields-table-wrap">
-        <table class="fields-def-table">
-          <thead>
-          <tr>
-            <th>Technischer Name</th>
-            <th>Anzeige</th>
-            <th>Sortierung</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody id="llFieldsTableBody"></tbody>
-        </table>
-      </div>
-      <form id="llNewFieldForm" class="modal-grid new-field-form">
-        <h4 class="full-width">Neues Feld</h4>
-        <label>Technischer Name <span class="muted">(z. B. linkedin)</span>
-          <input name="key" id="llNewFieldKey" type="text" pattern="[a-z][a-z0-9_]*" maxlength="64" placeholder="nur_kleinbuchstaben" required autocomplete="off">
-        </label>
-        <label>Anzeige im CRM
-          <input name="label" id="llNewFieldLabel" type="text" maxlength="200" placeholder="LinkedIn-Profil" required autocomplete="off">
-        </label>
-        <div class="modal-actions full-width">
-          <button type="submit" class="btn btn-primary">Feld anlegen</button>
-        </div>
-      </form>
-      <footer class="modal-actions">
-        <button type="button" class="btn btn-ghost" id="llFieldsClose">Schließen</button>
-      </footer>
-    </div>
-  </dialog>
-  <?php endif; ?>
 
   <dialog id="dealModal" class="modal">
     <form method="dialog" class="modal-card" id="dealForm">
@@ -520,16 +412,17 @@ $bootstrap = [
     </div>
   </dialog>
 
-  <dialog id="incomingCallModal" class="modal">
-    <div class="modal-card">
+  <dialog id="incomingCallModal" class="modal modal--intent-announce">
+    <div class="modal-card modal-card--intent-announce">
       <header>
-        <h3>Anruf vom anderen Gerät</h3>
-        <p class="muted">Eine Telefonnummer wurde in <strong>Leads</strong> angeklickt. Wenn Sie hier mit demselben Konto angemeldet sind, können Sie direkt wählen.</p>
+        <h3>Rückruf aus Leads</h3>
+        <p class="muted">Telefonnummer an dieses Konto übermittelt. Auf dem Handy: „Anrufen“ startet die native Telefon-App.</p>
       </header>
-      <p class="incoming-call-number" id="incomingCallNumber" aria-live="polite"></p>
-      <footer class="modal-actions">
-        <button type="button" class="btn btn-ghost" id="incomingCallDismiss">Später</button>
-        <button type="button" class="btn btn-primary" id="incomingCallDial">Jetzt anrufen</button>
+      <p class="incoming-call-number crm-no-autolink" id="incomingCallNumber" x-apple-data-detectors="false" translate="no" aria-live="polite"></p>
+      <footer class="modal-actions modal-actions--intent-call">
+        <button type="button" class="btn btn-ghost" id="incomingCallDismiss">Schließen</button>
+        <button type="button" class="btn btn-secondary" id="incomingCallCopy">Nummer kopieren</button>
+        <a class="btn btn-primary hidden" id="incomingCallDial" href="#">Anrufen</a>
       </footer>
     </div>
   </dialog>
@@ -555,7 +448,6 @@ $bootstrap = [
   </template>
 
   <script src="<?php echo htmlspecialchars(crm_asset_url('assets/crm.js'), ENT_QUOTES, 'UTF-8'); ?>"></script>
-  <script src="<?php echo htmlspecialchars(crm_asset_url('assets/lead-lists.js'), ENT_QUOTES, 'UTF-8'); ?>"></script>
 <?php endif; ?>
 </body>
 </html>

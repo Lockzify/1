@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bewerbung Vertrieb – ADLIONS Karriere</title>
+  <title>Karriere im Vertrieb – ADLIONS Berlin</title>
   <meta name="description"
-    content="Karriere im Vertrieb bei ADLIONS in Berlin – Traineeprogramm, Vorteile und kurzer Bewerbungs-Funnel." />
+    content="Karriere im Vertrieb bei ADLIONS aus Berlin – wir sind ein Marketingunternehmen, das Handwerksbetrieben hilft, Neukunden und Mitarbeiter zu gewinnen." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
@@ -599,7 +599,7 @@
         <a href="/index.html#ueber-uns">Über uns</a>
         <a href="/index.html#zwei-bereiche">Kernbereiche</a>
         <a href="/index.html#fallstudien">Fallstudien</a>
-        <a href="/vertrieb-funnel.html" aria-current="page">Karriere</a>
+        <a href="/karriere.html" aria-current="page">Karriere</a>
         <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
       </nav>
     </div>
@@ -607,8 +607,8 @@
 
   <div class="hero">
     <div class="hero-inner">
-      <h1><span class="inline-emoji" aria-hidden="true">🚀</span>Bewerbung Vertrieb</h1>
-      <p><span class="inline-emoji" aria-hidden="true">✨</span>Kurz ein paar Fragen – dann melden wir uns bei dir.</p>
+      <h1><span class="inline-emoji" aria-hidden="true">🚀</span>Karriere im Vertrieb bei ADLIONS</h1>
+      <p><span class="inline-emoji" aria-hidden="true">✨</span>Wir sind ADLIONS aus Berlin – ein Marketingunternehmen, das Handwerksbetrieben hilft, Neukunden und Mitarbeiter zu gewinnen.</p>
     </div>
   </div>
 
@@ -617,11 +617,11 @@
 
     <div class="flow-screen" data-flow-step="0">
       <div class="card flow-card">
-        <h2><span class="inline-emoji" aria-hidden="true">👋</span>Hey, wir sind das Team von ADLIONS!</h2>
-        <p class="intro-lead"><span class="inline-emoji" aria-hidden="true">🏢</span>Werbeagentur aus Berlin – wir suchen Verstärkung im Vertrieb.</p>
+        <h2><span class="inline-emoji" aria-hidden="true">👋</span>Hey, wir sind das Team von ADLIONS aus Berlin!</h2>
+        <p class="intro-lead"><span class="inline-emoji" aria-hidden="true">🏢</span>Wir sind ein Marketingunternehmen und helfen Handwerksbetrieben dabei, Neukunden und Mitarbeiter zu gewinnen – dafür suchen wir Verstärkung im Vertrieb.</p>
         <ul class="benefit-list">
           <li><span class="mark" aria-hidden="true">1</span><div><strong>🤝 Dynamisches Team</strong><span class="desc">Du wirst Teil eines jungen, dynamischen Teams mit starkem Teamgeist. Bei uns zählt Zusammenarbeit auf Augenhöhe und offener Austausch.</span></div></li>
-          <li><span class="mark" aria-hidden="true">2</span><div><strong>📈 Spannendes Arbeitsumfeld</strong><span class="desc">Als stark wachsende Agentur in einem zukunftsorientierten Markt (Performance Marketing, digitale Kundengewinnung) bieten wir dir einen Arbeitsplatz mit Möglichkeiten und Perspektiven – mitten in Berlin.</span></div></li>
+          <li><span class="mark" aria-hidden="true">2</span><div><strong>📈 Spannendes Arbeitsumfeld</strong><span class="desc">Als stark wachsendes Marketingunternehmen in Berlin unterstützen wir Handwerksbetriebe bei digitaler Neukunden- und Mitarbeitergewinnung – und bieten dir dabei viele Entwicklungsmöglichkeiten.</span></div></li>
           <li><span class="mark" aria-hidden="true">3</span><div><strong>🌟 Ambitionierte Atmosphäre</strong><span class="desc">In unserem Team wirst du dich wohlfühlen, wenn du ambitioniert bist und den Wunsch hast, dich persönlich weiterzuentwickeln.</span></div></li>
           <li><span class="mark" aria-hidden="true">4</span><div><strong>🏆 Dein Erfolg ist unser Erfolg</strong><span class="desc">Wir fördern unsere Mitarbeiter und begegnen ihnen mit Offenheit, Respekt und Wertschätzung. Bei uns bist du ein geschätzter Teil des Teams – kein anonymes Rädchen.</span></div></li>
         </ul>
@@ -805,7 +805,7 @@
     <nav aria-label="Footer">
       <a href="/impressum.html">Impressum</a>
       <a href="/datenschutz.html">Datenschutz</a>
-      <a href="/vertrieb-funnel.html">Karriere</a>
+      <a href="/karriere.html">Karriere</a>
     </nav>
   </footer>
 
@@ -813,6 +813,7 @@
   <script>
     (function () {
       var WEB3FORMS_KEY = "d7aa098b-83d4-4a29-8a31-a336d22d12da";
+      var META_PIXEL_ID = "2082288726503702";
       var TOTAL_STEPS = 13;
       var INTRO_LAST = 4;
       var QUIZ_FIRST = 5;
@@ -822,6 +823,42 @@
       var flowStep = 0;
       var progressEl = document.getElementById("flow-progress");
       var resultEl = document.getElementById("form-result");
+      var leadTracked = false;
+
+      function ensureMetaPixel() {
+        if (!META_PIXEL_ID || META_PIXEL_ID === "DEINE_PIXEL_ID_HIER") return false;
+        if (typeof window.fbq === "function") return true;
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = true;
+          n.version = "2.0";
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = true;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+        window.fbq("init", META_PIXEL_ID);
+        window.fbq("track", "PageView");
+        return true;
+      }
+
+      function trackLeadEvent() {
+        if (leadTracked) return;
+        if (!ensureMetaPixel() || typeof window.fbq !== "function") return;
+        window.fbq("track", "Lead", {
+          content_name: "Karriere Vertrieb Funnel",
+          content_category: "Bewerbung",
+          status: "completed"
+        });
+        leadTracked = true;
+      }
 
       function showFlowStep(i) {
         document.querySelectorAll(".flow-screen").forEach(function (el) {
@@ -920,6 +957,7 @@
           })
           .then(function (out) {
             if (out.ok && out.data && out.data.success) {
+              trackLeadEvent();
               resultEl.textContent = "Danke! Deine Bewerbung wurde übermittelt.";
               resultEl.className = "ok";
             } else {
