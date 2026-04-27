@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vielen Dank – Karriere bei ADLIONS</title>
+  <meta name="description"
+    content="Deine Bewerbung wurde übermittelt. Wir melden uns bei dir." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet" />
+  <link href="/output-onlinepngtools-6.png" rel="icon" type="image/png" />
+  <style>
+    :root {
+      --bg: #eef6ff;
+      --text: #0c1929;
+      --muted: #5c6b7f;
+      --accent: #0284c7;
+      --accent-bright: #0ea5e9;
+      --radius: 16px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--text);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 120% 80% at 0% -20%, rgba(56, 189, 248, 0.35), transparent 55%),
+        linear-gradient(180deg, #f0f9ff 0%, var(--bg) 38%, #e8f4fc 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar a.logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .topbar img {
+      height: 42px;
+      width: auto;
+    }
+
+    .nav-main {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.15rem 0.35rem;
+      justify-content: flex-end;
+    }
+
+    .nav-main a {
+      color: #334155;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0.45rem 0.65rem;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-main a:hover {
+      background: rgba(224, 242, 254, 0.85);
+      color: var(--accent-bright);
+    }
+
+    .nav-main a.cta {
+      background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 45%, #0284c7 100%);
+      color: #fff;
+      font-weight: 600;
+      margin-left: 0.25rem;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0369a1 0%, #0c4a6e 32%, #082f49 58%, #0e7490 100%);
+      color: #f8fafc;
+      padding: 2.5rem 1.25rem 2.75rem;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      font-size: 1.05rem;
+      color: #e0f2fe;
+      max-width: 36rem;
+    }
+
+    main {
+      max-width: 640px;
+      margin: -1.25rem auto 0;
+      padding: 0 1.25rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: linear-gradient(165deg, #ffffff 0%, #f8fcff 100%);
+      border-radius: var(--radius);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 4px 28px rgba(14, 165, 233, 0.12);
+      padding: clamp(1.5rem, 4vw, 2rem);
+      text-align: center;
+    }
+
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.2rem;
+      color: #0c4a6e;
+    }
+
+    .card p {
+      margin: 0 0 1.25rem;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      align-items: stretch;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.25rem;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: filter 0.2s, transform 0.15s;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 40%, #0284c7 100%);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(14, 165, 233, 0.45);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn-secondary {
+      color: #0c4a6e;
+      background: #fff;
+      border: 2px solid rgba(56, 189, 248, 0.45);
+    }
+
+    .btn-secondary:hover {
+      background: #f0f9ff;
+    }
+
+    footer {
+      background: linear-gradient(180deg, #0c1929 0%, #0f172a 40%, #082f49 100%);
+      color: #94a3b8;
+      padding: 2rem 1.25rem;
+      text-align: center;
+      font-size: 14px;
+      margin-top: auto;
+    }
+
+    footer strong {
+      color: #f0f9ff;
+      display: block;
+      margin-bottom: 0.75rem;
+      font-size: 15px;
+    }
+
+    footer nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1.25rem;
+    }
+
+    footer a {
+      color: #7dd3fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
+      <nav class="nav-main" aria-label="Hauptnavigation">
+        <a href="/index.html">Home</a>
+        <a href="/karriere.html">Karriere</a>
+        <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <h1>Vielen Dank für deine Bewerbung</h1>
+      <p>Wir haben deine Angaben erhalten und melden uns bei dir.</p>
+    </div>
+  </div>
+
+  <main>
+    <div class="card">
+      <h2>Was passiert als Nächstes?</h2>
+      <p>Wir prüfen deine Bewerbung und kontaktieren dich per E-Mail oder Telefon. Bitte prüfe auch deinen Spam-Ordner.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/index.html">Zur Startseite</a>
+        <a class="btn btn-secondary" href="/karriere.html">Nochmal zum Karriere-Funnel</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <strong>ADLIONS</strong>
+    <nav aria-label="Footer">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+      <a href="/karriere.html">Karriere</a>
+    </nav>
+  </footer>
+
+  <script>
+    (function () {
+      var META_PIXEL_ID = "2082288726503702";
+      var STORAGE_KEY = "adlions_karriere_thankyou";
+      var fromFunnel = false;
+      try {
+        fromFunnel = sessionStorage.getItem(STORAGE_KEY) === "1";
+        if (fromFunnel) sessionStorage.removeItem(STORAGE_KEY);
+      } catch (e) { /* ignore */ }
+
+      function loadMetaPixel() {
+        if (!META_PIXEL_ID) return;
+        if (typeof window.fbq === "function") return;
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = true;
+          n.version = "2.0";
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = true;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+        window.fbq("init", META_PIXEL_ID);
+        window.fbq("track", "PageView");
+      }
+
+      loadMetaPixel();
+      if (fromFunnel && typeof window.fbq === "function") {
+        window.fbq("track", "Lead", {
+          content_name: "Karriere Vertrieb Funnel",
+          content_category: "Bewerbung",
+          status: "completed"
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

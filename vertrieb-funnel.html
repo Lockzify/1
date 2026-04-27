@@ -813,7 +813,8 @@
   <script>
     (function () {
       var WEB3FORMS_KEY = "d7aa098b-83d4-4a29-8a31-a336d22d12da";
-      var META_PIXEL_ID = "2082288726503702";
+      var THANKYOU_URL = "/karriere-danke.html";
+      var THANKYOU_STORAGE_KEY = "adlions_karriere_thankyou";
       var TOTAL_STEPS = 13;
       var INTRO_LAST = 4;
       var QUIZ_FIRST = 5;
@@ -823,42 +824,6 @@
       var flowStep = 0;
       var progressEl = document.getElementById("flow-progress");
       var resultEl = document.getElementById("form-result");
-      var leadTracked = false;
-
-      function ensureMetaPixel() {
-        if (!META_PIXEL_ID || META_PIXEL_ID === "DEINE_PIXEL_ID_HIER") return false;
-        if (typeof window.fbq === "function") return true;
-        !(function (f, b, e, v, n, t, s) {
-          if (f.fbq) return;
-          n = f.fbq = function () {
-            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n;
-          n.push = n;
-          n.loaded = true;
-          n.version = "2.0";
-          n.queue = [];
-          t = b.createElement(e);
-          t.async = true;
-          t.src = v;
-          s = b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t, s);
-        })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-        window.fbq("init", META_PIXEL_ID);
-        window.fbq("track", "PageView");
-        return true;
-      }
-
-      function trackLeadEvent() {
-        if (leadTracked) return;
-        if (!ensureMetaPixel() || typeof window.fbq !== "function") return;
-        window.fbq("track", "Lead", {
-          content_name: "Karriere Vertrieb Funnel",
-          content_category: "Bewerbung",
-          status: "completed"
-        });
-        leadTracked = true;
-      }
 
       function showFlowStep(i) {
         document.querySelectorAll(".flow-screen").forEach(function (el) {
@@ -957,9 +922,10 @@
           })
           .then(function (out) {
             if (out.ok && out.data && out.data.success) {
-              trackLeadEvent();
-              resultEl.textContent = "Danke! Deine Bewerbung wurde übermittelt.";
-              resultEl.className = "ok";
+              try {
+                sessionStorage.setItem(THANKYOU_STORAGE_KEY, "1");
+              } catch (e) { /* ignore */ }
+              window.location.href = THANKYOU_URL;
             } else {
               var errMsg =
                 (out.data && (out.data.message || out.data.error)) || "Unbekannter Fehler";
