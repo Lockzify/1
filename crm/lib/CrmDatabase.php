@@ -245,7 +245,7 @@ final class CrmDatabase
         }
 
         $email = getenv('CRM_ADMIN_EMAIL') ?: 'info@adlions.de';
-        $name = getenv('CRM_ADMIN_NAME') ?: 'Leander';
+        $name = getenv('CRM_ADMIN_NAME') ?: 'Leander Jede';
         $password = getenv('CRM_ADMIN_PASSWORD') ?: 'Seo2026!?';
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $now = gmdate('c');
