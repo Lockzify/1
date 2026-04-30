@@ -238,6 +238,44 @@
     footer a:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 640px) {
+      .topbar {
+        display: none;
+      }
+
+      .hero {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      main {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      .card {
+        padding: clamp(1.1rem, 3.2vw, 1.4rem);
+      }
+
+      .card,
+      .card h2,
+      .card p,
+      .btn,
+      .actions {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        hyphens: auto;
+      }
+
+      .btn {
+        white-space: normal;
+        text-align: center;
+        line-height: 1.35;
+      }
+    }
   </style>
 </head>
 

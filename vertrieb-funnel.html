@@ -582,9 +582,50 @@
     }
 
     @media (max-width: 640px) {
+      .topbar {
+        display: none;
+      }
+
+      .hero {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      main {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      .card {
+        padding: clamp(1.1rem, 3.2vw, 1.4rem);
+      }
+
       .nav-main {
         width: 100%;
         justify-content: flex-start;
+      }
+
+      .card,
+      .flow-card,
+      .funnel-card,
+      .benefit-list li,
+      .choice-btn,
+      .hint,
+      .btn-primary,
+      .btn-next,
+      .funnel-contact label,
+      .funnel-contact input,
+      .funnel-contact textarea {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        hyphens: auto;
+      }
+
+      .choice-btn {
+        white-space: normal;
+        line-height: 1.35;
       }
     }
   </style>
