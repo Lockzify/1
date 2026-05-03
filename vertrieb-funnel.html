@@ -850,11 +850,16 @@
       var THANKYOU_URL = "/karriere-danke.html";
       /** Query fuer Meta „Benutzerdefinierte Konversion“ (Regel: URL enthaelt funnel_bewerbung=1) */
       var THANKYOU_QUERY = "funnel_bewerbung=1";
-      var THANKYOU_STORAGE_KEY = "adlions_karriere_thankyou";
+      /** Danke-Seite darf Meta-Lead erneut senden, wenn Nutzer den Funnel erneut startet */
+      var DANKE_LEAD_FLAG = "adlions_danke_lead_sent";
       var TOTAL_STEPS = 11;
       var INTRO_LAST = 2;
       var QUIZ_FIRST = 3;
       var QUIZ_LAST = 9;
+
+      try {
+        sessionStorage.removeItem(DANKE_LEAD_FLAG);
+      } catch (e) { /* ignore */ }
 
       var answers = {};
       var flowStep = 0;
@@ -958,9 +963,6 @@
           })
           .then(function (out) {
             if (out.ok && out.data && out.data.success) {
-              try {
-                sessionStorage.setItem(THANKYOU_STORAGE_KEY, "1");
-              } catch (e) { /* ignore */ }
               var sep = THANKYOU_URL.indexOf("?") >= 0 ? "&" : "?";
               window.location.href = THANKYOU_URL + sep + THANKYOU_QUERY;
             } else {
