@@ -848,6 +848,8 @@
     (function () {
       var WEB3FORMS_KEY = "d7aa098b-83d4-4a29-8a31-a336d22d12da";
       var THANKYOU_URL = "/karriere-danke.html";
+      /** Query fuer Meta „Benutzerdefinierte Konversion“ (Regel: URL enthaelt funnel_bewerbung=1) */
+      var THANKYOU_QUERY = "funnel_bewerbung=1";
       var THANKYOU_STORAGE_KEY = "adlions_karriere_thankyou";
       var TOTAL_STEPS = 11;
       var INTRO_LAST = 2;
@@ -959,7 +961,8 @@
               try {
                 sessionStorage.setItem(THANKYOU_STORAGE_KEY, "1");
               } catch (e) { /* ignore */ }
-              window.location.href = THANKYOU_URL;
+              var sep = THANKYOU_URL.indexOf("?") >= 0 ? "&" : "?";
+              window.location.href = THANKYOU_URL + sep + THANKYOU_QUERY;
             } else {
               var errMsg =
                 (out.data && (out.data.message || out.data.error)) || "Unbekannter Fehler";
