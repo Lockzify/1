@@ -12,6 +12,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
     rel="stylesheet" />
   <link href="/output-onlinepngtools-6.png" rel="icon" type="image/png" />
+  <!-- Meta Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = "2.0";
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", "1349114390392151");
+    fbq("track", "PageView");
+  </script>
+  <!-- End Meta Pixel Code -->
   <style>
     :root {
       --bg: #eef6ff;
@@ -280,6 +302,8 @@
 </head>
 
 <body>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1349114390392151&ev=PageView&noscript=1" alt="" /></noscript>
   <header class="topbar">
     <div class="topbar-inner">
       <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
@@ -320,7 +344,6 @@
 
   <script>
     (function () {
-      var META_PIXEL_ID = "2958145984390695";
       var STORAGE_KEY = "adlions_karriere_thankyou";
       var fromFunnel = false;
       try {
@@ -328,30 +351,6 @@
         if (fromFunnel) sessionStorage.removeItem(STORAGE_KEY);
       } catch (e) { /* ignore */ }
 
-      function loadMetaPixel() {
-        if (!META_PIXEL_ID) return;
-        if (typeof window.fbq === "function") return;
-        !(function (f, b, e, v, n, t, s) {
-          if (f.fbq) return;
-          n = f.fbq = function () {
-            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n;
-          n.push = n;
-          n.loaded = true;
-          n.version = "2.0";
-          n.queue = [];
-          t = b.createElement(e);
-          t.async = true;
-          t.src = v;
-          s = b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t, s);
-        })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-        window.fbq("init", META_PIXEL_ID);
-        window.fbq("track", "PageView");
-      }
-
-      loadMetaPixel();
       if (fromFunnel && typeof window.fbq === "function") {
         window.fbq("track", "Lead", {
           content_name: "Karriere Vertrieb Funnel",
