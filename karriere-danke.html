@@ -33,8 +33,9 @@
       s = b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t, s);
     }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-    fbq("init", "1349114390392151");
-    fbq("track", "PageView");
+    window.ADLIONS_META_PIXEL_ID = "334460648539265";
+    fbq("init", window.ADLIONS_META_PIXEL_ID);
+    fbq("trackSingle", window.ADLIONS_META_PIXEL_ID, "PageView");
   </script>
   <!-- End Meta Pixel Code -->
   <style>
@@ -306,7 +307,7 @@
 
 <body>
   <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1349114390392151&ev=PageView&noscript=1" alt="" /></noscript>
+      src="https://www.facebook.com/tr?id=334460648539265&ev=PageView&noscript=1" alt="" /></noscript>
   <header class="topbar">
     <div class="topbar-inner">
       <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
@@ -351,18 +352,24 @@
 <script>
   (function () {
     if (typeof window.fbq !== "function") return;
+    /** Nur Abschluss aus dem Vertrieb-Funnel (Redirect mit ?funnel_bewerbung=1), nicht bei direktem Aufruf der Danke-URL. */
+    var params = new URLSearchParams(window.location.search || "");
+    if (params.get("funnel_bewerbung") !== "1") return;
+
     var FLAG = "adlions_danke_lead_sent";
     try {
       if (sessionStorage.getItem(FLAG) === "1") return;
       sessionStorage.setItem(FLAG, "1");
     } catch (e) { /* ignore */ }
-    window.fbq("track", "Lead", {
+    var pid = window.ADLIONS_META_PIXEL_ID || "334460648539265";
+    var leadPayload = {
       content_name: "Karriere Vertrieb Funnel",
       content_category: "Bewerbung",
       content_ids: ["https://www.adlions.de/vertrieb-funnel.html"],
       status: "completed"
-    });
-    window.fbq("trackCustom", "KarriereFunnelBewerbungAbgeschlossen", {
+    };
+    window.fbq("trackSingle", pid, "Lead", leadPayload);
+    window.fbq("trackSingleCustom", pid, "KarriereFunnelBewerbungAbgeschlossen", {
       content_name: "Karriere Vertrieb Funnel"
     });
   })();

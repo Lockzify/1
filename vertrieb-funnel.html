@@ -33,7 +33,7 @@
       s = b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t, s);
     }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-    fbq("init", "1349114390392151");
+    fbq("init", "334460648539265");
     fbq("track", "PageView");
   </script>
   <!-- End Meta Pixel Code -->
@@ -658,7 +658,7 @@
 
 <body>
   <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1349114390392151&ev=PageView&noscript=1" alt="" /></noscript>
+      src="https://www.facebook.com/tr?id=334460648539265&ev=PageView&noscript=1" alt="" /></noscript>
   <header class="topbar">
     <div class="topbar-inner">
       <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
@@ -857,9 +857,16 @@
       var QUIZ_FIRST = 3;
       var QUIZ_LAST = 9;
 
-      try {
-        sessionStorage.removeItem(DANKE_LEAD_FLAG);
-      } catch (e) { /* ignore */ }
+      function clearDankeLeadFlag() {
+        try {
+          sessionStorage.removeItem(DANKE_LEAD_FLAG);
+        } catch (e) { /* ignore */ }
+      }
+      clearDankeLeadFlag();
+      /** Nach „Zurück“ aus der Danke-Seite kann der Funnel aus dem bfcache kommen — dann lief kein erneutes Script; Flag sonst blockiert Lead beim zweiten Absenden. */
+      window.addEventListener("pageshow", function (ev) {
+        if (ev.persisted) clearDankeLeadFlag();
+      });
 
       var answers = {};
       var flowStep = 0;
