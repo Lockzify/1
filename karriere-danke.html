@@ -346,25 +346,26 @@
       <a href="/karriere.html">Karriere</a>
     </nav>
   </footer>
-
-  <script>
-    (function () {
-      if (typeof window.fbq !== "function") return;
-      var FLAG = "adlions_danke_lead_sent";
-      try {
-        if (sessionStorage.getItem(FLAG) === "1") return;
-        sessionStorage.setItem(FLAG, "1");
-      } catch (e) { /* ignore */ }
-      window.fbq("track", "Lead", {
-        content_name: "Karriere Vertrieb Funnel",
-        content_category: "Bewerbung",
-        status: "completed"
-      });
-      window.fbq("trackCustom", "KarriereFunnelBewerbungAbgeschlossen", {
-        content_name: "Karriere Vertrieb Funnel"
-      });
-    })();
-  </script>
 </body>
+
+<script>
+  (function () {
+    if (typeof window.fbq !== "function") return;
+    var FLAG = "adlions_danke_lead_sent";
+    try {
+      if (sessionStorage.getItem(FLAG) === "1") return;
+      sessionStorage.setItem(FLAG, "1");
+    } catch (e) { /* ignore */ }
+    window.fbq("track", "Lead", {
+      content_name: "Karriere Vertrieb Funnel",
+      content_category: "Bewerbung",
+      content_ids: ["https://www.adlions.de/vertrieb-funnel.html"],
+      status: "completed"
+    });
+    window.fbq("trackCustom", "KarriereFunnelBewerbungAbgeschlossen", {
+      content_name: "Karriere Vertrieb Funnel"
+    });
+  })();
+</script>
 
 </html>
