@@ -233,15 +233,6 @@ $bootstrap = [
             <label for="ownerFilter">Owner</label>
             <select id="ownerFilter"></select>
           </div>
-          <div class="filter-group">
-            <label for="priorityFilter">Priorität</label>
-            <select id="priorityFilter">
-              <option value="">Alle</option>
-              <option value="hoch">Hoch</option>
-              <option value="mittel">Mittel</option>
-              <option value="niedrig">Niedrig</option>
-            </select>
-          </div>
           <div class="filter-actions">
             <button class="btn btn-secondary" id="exportJson" type="button">Export JSON</button>
             <label class="btn btn-secondary import-label">
@@ -433,7 +424,6 @@ $bootstrap = [
     <article class="deal-card" draggable="true">
       <header>
         <h4></h4>
-        <span class="priority-pill"></span>
       </header>
       <p class="deal-company"></p>
       <p class="deal-meta"></p>

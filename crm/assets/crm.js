@@ -806,7 +806,9 @@
     searchInput.addEventListener("input", renderBoard);
     phaseFilter.addEventListener("change", renderBoard);
     ownerFilter.addEventListener("change", renderBoard);
-    priorityFilter.addEventListener("change", renderBoard);
+    if (priorityFilter) {
+      priorityFilter.addEventListener("change", renderBoard);
+    }
     dealForm.addEventListener("submit", handleDealSubmit);
     contactForm.addEventListener("submit", handleContactSubmit);
     phaseForm.addEventListener("submit", handlePhaseSubmit);
@@ -932,7 +934,6 @@
     const fragment = dealTemplate.content.cloneNode(true);
     const card = fragment.querySelector(".deal-card");
     const title = fragment.querySelector("h4");
-    const priority = fragment.querySelector(".priority-pill");
     const company = fragment.querySelector(".deal-company");
     const meta = fragment.querySelector(".deal-meta");
     const nextStep = fragment.querySelector(".deal-next-step");
@@ -940,8 +941,6 @@
     const tagList = fragment.querySelector(".tag-list");
 
     title.textContent = deal.name;
-    priority.textContent = deal.priority || "mittel";
-    priority.classList.add(`priority-${deal.priority || "mittel"}`);
     company.textContent = deal.company ? `${deal.company}` : "Keine Firma angegeben";
 
     const contact = state.contacts.find((item) => item.id === deal.contactId);
@@ -1028,7 +1027,7 @@
     const text = searchInput.value.trim().toLowerCase();
     const phase = phaseFilter.value;
     const owner = ownerFilter.value;
-    const priority = priorityFilter.value;
+    const priority = priorityFilter ? priorityFilter.value : "";
 
     return state.deals.filter((deal) => {
       if (phase && deal.phaseId !== phase) return false;
@@ -1470,7 +1469,9 @@
     searchInput.value = "";
     phaseFilter.value = "";
     ownerFilter.value = "";
-    priorityFilter.value = "";
+    if (priorityFilter) {
+      priorityFilter.value = "";
+    }
     renderBoard();
   }
 
