@@ -771,21 +771,7 @@
 
     const pipelineTopbarDetails = document.getElementById("pipelineTopbarDetails");
     if (pipelineTopbarDetails) {
-      try {
-        const saved = localStorage.getItem("adlions_pipeline_topbar_open");
-        if (saved === "0") {
-          pipelineTopbarDetails.open = false;
-        }
-      } catch (_) {
-        /* ignore */
-      }
-      pipelineTopbarDetails.addEventListener("toggle", () => {
-        try {
-          localStorage.setItem("adlions_pipeline_topbar_open", pipelineTopbarDetails.open ? "1" : "0");
-        } catch (_) {
-          /* ignore */
-        }
-      });
+      pipelineTopbarDetails.open = false;
     }
 
     document.getElementById("openDealModal").addEventListener("click", () => openDealModal());
@@ -900,7 +886,7 @@
       if (phaseMap.has(deal.phaseId)) phaseMap.get(deal.phaseId).push(deal);
     }
 
-    for (const [phaseIndex, phase] of state.phases.entries()) {
+    for (const phase of state.phases) {
       const column = document.createElement("section");
       column.className = "phase-column";
       column.dataset.phaseId = phase.id;
@@ -920,10 +906,8 @@
       const actions = document.createElement("div");
       actions.className = "phase-actions";
       actions.append(
-        phaseActionButton("Umbenennen", () => openPhaseModal(phase.id), "\u270E"),
-        phaseActionButton("Nach links", () => movePhase(phase.id, phaseIndex - 1), "←"),
-        phaseActionButton("Nach rechts", () => movePhase(phase.id, phaseIndex + 1), "→"),
-        phaseActionButton("Löschen", () => removePhase(phase.id), "\uD83D\uDDD1")
+        phaseActionButton("Phase bearbeiten", () => openPhaseModal(phase.id), "Bearbeiten"),
+        phaseActionButton("Phase löschen", () => removePhase(phase.id), "Löschen")
       );
 
       head.append(titleWrap, actions);
@@ -998,7 +982,6 @@
     });
 
     fragment.querySelector('[data-action="edit"]').addEventListener("click", () => openDealModal(deal.id));
-    fragment.querySelector('[data-action="delete"]').addEventListener("click", () => deleteDeal(deal.id));
 
     return fragment;
   }

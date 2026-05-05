@@ -195,7 +195,7 @@ $bootstrap = [
 
   <div id="viewPipeline" class="crm-view">
   <main class="crm-layout" id="crmApp">
-    <details class="pipeline-topbar-details" id="pipelineTopbarDetails" open>
+    <details class="pipeline-topbar-details" id="pipelineTopbarDetails">
       <summary class="pipeline-topbar-summary">
         <span class="pipeline-topbar-summary__title">Kennzahlen &amp; Filter</span>
         <span class="pipeline-topbar-summary__chev" aria-hidden="true"></span>
@@ -441,8 +441,7 @@ $bootstrap = [
       <p class="deal-audit"></p>
       <div class="tag-list"></div>
       <footer>
-        <button data-action="edit" class="link-btn">Bearbeiten</button>
-        <button data-action="delete" class="link-btn danger">Löschen</button>
+        <button data-action="edit" class="link-btn deal-open-btn">Deal öffnen</button>
       </footer>
     </article>
   </template>
