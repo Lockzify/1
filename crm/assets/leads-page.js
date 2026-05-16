@@ -9,11 +9,32 @@
 
   const apiPhpHref = new URL("api.php", window.location.href).href.split("?")[0];
 
+  const ROW_COLOR_KEY = "__rowColor";
+
+  const ROW_COLOR_PRESETS = [
+    { value: "", label: "Keine Markierung", swatch: null },
+    { value: "#fde8e8", label: "Bastard", swatch: "#d32f2f" },
+    { value: "#e8f5e9", label: "Terminiert", swatch: "#388e3c" },
+    { value: "#eceff1", label: "Nicht erreicht", swatch: "#78909c" },
+    { value: "#e3f2fd", label: "Follow up", swatch: "#1976d2" },
+  ];
+
+  /** @type {HTMLElement|null} */
+  let rowColorMenuEl = null;
+  /** @type {number|null} */
+  let rowColorMenuRowIndex = null;
+
   const leadsListMenu = document.getElementById("leadsListMenu");
   const leadsListName = document.getElementById("leadsListName");
   const leadsListMeta = document.getElementById("leadsListMeta");
+  const leadsListOwnerLabel = document.getElementById("leadsListOwnerLabel");
+  const leadsListScopeFilter = document.getElementById("leadsListScopeFilter");
+  const leadsListUserFilter = document.getElementById("leadsListUserFilter");
+  const leadsSearchInput = document.getElementById("leadsSearchInput");
+  const leadsSheetStats = document.getElementById("leadsSheetStats");
   const leadsSheetHead = document.getElementById("leadsSheetHead");
   const leadsSheetBody = document.getElementById("leadsSheetBody");
+  const leadsSheetColgroup = document.getElementById("leadsSheetColgroup");
   const leadsSheetEmpty = document.getElementById("leadsSheetEmpty");
   const leadsSheetTable = document.getElementById("leadsSheetTable");
 
@@ -23,6 +44,7 @@
   const leadsImportMappingBody = document.getElementById("leadsImportMappingBody");
   const leadsImportApply = document.getElementById("leadsImportApply");
   const leadsImportCancel = document.getElementById("leadsImportCancel");
+  const leadsSaveStatus = document.getElementById("leadsSaveStatus");
 
   const incomingCallModal = document.getElementById("incomingCallModal");
   const incomingCallNumber = document.getElementById("incomingCallNumber");
@@ -30,8 +52,14 @@
   const incomingCallDial = document.getElementById("incomingCallDial");
   const incomingCallDismiss = document.getElementById("incomingCallDismiss");
 
-  /** @type {{ id: number|null, name: string, rows: Record<string,string>[] }} */
-  let draft = { id: null, name: "", rows: [] };
+  /** @type {{ id: number|null, name: string, rows: Record<string,string>[], listOwnerUserId: number }} */
+  let draft = { id: null, name: "", rows: [], listOwnerUserId: 0 };
+
+  /** @type {{ id:number, displayName:string }[]} */
+  let teamUsers = [];
+
+  let listScope = "mine";
+  let listScopeUserId = 0;
 
   /** @type {{ id:string, key:string, label:string, sortOrder:number}[]} */
   let globalVariables = [];
@@ -48,6 +76,9 @@
   const CALL_INTENT_POLL_MS = 800;
   const clientDismissedIntentIds = new Set();
   const intentShownOnceOnDevice = new Set();
+
+  let leadsAutoSaveTimer = null;
+  let leadsAutoSaveInFlight = false;
 
   function callIntentDoneStorageKey() {
     const id = currentUser && currentUser.id != null ? String(currentUser.id) : "";
@@ -130,6 +161,47 @@
     }, 4200);
   }
 
+  function setLeadsSaveStatus(text, isError) {
+    if (!leadsSaveStatus) return;
+    leadsSaveStatus.textContent = text || "";
+    leadsSaveStatus.classList.toggle("leads-save-status--error", Boolean(isError));
+  }
+
+  function scheduleLeadsAutoSave() {
+    if (leadsAutoSaveTimer) {
+      clearTimeout(leadsAutoSaveTimer);
+    }
+    setLeadsSaveStatus("Wird gespeichert …");
+    leadsAutoSaveTimer = window.setTimeout(() => {
+      leadsAutoSaveTimer = null;
+      void flushLeadsAutoSave();
+    }, 550);
+  }
+
+  async function flushLeadsAutoSave() {
+    if (leadsAutoSaveInFlight) {
+      scheduleLeadsAutoSave();
+      return;
+    }
+    if (!draft.name.trim()) {
+      draft.name = (leadsListName?.value || "").trim() || "Neue Lead-Liste";
+      if (leadsListName) leadsListName.value = draft.name;
+    }
+    if (!globalVariables.length) {
+      setLeadsSaveStatus("");
+      return;
+    }
+    leadsAutoSaveInFlight = true;
+    try {
+      await saveList({ silent: true });
+      setLeadsSaveStatus("Gespeichert");
+    } catch (e) {
+      setLeadsSaveStatus(e instanceof Error ? e.message : "Speichern fehlgeschlagen", true);
+    } finally {
+      leadsAutoSaveInFlight = false;
+    }
+  }
+
   function crmPhoneDisplayForUi(raw) {
     const s = String(raw || "");
     if (!s) return "";
@@ -173,7 +245,203 @@
       id: null,
       name: "Neue Lead-Liste",
       rows: globalVariables.length ? [emptyLine()] : [],
+      listOwnerUserId: currentUser?.id ?? 0,
     };
+  }
+
+  async function loadTeamUsers() {
+    const data = await api("lead_team_users", { method: "GET" });
+    teamUsers = Array.isArray(data.users) ? data.users : [];
+    populateUserSelects();
+  }
+
+  function populateUserSelects() {
+    const opts = teamUsers.map((u) => ({ value: String(u.id), label: u.displayName }));
+    if (leadsListUserFilter) {
+      const prev = leadsListUserFilter.value;
+      replaceSelectOptions(leadsListUserFilter, opts);
+      if (teamUsers.some((u) => String(u.id) === prev)) leadsListUserFilter.value = prev;
+    }
+    document.querySelectorAll(".leads-admin-only").forEach((el) => {
+      el.classList.toggle("hidden", !isAdmin);
+    });
+  }
+
+  function replaceSelectOptions(selectEl, options) {
+    if (!selectEl) return;
+    selectEl.innerHTML = "";
+    options.forEach((option) => {
+      const item = document.createElement("option");
+      item.value = option.value;
+      item.textContent = option.label;
+      selectEl.append(item);
+    });
+  }
+
+  function listScopeApiQuery() {
+    if (listScope === "all" && isAdmin) return { scope: "all" };
+    if (listScope === "user" && listScopeUserId > 0) {
+      return { scope: "user", userId: listScopeUserId };
+    }
+    return { scope: "mine" };
+  }
+
+  function userNameById(id) {
+    const u = teamUsers.find((x) => x.id === Number(id));
+    return u?.displayName || "Unbekannt";
+  }
+
+  function rowColorPreset(value) {
+    const v = normalizeRowColor(value);
+    return ROW_COLOR_PRESETS.find((p) => p.value === v) || ROW_COLOR_PRESETS[0];
+  }
+
+  function normalizeRowColor(color) {
+    const s = String(color || "").trim().toLowerCase();
+    if (!s) return "";
+    const allowed = new Set(ROW_COLOR_PRESETS.map((p) => p.value).filter(Boolean));
+    return allowed.has(s) ? s : "";
+  }
+
+  function closeRowColorMenu() {
+    rowColorMenuRowIndex = null;
+    rowColorMenuEl?.classList.add("hidden");
+    rowColorMenuEl?.setAttribute("aria-hidden", "true");
+  }
+
+  function ensureRowColorMenu() {
+    if (rowColorMenuEl) return rowColorMenuEl;
+    const menu = document.createElement("div");
+    menu.id = "leadsRowColorMenu";
+    menu.className = "leads-row-color-menu hidden";
+    menu.setAttribute("role", "menu");
+    menu.setAttribute("aria-label", "Zeilenstatus");
+    menu.setAttribute("aria-hidden", "true");
+    ROW_COLOR_PRESETS.forEach((preset) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "leads-row-color-menu__option";
+      btn.setAttribute("role", "menuitemradio");
+      btn.dataset.value = preset.value;
+      const swatch = document.createElement("span");
+      swatch.className = "leads-row-color-menu__swatch";
+      if (!preset.value) {
+        swatch.classList.add("leads-row-color-menu__swatch--empty");
+      } else {
+        swatch.style.backgroundColor = preset.swatch || preset.value;
+      }
+      const label = document.createElement("span");
+      label.className = "leads-row-color-menu__label";
+      label.textContent = preset.label;
+      btn.append(swatch, label);
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const ri = rowColorMenuRowIndex;
+        if (ri == null || ri < 0 || !draft.rows[ri]) {
+          closeRowColorMenu();
+          return;
+        }
+        const value = normalizeRowColor(btn.dataset.value);
+        draft.rows[ri][ROW_COLOR_KEY] = value;
+        const tr = leadsSheetBody?.querySelector(`tr[data-row-index="${ri}"]`);
+        applyRowColorStyle(tr, value);
+        renderSheetStats();
+        closeRowColorMenu();
+        scheduleLeadsAutoSave();
+      });
+      menu.appendChild(btn);
+    });
+    document.body.appendChild(menu);
+    rowColorMenuEl = menu;
+    return menu;
+  }
+
+  function openRowColorMenu(anchorBtn, rowIndex) {
+    const menu = ensureRowColorMenu();
+    rowColorMenuRowIndex = rowIndex;
+    const current = normalizeRowColor(draft.rows[rowIndex]?.[ROW_COLOR_KEY]);
+    menu.querySelectorAll(".leads-row-color-menu__option").forEach((opt) => {
+      const v = normalizeRowColor(opt.dataset.value);
+      const active = v === current;
+      opt.classList.toggle("is-active", active);
+      opt.setAttribute("aria-checked", active ? "true" : "false");
+    });
+    const rect = anchorBtn.getBoundingClientRect();
+    menu.classList.remove("hidden");
+    menu.setAttribute("aria-hidden", "false");
+    const menuRect = menu.getBoundingClientRect();
+    let top = rect.bottom + 4;
+    let left = rect.left;
+    if (left + menuRect.width > window.innerWidth - 8) {
+      left = window.innerWidth - menuRect.width - 8;
+    }
+    if (top + menuRect.height > window.innerHeight - 8) {
+      top = rect.top - menuRect.height - 4;
+    }
+    menu.style.top = `${Math.max(8, top)}px`;
+    menu.style.left = `${Math.max(8, left)}px`;
+  }
+
+  function applyRowColorStyle(tr, color) {
+    if (!tr) return;
+    const c = normalizeRowColor(color);
+    const preset = rowColorPreset(c);
+    if (c) {
+      tr.dataset.rowColor = c;
+      tr.style.setProperty("--leads-row-bg", c);
+      tr.classList.add("leads-row--colored");
+    } else {
+      delete tr.dataset.rowColor;
+      tr.style.removeProperty("--leads-row-bg");
+      tr.classList.remove("leads-row--colored");
+    }
+    const btn = tr.querySelector(".leads-row-color-btn");
+    if (btn) {
+      const swatch = preset.swatch || c || "";
+      btn.style.backgroundColor = swatch;
+      btn.classList.toggle("leads-row-color-btn--empty", !c);
+      btn.title = c ? preset.label : "Status wählen";
+      btn.setAttribute("aria-label", c ? `Status: ${preset.label}` : "Status wählen");
+    }
+  }
+
+  function rowMatchesSearch(row) {
+    const q = (leadsSearchInput?.value || "").trim().toLowerCase();
+    if (!q) return true;
+    const hay = globalVariables
+      .map((c) => row[c.key])
+      .join(" ")
+      .toLowerCase();
+    return hay.includes(q);
+  }
+
+  function getVisibleRowEntries() {
+    return draft.rows
+      .map((row, index) => ({ row, index }))
+      .filter(({ row }) => rowMatchesSearch(row));
+  }
+
+  function updateListOwnerLabel() {
+    if (!leadsListOwnerLabel) return;
+    if (!draft.listOwnerUserId || draft.listOwnerUserId === currentUser?.id) {
+      leadsListOwnerLabel.classList.add("hidden");
+      return;
+    }
+    leadsListOwnerLabel.textContent = `Listen-Inhaber: ${userNameById(draft.listOwnerUserId)}`;
+    leadsListOwnerLabel.classList.remove("hidden");
+  }
+
+  function renderSheetStats() {
+    if (!leadsSheetStats) return;
+    const visible = getVisibleRowEntries().length;
+    const total = draft.rows.length;
+    const colored = draft.rows.filter((r) => normalizeRowColor(r[ROW_COLOR_KEY])).length;
+    leadsSheetStats.innerHTML = `
+      <span><strong>${visible}</strong> angezeigt</span>
+      <span><strong>${total}</strong> gesamt</span>
+      <span><strong>${colored}</strong> mit Status</span>
+    `;
   }
 
   function isPhoneBroadcastColumn(col) {
@@ -203,6 +471,65 @@
       .normalize("NFD")
       .replace(/\p{M}/gu, "")
       .replace(/ß/g, "ss");
+  }
+
+  /** Spaltenbreite in rem für table-layout: fixed */
+  function columnWidthRem(col) {
+    if (isPhoneBroadcastColumn(col)) {
+      return 14;
+    }
+    const k = (col.key || "").toLowerCase();
+    const lab = normHeader(col.label);
+    if (/e-?mail|mail/.test(k) || /\b(e-?mail|mail)\b/.test(lab)) {
+      return 14;
+    }
+    if (/firma|company|unternehmen|organisation/.test(k) || /\bfirma\b/.test(lab)) {
+      return 12;
+    }
+    if (/web|url|homepage|website/.test(k) || /\bweb\b/.test(lab)) {
+      return 12;
+    }
+    if (/notiz|note|bemerkung|kommentar/.test(k)) {
+      return 16;
+    }
+    if (/adresse|straße|strasse|street|stadt|ort|plz|zip/.test(k)) {
+      return 11;
+    }
+    if (/name|nachname|vorname|ansprech/.test(k)) {
+      return 10;
+    }
+    return 10;
+  }
+
+  function rebuildSheetColgroup() {
+    if (!leadsSheetColgroup || !leadsSheetTable) {
+      return;
+    }
+    leadsSheetColgroup.replaceChildren();
+    let totalRem = 0;
+    const addCol = (className, rem) => {
+      const col = document.createElement("col");
+      if (className) {
+        col.className = className;
+      }
+      col.style.width = `${rem}rem`;
+      leadsSheetColgroup.appendChild(col);
+      totalRem += rem;
+    };
+    addCol("leads-col-num", 2.5);
+    globalVariables.forEach((col) => {
+      const rem = columnWidthRem(col);
+      const colEl = document.createElement("col");
+      colEl.className = "leads-col-field";
+      colEl.dataset.colKey = col.key;
+      colEl.style.width = `${rem}rem`;
+      leadsSheetColgroup.appendChild(colEl);
+      totalRem += rem;
+    });
+    addCol("leads-col-actions", 3.5);
+    const tableWidthRem = Math.ceil(totalRem * 100) / 100;
+    leadsSheetTable.style.width = `${tableWidthRem}rem`;
+    leadsSheetTable.style.minWidth = `${tableWidthRem}rem`;
   }
 
   function getPhoneBroadcastColumnKey() {
@@ -237,6 +564,9 @@
       keys.forEach((k) => {
         line[k] = r && r[k] != null ? String(r[k]) : "";
       });
+      if (r && r[ROW_COLOR_KEY] != null) {
+        line[ROW_COLOR_KEY] = normalizeRowColor(r[ROW_COLOR_KEY]);
+      }
       return line;
     });
     if (draft.rows.length === 0) {
@@ -422,14 +752,19 @@
   function collectRowsFromDom() {
     if (!leadsSheetBody) return;
     const trs = [...leadsSheetBody.querySelectorAll("tr[data-row-index]")];
-    const next = [];
+    const next = [...draft.rows];
     trs.forEach((tr) => {
-      const line = emptyLine();
+      const ri = Number.parseInt(tr.getAttribute("data-row-index") || "-1", 10);
+      if (ri < 0 || ri >= next.length) return;
+      const line = { ...next[ri] };
       globalVariables.forEach((col) => {
         const inp = tr.querySelector(`input[data-col-key="${CSS.escape(col.key)}"]`);
         if (inp) line[col.key] = inp.value;
       });
-      next.push(line);
+      if (draft.rows[ri] && draft.rows[ri][ROW_COLOR_KEY] != null) {
+        line[ROW_COLOR_KEY] = normalizeRowColor(draft.rows[ri][ROW_COLOR_KEY]);
+      }
+      next[ri] = line;
     });
     draft.rows = next.length ? next : [emptyLine()];
   }
@@ -936,34 +1271,97 @@
     }
   }
 
+  function moveColumn(colId, direction) {
+    if (!isAdmin) return;
+    void api("lead_variable_move", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: colId, direction }),
+    })
+      .then(() => loadGlobalVariables())
+      .then(() => {
+        alignDraftRowsToVariables();
+        renderSheet();
+      })
+      .catch((e) => alert(e instanceof Error ? e.message : "Fehler"));
+  }
+
   function renderSheet() {
     if (!leadsSheetHead || !leadsSheetBody || !leadsSheetEmpty) return;
     const hasVars = globalVariables.length > 0;
-    leadsSheetEmpty.classList.toggle("hidden", hasVars);
     leadsSheetTable?.classList.toggle("hidden", !hasVars);
     if (!hasVars) {
       leadsSheetEmpty.textContent =
-        "Noch keine globalen Felder vorhanden. Ein Admin kann hier unter „Globale Felder“ Spalten anlegen.";
+        "Noch keine Spalten vorhanden. Ein Admin kann unter „Spalten verwalten“ Felder anlegen.";
+      leadsSheetEmpty.classList.remove("hidden");
       leadsSheetHead.innerHTML = "";
       leadsSheetBody.innerHTML = "";
+      if (leadsSheetColgroup) {
+        leadsSheetColgroup.replaceChildren();
+      }
+      if (leadsSheetTable) {
+        leadsSheetTable.style.width = "";
+        leadsSheetTable.style.minWidth = "";
+      }
       return;
     }
-    leadsSheetEmpty.textContent = "Wählen Sie eine Liste oder legen Sie eine neue an.";
+
+    const visibleEntries = getVisibleRowEntries();
+    leadsSheetEmpty.classList.toggle("hidden", visibleEntries.length > 0);
+    if (!visibleEntries.length) {
+      leadsSheetEmpty.textContent = "Keine Zeilen für den aktuellen Filter.";
+      leadsSheetEmpty.classList.remove("hidden");
+    }
+
+    rebuildSheetColgroup();
 
     const trh = document.createElement("tr");
+    const thNum = document.createElement("th");
+    thNum.className = "leads-col-num";
+    thNum.scope = "col";
+    thNum.textContent = "#";
+    thNum.title = "Statusfarbe";
+    trh.appendChild(thNum);
+
     globalVariables.forEach((col) => {
       const th = document.createElement("th");
-      th.setAttribute("data-col-key", col.key);
+      th.className = "leads-col-field";
+      th.scope = "col";
+      th.dataset.colKey = col.key;
+      th.title = col.label;
+      const inner = document.createElement("div");
+      inner.className = "leads-th-inner";
       const lab = document.createElement("span");
-      lab.className = "lead-col-label-readonly";
+      lab.className = "leads-th-label";
       lab.textContent = col.label;
-      lab.title = `Technischer Name: ${col.key}`;
-      th.appendChild(lab);
+      inner.appendChild(lab);
+      if (isAdmin) {
+        const sort = document.createElement("div");
+        sort.className = "leads-th-sort";
+        const up = document.createElement("button");
+        up.type = "button";
+        up.className = "leads-th-sort-btn";
+        up.textContent = "↑";
+        up.title = "Spalte nach links";
+        up.setAttribute("aria-label", `${col.label}: nach links`);
+        up.addEventListener("click", () => moveColumn(col.id, "up"));
+        const down = document.createElement("button");
+        down.type = "button";
+        down.className = "leads-th-sort-btn";
+        down.textContent = "↓";
+        down.title = "Spalte nach rechts";
+        down.setAttribute("aria-label", `${col.label}: nach rechts`);
+        down.addEventListener("click", () => moveColumn(col.id, "down"));
+        sort.append(up, down);
+        inner.appendChild(sort);
+      }
+      th.appendChild(inner);
       trh.appendChild(th);
     });
     const thAct = document.createElement("th");
-    thAct.textContent = "Aktion";
-    thAct.style.width = "4.5rem";
+    thAct.className = "leads-col-actions";
+    thAct.scope = "col";
+    thAct.setAttribute("aria-label", "Aktionen");
     trh.appendChild(thAct);
     leadsSheetHead.innerHTML = "";
     leadsSheetHead.appendChild(trh);
@@ -971,91 +1369,100 @@
     leadsSheetBody.innerHTML = "";
     const phoneBroadcastKey = getPhoneBroadcastColumnKey();
 
-    draft.rows.forEach((row, ri) => {
+    visibleEntries.forEach(({ row, index: ri }, displayIndex) => {
       const tr = document.createElement("tr");
       tr.setAttribute("data-row-index", String(ri));
 
+      const tdNum = document.createElement("td");
+      tdNum.className = "leads-col-num";
+      const numInner = document.createElement("div");
+      numInner.className = "leads-col-num-inner";
+      const colorBtn = document.createElement("button");
+      colorBtn.type = "button";
+      colorBtn.className = "leads-row-color-btn";
+      colorBtn.setAttribute("aria-haspopup", "menu");
+      const numSpan = document.createElement("span");
+      numSpan.className = "leads-row-num";
+      numSpan.textContent = String(displayIndex + 1);
+      numInner.append(colorBtn, numSpan);
+      tdNum.appendChild(numInner);
+      tr.appendChild(tdNum);
+
       globalVariables.forEach((col) => {
         const td = document.createElement("td");
+        td.className = "leads-col-field";
+        td.dataset.colKey = col.key;
         const rawVal = row[col.key] ?? "";
-        const isPhoneBroadcastCol = phoneBroadcastKey && col.key === phoneBroadcastKey;
-
-        if (isPhoneBroadcastCol) {
+        const isPhone = phoneBroadcastKey && col.key === phoneBroadcastKey;
+        if (isPhone) {
+          td.classList.add("leads-col-phone");
           const wrap = document.createElement("div");
-          wrap.className = "leads-phone-inline-row crm-no-autolink";
-          wrap.setAttribute("translate", "no");
+          wrap.className = "leads-phone-cell crm-no-autolink";
           const inp = document.createElement("input");
           inp.type = "tel";
-          inp.inputMode = "tel";
-          inp.className = "lead-cell leads-phone-inline-input leads-cell-input crm-no-autolink";
+          inp.className = "leads-phone-input crm-no-autolink";
           inp.setAttribute("data-col-key", col.key);
           inp.value = String(rawVal);
-          inp.autocomplete = "tel";
-          inp.placeholder = "Telefon";
-          const sendBtn = document.createElement("button");
-          sendBtn.type = "button";
-          sendBtn.className = "btn btn-secondary leads-phone-send-icon";
-          sendBtn.textContent = "↗";
-          sendBtn.title = "Nummer an alle Geräte mit diesem Konto senden";
-          sendBtn.setAttribute("aria-label", "Nummer an alle Geräte senden");
-          wrap.append(inp, sendBtn);
+          const copyBtn = document.createElement("button");
+          copyBtn.type = "button";
+          copyBtn.className = "leads-phone-copy-btn";
+          copyBtn.title = "Nummer kopieren";
+          copyBtn.setAttribute("aria-label", "Telefonnummer kopieren");
+          copyBtn.innerHTML =
+            '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+          wrap.append(inp, copyBtn);
           td.appendChild(wrap);
         } else {
           const inp = document.createElement("input");
           inp.type = "text";
-          inp.className = "lead-cell leads-cell-input crm-no-autolink";
+          inp.className = "lead-cell-input crm-no-autolink";
           inp.setAttribute("data-col-key", col.key);
           inp.value = String(rawVal);
-          inp.autocomplete = "off";
           td.appendChild(inp);
         }
         tr.appendChild(td);
       });
 
       const tdDel = document.createElement("td");
+      tdDel.className = "leads-col-actions";
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "btn btn-ghost btn-danger-text leads-row-del";
       delBtn.setAttribute("data-row-index", String(ri));
       delBtn.textContent = "×";
-      delBtn.title = "Zeile entfernen";
       tdDel.appendChild(delBtn);
       tr.appendChild(tdDel);
-
+      applyRowColorStyle(tr, row[ROW_COLOR_KEY]);
       leadsSheetBody.appendChild(tr);
     });
 
-    if (!phoneBroadcastKey && draft.rows.length) {
-      const trW = document.createElement("tr");
-      const tdW = document.createElement("td");
-      tdW.colSpan = globalVariables.length + 1;
-      tdW.className = "lead-phone-broadcast-missing-cell";
-      const warn = document.createElement("p");
-      warn.className = "muted lead-phone-broadcast-missing-hint";
-      warn.textContent =
-        "Hinweis: Keine Telefon-Spalte erkannt. Senden ist deaktiviert – Admin: unter „Globale Felder“ z. B. „Telefon“ anlegen.";
-      tdW.appendChild(warn);
-      trW.appendChild(tdW);
-      leadsSheetBody.appendChild(trW);
-    }
+    renderSheetStats();
+    updateListOwnerLabel();
   }
 
   async function refreshListMenu() {
     if (!leadsListMenu) return;
-    const data = await api("lead_lists", { method: "GET" });
+    const data = await api("lead_lists", { method: "GET", query: listScopeApiQuery() });
     leadsListMenu.innerHTML = "";
     data.lists.forEach((item) => {
       const li = document.createElement("li");
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "lead-list-menu-btn";
+      btn.className = "leads-list-menu-btn";
       btn.textContent = item.name;
       const meta = document.createElement("span");
-      meta.className = "lead-list-menu-meta";
+      meta.className = "leads-list-menu-meta";
       meta.textContent = `${item.rowCount} Zeilen`;
       if (draft.id === item.id) btn.classList.add("is-active");
       btn.addEventListener("click", () => void loadList(item.id).catch(console.error));
-      li.append(btn, meta);
+      if (isAdmin && item.ownerName && listScope === "all") {
+        const owner = document.createElement("span");
+        owner.className = "leads-list-menu-owner";
+        owner.textContent = item.ownerName;
+        li.append(btn, meta, owner);
+      } else {
+        li.append(btn, meta);
+      }
       leadsListMenu.appendChild(li);
     });
   }
@@ -1083,6 +1490,7 @@
       id: list.id,
       name: list.name,
       rows: Array.isArray(list.rows) ? list.rows : [],
+      listOwnerUserId: list.userId || currentUser?.id || 0,
     };
     alignDraftRowsToVariables();
     if (leadsListName) leadsListName.value = draft.name;
@@ -1102,17 +1510,22 @@
     const silent = opts.silent === true;
     collectRowsFromDom();
     if (!draft.name.trim()) {
-      alert("Bitte einen Listen-Namen angeben.");
+      if (!silent) {
+        alert("Bitte einen Listen-Namen angeben.");
+      }
       return;
     }
     if (!globalVariables.length) {
-      alert("Keine globalen Felder – Speichern nicht möglich.");
+      if (!silent) {
+        alert("Keine globalen Felder – Speichern nicht möglich.");
+      }
       return;
     }
     try {
       const body = {
         name: draft.name.trim(),
         rows: draft.rows,
+        ownerUserId: draft.listOwnerUserId || currentUser?.id || 0,
       };
       if (draft.id) body.id = draft.id;
       const res = await api("lead_list_save", {
@@ -1131,11 +1544,11 @@
       await refreshListMenu();
       if (!silent) {
         showLeadsToast("Gespeichert.");
-      } else {
-        showLeadsToast("Liste gespeichert.");
       }
     } catch (e) {
-      alert(e instanceof Error ? e.message : "Speichern fehlgeschlagen.");
+      if (!silent) {
+        alert(e instanceof Error ? e.message : "Speichern fehlgeschlagen.");
+      }
       throw e;
     }
   }
@@ -1189,6 +1602,7 @@
     collectRowsFromDom();
     draft.rows.push(emptyLine());
     renderSheet();
+    scheduleLeadsAutoSave();
   }
 
   function removeRowAt(ri) {
@@ -1199,6 +1613,29 @@
       draft.rows.splice(ri, 1);
     }
     renderSheet();
+    scheduleLeadsAutoSave();
+  }
+
+  function wireRowColorMenuDismiss() {
+    document.addEventListener("click", (e) => {
+      if (!rowColorMenuEl || rowColorMenuEl.classList.contains("hidden")) {
+        return;
+      }
+      if (rowColorMenuEl.contains(e.target)) {
+        return;
+      }
+      if (e.target.closest(".leads-row-color-btn")) {
+        return;
+      }
+      closeRowColorMenu();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeRowColorMenu();
+      }
+    });
+    window.addEventListener("scroll", closeRowColorMenu, true);
+    window.addEventListener("resize", closeRowColorMenu);
   }
 
   function wireTableDelegation() {
@@ -1209,18 +1646,51 @@
         if (ri >= 0) removeRowAt(ri);
         return;
       }
-      const sendIcon = e.target.closest("button.leads-phone-send-icon");
-      if (sendIcon && leadsSheetBody.contains(sendIcon)) {
+      const colorBtn = e.target.closest("button.leads-row-color-btn");
+      if (colorBtn && leadsSheetBody.contains(colorBtn)) {
         e.preventDefault();
         e.stopPropagation();
-        if (sendIcon.disabled || phoneBroadcastInFlight) {
-          return;
+        const tr = colorBtn.closest("tr[data-row-index]");
+        const ri = Number.parseInt(tr?.getAttribute("data-row-index") || "-1", 10);
+        if (ri >= 0 && draft.rows[ri]) {
+          if (rowColorMenuEl && !rowColorMenuEl.classList.contains("hidden") && rowColorMenuRowIndex === ri) {
+            closeRowColorMenu();
+          } else {
+            openRowColorMenu(colorBtn, ri);
+          }
         }
-        const row = sendIcon.closest("tr[data-row-index]");
+        return;
+      }
+      const copyBtn = e.target.closest("button.leads-phone-copy-btn");
+      if (copyBtn && leadsSheetBody.contains(copyBtn)) {
+        e.preventDefault();
+        e.stopPropagation();
+        const row = copyBtn.closest("tr[data-row-index]");
         const fk = getPhoneBroadcastColumnKey();
         const inp = fk && row ? row.querySelector(`input[data-col-key="${CSS.escape(fk)}"]`) : null;
-        const msg = inp ? inp.value : "";
-        void sendPhoneBroadcast(msg, sendIcon);
+        const num = (inp ? inp.value : "").trim();
+        if (!num) {
+          showLeadsToast("Keine Nummer zum Kopieren.");
+          return;
+        }
+        void (async () => {
+          try {
+            await crmCopyPlainText(num);
+            showLeadsToast("Nummer kopiert.");
+          } catch (_) {
+            alert("Kopieren fehlgeschlagen.");
+          }
+        })();
+      }
+    });
+    leadsSheetBody?.addEventListener("input", (e) => {
+      if (e.target.matches("input[data-col-key]")) {
+        scheduleLeadsAutoSave();
+      }
+    });
+    leadsSheetBody?.addEventListener("change", (e) => {
+      if (e.target.matches("input[data-col-key]")) {
+        scheduleLeadsAutoSave();
       }
     });
   }
@@ -1374,12 +1844,29 @@
     });
   }
 
+  function wireFilters() {
+    leadsListScopeFilter?.addEventListener("change", () => {
+      listScope = leadsListScopeFilter.value || "mine";
+      leadsListUserFilter?.classList.toggle("hidden", listScope !== "user");
+      if (listScope === "user" && leadsListUserFilter && !leadsListUserFilter.value && teamUsers[0]) {
+        leadsListUserFilter.value = String(teamUsers[0].id);
+      }
+      listScopeUserId = listScope === "user" ? Number(leadsListUserFilter?.value || 0) : 0;
+      void refreshListMenu().catch(console.error);
+    });
+    leadsListUserFilter?.addEventListener("change", () => {
+      listScopeUserId = Number(leadsListUserFilter.value || 0);
+      void refreshListMenu().catch(console.error);
+    });
+    leadsSearchInput?.addEventListener("input", () => renderSheet());
+  }
+
   function wireToolbar() {
+    wireFilters();
     document.getElementById("leadsNewList")?.addEventListener("click", () => {
       newList();
       void refreshListMenu().catch(console.error);
     });
-    document.getElementById("leadsSave")?.addEventListener("click", () => void saveList({ silent: false }).catch(console.error));
     document.getElementById("leadsAddRow")?.addEventListener("click", () => addRow());
     document.getElementById("leadsOpenImport")?.addEventListener("click", () => openImportModal());
     document.getElementById("leadsExportCsv")?.addEventListener("click", () => exportCsv());
@@ -1387,6 +1874,7 @@
 
     leadsListName?.addEventListener("input", () => {
       draft.name = leadsListName.value;
+      scheduleLeadsAutoSave();
     });
 
     leadsImportFile?.addEventListener("change", (ev) => {
@@ -1441,18 +1929,22 @@
     }
     const chip = document.getElementById("leadsUserChip");
     if (chip && currentUser) {
-      chip.textContent = `${currentUser.displayName} · ${currentUser.role === "admin" ? "Admin" : "Nutzer"}`;
+      const roleLabel =
+        currentUser.role === "admin" ? "Admin" : currentUser.role === "fulfilment" ? "Fulfilment" : "Nutzer";
+      chip.textContent = `${currentUser.displayName} · ${roleLabel}`;
     }
     const logoutCsrf = document.getElementById("logoutCsrf");
     if (logoutCsrf) logoutCsrf.value = csrfToken;
 
     wireTableDelegation();
+    wireRowColorMenuDismiss();
     wireToolbar();
     wireAdminFields();
     startCallIntentPoller();
 
     await loadGlobalVariables();
-    const listsData = await api("lead_lists", { method: "GET" });
+    await loadTeamUsers();
+    const listsData = await api("lead_lists", { method: "GET", query: listScopeApiQuery() });
     const lists = listsData.lists || [];
     if (lists.length) {
       await loadList(lists[0].id);

@@ -1,0 +1,593 @@
+/* Pipedrive / HubSpot – linke Sidebar, helles Arbeitsfeld */
+
+:root {
+  color-scheme: light;
+  --sidebar-w: 220px;
+  --sidebar-bg: #1d2128;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-text: #9aa3b2;
+  --sidebar-text-hover: #e8ecf1;
+  --sidebar-active-bg: rgba(255, 255, 255, 0.08);
+  --sidebar-accent: #3bcc9d;
+  --main-bg: #eceef1;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --text: #2c3845;
+  --text-soft: #516f90;
+  --muted: #7c98b6;
+  --line: #dfe3eb;
+  --line-strong: #cbd6e2;
+  --primary: #0091ae;
+  --primary-hover: #007a94;
+  --primary-soft: #e5f5f8;
+  --primary-bright: #0091ae;
+  --success: #00bda5;
+  --warning: #f5a623;
+  --danger: #f2545b;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --radius-lg: 8px;
+  --radius-md: 6px;
+  --radius-sm: 4px;
+  --input-bg: #ffffff;
+  --input-bg-focus: #ffffff;
+  --glass-blur: 0;
+  --glass-saturate: 1;
+  --glass-inset: none;
+}
+
+body.crm-body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background: var(--main-bg);
+}
+
+body.crm-body:has(.crm-shell) {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* —— Shell —— */
+.crm-shell {
+  display: flex;
+  height: 100%;
+  min-height: 100dvh;
+  width: 100%;
+}
+
+.crm-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--main-bg);
+}
+
+.crm-page-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  min-height: 56px;
+}
+
+.crm-page-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.crm-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.crm-page-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.crm-view {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.crm-view--fill {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.crm-view--fill > .crm-layout {
+  flex: 1;
+  min-height: 0;
+}
+
+/* —— Sidebar (Pipedrive-Stil) —— */
+.crm-sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  color: var(--sidebar-text);
+}
+
+.crm-sidebar-brand {
+  padding: 1rem 1rem 0.75rem;
+  flex-shrink: 0;
+}
+
+.crm-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: #fff;
+}
+
+.crm-sidebar-logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--sidebar-accent), #2aa87a);
+  color: #0d1a14;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.crm-sidebar-logo-text {
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+}
+
+.crm-sidebar-nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.35rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.crm-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--sidebar-text);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  position: relative;
+}
+
+.crm-sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--sidebar-text-hover);
+}
+
+.crm-sidebar-link.is-active {
+  background: var(--sidebar-active-bg);
+  color: #fff;
+}
+
+.crm-sidebar-link.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--sidebar-accent);
+}
+
+.crm-sidebar-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.crm-sidebar-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.crm-sidebar-link.is-active .crm-sidebar-icon {
+  opacity: 1;
+  color: var(--sidebar-accent);
+}
+
+.crm-sidebar-footer {
+  flex-shrink: 0;
+  padding: 0.75rem 0.65rem 1rem;
+  border-top: 1px solid var(--sidebar-border);
+  display: grid;
+  gap: 0.5rem;
+}
+
+.crm-sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.35rem 0.25rem;
+}
+
+.crm-sidebar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.crm-sidebar-user-text {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.crm-sidebar-user-text strong {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crm-sidebar-user-text small {
+  font-size: 0.68rem;
+  color: var(--sidebar-text);
+}
+
+.crm-sidebar-footer-btn {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--sidebar-text-hover);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.45rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.crm-sidebar-footer-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.crm-sidebar-footer-btn--logout {
+  color: #f5a0a5;
+  border-color: rgba(242, 84, 91, 0.25);
+}
+
+.crm-sidebar-logout {
+  margin: 0;
+}
+
+/* —— Buttons (HubSpot-ähnlich) —— */
+.btn-primary,
+button[type="submit"] {
+  background: var(--primary);
+  color: #fff;
+  border: 1px solid var(--primary);
+  box-shadow: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.btn-primary:hover,
+button[type="submit"]:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  filter: none;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background: #f5f8fa;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+}
+
+.btn-ghost:hover {
+  background: #f5f8fa;
+}
+
+/* —— Panels & Karten —— */
+.panel,
+.board-section,
+.stat-card,
+.filter-bar,
+.pipeline-topbar-details,
+.modal-card,
+.deal-card,
+.phase-column,
+.active-project-card,
+.leads-sidebar,
+.leads-workspace {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.panel {
+  border-radius: var(--radius-lg);
+}
+
+.board-section {
+  border-radius: var(--radius-lg);
+}
+
+.pipeline-topbar-details {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.pipeline-topbar-details > summary:hover {
+  background: #f5f8fa;
+}
+
+.phase-column {
+  background: #f5f8fa;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.deal-card {
+  background: var(--surface);
+  border-color: var(--line);
+  box-shadow: var(--shadow-soft);
+}
+
+.deal-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.link-btn {
+  background: var(--primary-soft);
+  border-color: transparent;
+  color: var(--primary);
+}
+
+.link-btn:hover {
+  background: #d0eef3;
+}
+
+.tag {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: transparent;
+}
+
+.priority-hoch {
+  background: #fde8e9;
+  color: #c93b42;
+}
+
+.priority-mittel {
+  background: #fff4e5;
+  color: #b86e00;
+}
+
+.priority-niedrig {
+  background: #e5f8f4;
+  color: #008f7a;
+}
+
+.stat-card:hover {
+  border-color: var(--line-strong);
+  background: var(--surface);
+}
+
+/* Tabellen */
+.customers-table th,
+.projects-table th,
+.lead-sheet-table thead th {
+  background: #f5f8fa;
+  color: var(--muted);
+}
+
+.activity-feed li {
+  background: #f5f8fa;
+  border-color: var(--line);
+}
+
+.modal::backdrop {
+  background: rgba(45, 62, 80, 0.45);
+}
+
+.modal-card {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+/* Pipeline viewport */
+body.crm-body:has(#viewPipeline:not(.hidden)) {
+  overflow: hidden;
+}
+
+body.crm-body:has(#viewPipeline:not(.hidden)) .crm-shell {
+  height: 100dvh;
+}
+
+body.crm-body:has(#viewPipeline:not(.hidden)) #viewPipeline {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#viewPipeline #crmApp.crm-layout {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Login */
+.login-page {
+  background: var(--main-bg);
+}
+
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.brand-pill {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: none;
+}
+
+/* Leads in Shell */
+.leads-page-body .crm-shell .crm-main {
+  overflow: hidden;
+}
+
+.leads-page-body .leads-app {
+  flex: 1;
+  min-height: 0;
+  padding: 1rem 1.25rem;
+}
+
+.leads-page-body .leads-sidebar,
+.leads-page-body .leads-workspace {
+  max-height: none;
+  border-radius: var(--radius-lg);
+}
+
+.lead-sheet-table tbody tr:nth-child(even) td {
+  background: #fafbfc;
+}
+
+.lead-sheet-table tbody tr:hover td {
+  background: var(--primary-soft);
+}
+
+.leads-list-menu-btn {
+  background: var(--surface);
+}
+
+.leads-list-menu-btn.is-active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.leads-sheet-scroll {
+  background: var(--surface);
+}
+
+.leads-page-body .lead-sheet-table thead th {
+  background: #f5f8fa;
+}
+
+.leads-col-actions {
+  background: var(--surface);
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.06);
+}
+
+.crm-app-toast {
+  background: var(--text);
+  color: #fff;
+  border: none;
+}
+
+/* Alte Top-Nav ausblenden */
+.topbar,
+.crm-subnav {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --sidebar-w: 64px;
+  }
+
+  .crm-sidebar-logo-text,
+  .crm-sidebar-label,
+  .crm-sidebar-user-text,
+  .crm-sidebar-footer-btn {
+    display: none;
+  }
+
+  .crm-sidebar-brand {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .crm-sidebar-logo {
+    justify-content: center;
+  }
+
+  .crm-sidebar-link {
+    justify-content: center;
+    padding: 0.65rem;
+  }
+
+  .crm-sidebar-link.is-active::before {
+    display: none;
+  }
+
+  .crm-sidebar-user {
+    justify-content: center;
+  }
+}

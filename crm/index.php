@@ -132,9 +132,11 @@ $bootstrap = [
   <title>ADLIONS CRM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <meta name="color-scheme" content="light only">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="light">
   <link href="<?php echo htmlspecialchars(crm_asset_url('assets/crm.css'), ENT_QUOTES, 'UTF-8'); ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo htmlspecialchars(crm_asset_url('assets/crm-saas.css'), ENT_QUOTES, 'UTF-8'); ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo htmlspecialchars(crm_asset_url('assets/tracking.css'), ENT_QUOTES, 'UTF-8'); ?>" rel="stylesheet" type="text/css">
 </head>
 <body class="crm-body" x-apple-data-detectors="false">
 <?php if (!$isAuthenticated): ?>
@@ -163,37 +165,40 @@ $bootstrap = [
   <script>
     window.__CRM_BOOTSTRAP__ = <?php echo json_encode($bootstrap, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR); ?>;
   </script>
-  <header class="topbar">
-    <div class="topbar-left">
-      <span class="brand-pill">ADLIONS CRM</span>
-      <h1 id="crmPageTitle">Pipeline</h1>
-      <span class="user-chip" title="<?php echo htmlspecialchars($sessionUser['email'], ENT_QUOTES, 'UTF-8'); ?>">
-        <?php echo htmlspecialchars($sessionUser['displayName'], ENT_QUOTES, 'UTF-8'); ?>
-        · <?php echo $sessionUser['role'] === 'admin' ? 'Admin' : 'Nutzer'; ?>
-      </span>
-    </div>
-    <div class="topbar-right">
-      <?php if ($sessionUser['role'] === 'admin'): ?>
-        <button class="btn btn-secondary" type="button" id="openUsersModal">Nutzer verwalten</button>
-      <?php endif; ?>
-      <div class="topbar-actions-group" id="toolbarPipeline">
-               <button class="btn btn-primary" id="openDealModal" type="button">+ Deal anlegen</button>
-        <button class="btn btn-secondary" id="openPhaseModal" type="button">+ Phase anlegen</button>
+  <div class="crm-shell">
+  <?php
+    $canAccessFulfilmentViews = CrmDatabase::canAccessFulfilmentViews($sessionUser);
+    $crmMainViews = ['pipeline', 'customers', 'projects', 'activity', 'tracking'];
+    if (!$canAccessFulfilmentViews) {
+        $crmMainViews = array_values(array_filter(
+            $crmMainViews,
+            static fn (string $view): bool => $view !== 'customers' && $view !== 'projects'
+        ));
+    }
+    $activeView = isset($_GET['view']) && in_array((string) $_GET['view'], $crmMainViews, true)
+        ? (string) $_GET['view']
+        : 'pipeline';
+    require __DIR__ . '/partials/sidebar.php';
+  ?>
+  <div class="crm-main">
+    <header class="crm-page-header">
+      <h1 class="crm-page-title" id="crmPageTitle">Deals</h1>
+      <div class="crm-page-actions">
+        <div class="crm-page-actions-group hidden" id="toolbarCustomers">
+          <button class="btn btn-primary" id="openCustomerModal" type="button">Kunde anlegen</button>
+        </div>
+        <div class="crm-page-actions-group hidden" id="toolbarProjects">
+          <button class="btn btn-primary" id="openProjectModal" type="button">Projekt anlegen</button>
+        </div>
+        <div class="crm-page-actions-group" id="toolbarPipeline">
+          <button class="btn btn-secondary" id="openPhaseModal" type="button">Phase</button>
+          <button class="btn btn-primary" id="openDealModal" type="button">Deal</button>
+        </div>
+        <div class="crm-page-actions-group hidden" id="toolbarTracking"></div>
       </div>
-      <form method="post">
-        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
-        <button class="btn btn-ghost" type="submit" name="logout" value="1">Logout</button>
-      </form>
-    </div>
-  </header>
+    </header>
 
-  <nav class="crm-subnav" aria-label="Hauptbereiche">
-    <button type="button" class="crm-nav-link is-active" data-crm-view="pipeline">Pipeline</button>
-    <button type="button" class="crm-nav-link" data-crm-view="activity">Aktivitätsfeed</button>
-    <a class="crm-nav-link" href="<?php echo htmlspecialchars(crm_asset_url('leads.html'), ENT_QUOTES, 'UTF-8'); ?>">Leads</a>
-  </nav>
-
-  <div id="viewPipeline" class="crm-view">
+  <div id="viewPipeline" class="crm-view crm-view--fill">
   <main class="crm-layout" id="crmApp">
     <details class="pipeline-topbar-details" id="pipelineTopbarDetails">
       <summary class="pipeline-topbar-summary">
@@ -251,6 +256,85 @@ $bootstrap = [
   </main>
   </div>
 
+  <div id="viewCustomers" class="crm-view hidden">
+    <main class="crm-layout crm-single-panel">
+      <article class="panel customers-panel-full">
+        <header class="panel-head panel-head--split">
+          <div>
+            <h2>Kunden</h2>
+            <p class="panel-subtitle">Alle Kunden verwalten und Projekten zuordnen.</p>
+          </div>
+          <input id="customerSearchInput" type="search" placeholder="Kunde suchen …" aria-label="Kunden suchen">
+        </header>
+        <div class="customers-stats" id="customersStats"></div>
+        <div class="table-wrap customers-table-wrap">
+          <table class="customers-table">
+            <thead>
+              <tr>
+                <th>Firma</th>
+                <th>Ansprechpartner</th>
+                <th>Kontakt</th>
+                <th>Status</th>
+                <th>Projekte</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="customersTableBody"></tbody>
+          </table>
+        </div>
+        <p class="empty-hint hidden" id="customersEmptyHint">Noch keine Kunden – oben „+ Kunde anlegen“ wählen.</p>
+      </article>
+    </main>
+  </div>
+
+  <div id="viewProjects" class="crm-view hidden">
+    <main class="crm-layout crm-projects-layout">
+      <section class="projects-overview panel">
+        <header class="panel-head panel-head--plain">
+          <h2>Aktive Projekte</h2>
+          <p class="panel-subtitle">Laufende und geplante Aufträge im Überblick.</p>
+        </header>
+        <div class="stats-grid projects-stats-grid" id="projectsStats"></div>
+        <div class="active-projects-grid" id="activeProjectsGrid"></div>
+        <p class="empty-hint hidden" id="activeProjectsEmpty">Keine aktiven Projekte.</p>
+      </section>
+      <article class="panel projects-list-panel">
+        <header class="panel-head panel-head--split">
+          <div>
+            <h2>Alle Projekte</h2>
+            <p class="panel-subtitle">Projektdokumentation mit Zeitraum und Leistungen.</p>
+          </div>
+          <div class="projects-filter-row">
+            <select id="projectStatusFilter" aria-label="Status filtern">
+              <option value="">Alle Status</option>
+              <option value="aktiv">Aktiv</option>
+              <option value="geplant">Geplant</option>
+              <option value="pausiert">Pausiert</option>
+              <option value="abgeschlossen">Abgeschlossen</option>
+            </select>
+            <input id="projectSearchInput" type="search" placeholder="Projekt suchen …" aria-label="Projekte suchen">
+          </div>
+        </header>
+        <div class="table-wrap projects-table-wrap">
+          <table class="projects-table">
+            <thead>
+              <tr>
+                <th>Projekt</th>
+                <th>Kunde</th>
+                <th>Zeitraum</th>
+                <th>Status</th>
+                <th>Fortschritt</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody"></tbody>
+          </table>
+        </div>
+        <p class="empty-hint hidden" id="projectsEmptyHint">Noch keine Projekte angelegt.</p>
+      </article>
+    </main>
+  </div>
+
   <div id="viewActivity" class="crm-view hidden">
     <main class="crm-layout crm-single-panel">
       <article class="panel activity-panel-full">
@@ -261,6 +345,162 @@ $bootstrap = [
       </article>
     </main>
   </div>
+
+
+  <div id="viewTracking" class="crm-view hidden">
+    <main class="crm-layout crm-single-panel">
+      <article class="panel tracking-panel-full">
+        <header class="panel-head panel-head--split tracking-panel-head">
+          <div>
+            <h2>Tages-Tracking</h2>
+            <p class="panel-subtitle" id="trackingDateLabel">Tagesübersicht: alle Nutzer mit Anrufen, Terminen und Abschlüssen.</p>
+            <p class="tracking-readonly-hint muted hidden" id="trackingReadOnlyHint">Nur Administratoren können Einträge bearbeiten. Bitte einen Admin bitten, Ihre Nutzerrolle anzupassen.</p>
+            <p class="tracking-edit-banner hidden" id="trackingEditBanner">
+              <strong>Daten erfassen:</strong> Tag wählen, dann in die <strong>grün umrandeten Felder</strong> tippen – wird automatisch gespeichert.
+            </p>
+          </div>
+          <div class="tracking-head-actions">
+            <div class="tracking-date-nav" role="group" aria-label="Tag auswählen">
+              <button class="btn btn-ghost" type="button" id="trackingPrevDay" title="Vorheriger Tag" aria-label="Vorheriger Tag">←</button>
+              <label class="tracking-date-picker">
+                <span class="tracking-date-picker__label">Tag</span>
+                <input type="date" id="trackingDate" class="tracking-date-input" aria-label="Tag im Kalender wählen">
+                <button type="button" class="btn btn-ghost tracking-date-calendar-btn" id="trackingOpenCalendar" title="Kalender öffnen" aria-label="Kalender öffnen">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </button>
+              </label>
+              <button class="btn btn-ghost" type="button" id="trackingNextDay" title="Nächster Tag" aria-label="Nächster Tag">→</button>
+              <button class="btn btn-secondary" type="button" id="trackingToday">Heute</button>
+              <button type="button" class="btn btn-primary tracking-capture-btn hidden" id="trackingOpenEntry">Daten für diesen Tag erfassen</button>
+            </div>
+            <p class="tracking-save-hint muted hidden" id="trackingSaveHint" aria-live="polite"></p>
+          </div>
+        </header>
+        <h3 class="tracking-section-title">Alle Nutzer am gewählten Tag</h3>
+        <div class="table-wrap tracking-table-wrap">
+          <table class="tracking-table">
+            <thead>
+              <tr>
+                <th>Nutzer</th>
+                <th>Anrufe</th>
+                <th title="Termine gelegt">Termine</th>
+                <th>Sales Calls</th>
+                <th>Abschlüsse</th>
+              </tr>
+            </thead>
+            <tbody id="trackingTableBody"></tbody>
+            <tfoot>
+              <tr class="tracking-totals-row">
+                <th>Gesamt</th>
+                <td id="trackingTotalCalls">0</td>
+                <td id="trackingTotalResults">0</td>
+                <td id="trackingTotalSalesCalls">0</td>
+                <td id="trackingTotalClosures">0</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="empty-hint hidden" id="trackingEmptyHint">Keine Nutzer im System – bitte zuerst unter „Nutzer“ anlegen.</p>
+
+        <section class="tracking-charts" id="trackingCharts" aria-label="Tracking-Auswertung">
+          <article class="tracking-chart-card">
+            <header class="tracking-chart-card__head">
+              <h3>Termine gelegt</h3>
+              <p class="muted tracking-chart-card__sub" id="trackingPieSubtitle">Verteilung nach Nutzer</p>
+            </header>
+            <div class="tracking-chart-wrap">
+              <canvas id="trackingPieChart" role="img" aria-label="Kreisdiagramm Termine nach Nutzer"></canvas>
+            </div>
+            <p class="tracking-chart-empty hidden" id="trackingPieEmpty">Für diesen Tag sind noch keine Termine erfasst.</p>
+          </article>
+          <article class="tracking-chart-card tracking-chart-card--wide">
+            <header class="tracking-chart-card__head">
+              <h3>Gelegte Termine im Verlauf</h3>
+              <p class="muted tracking-chart-card__sub" id="trackingClosuresRangeLabel">Letzte 30 Tage</p>
+            </header>
+            <div class="tracking-chart-wrap tracking-chart-wrap--tall">
+              <canvas id="trackingClosuresChart" role="img" aria-label="Diagramm gelegte Termine nach Tag"></canvas>
+            </div>
+            <p class="tracking-chart-empty hidden" id="trackingClosuresEmpty">Im gewählten Zeitraum keine Termine erfasst.</p>
+          </article>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  </div><!-- .crm-main -->
+  </div><!-- .crm-shell -->
+
+  <dialog id="customerModal" class="modal modal-wide">
+    <form method="dialog" class="modal-card" id="customerForm">
+      <header>
+        <h3 id="customerModalTitle">Kunde anlegen</h3>
+      </header>
+      <div class="modal-grid">
+        <label>Firma<input name="company" required placeholder="z. B. Muster GmbH"></label>
+        <label>Ansprechpartner<input name="contactName" placeholder="z. B. Max Mustermann"></label>
+        <label>E-Mail<input name="email" type="email"></label>
+        <label>Telefon<input name="phone"></label>
+        <label>Straße<input name="street"></label>
+        <label>PLZ<input name="zip"></label>
+        <label>Ort<input name="city"></label>
+        <label>Status
+          <select name="status">
+            <option value="aktiv">Aktiv</option>
+            <option value="inaktiv">Inaktiv</option>
+          </select>
+        </label>
+        <label class="full-width">Notizen<textarea name="notes" rows="3"></textarea></label>
+        <div class="full-width customer-projects-panel hidden" id="customerProjectsPanel">
+          <h4 class="customer-projects-heading">Verknüpfte Projekte</h4>
+          <ul class="customer-linked-projects" id="customerLinkedProjectsList"></ul>
+          <p class="muted customer-projects-empty hidden" id="customerProjectsEmpty">Noch keine Projekte mit diesem Kunden verknüpft.</p>
+          <div class="customer-link-project-row">
+            <label for="linkProjectToCustomerSelect">Bestehendes Projekt verknüpfen</label>
+            <div class="customer-link-project-actions">
+              <select id="linkProjectToCustomerSelect" aria-label="Projekt auswählen"></select>
+              <button class="btn btn-secondary" type="button" id="linkProjectToCustomerBtn">Verknüpfen</button>
+            </div>
+          </div>
+          <button class="btn btn-secondary customer-add-project-btn" type="button" id="addProjectForCustomerBtn">+ Neues Projekt für diesen Kunden</button>
+        </div>
+      </div>
+      <footer class="modal-actions">
+        <button class="btn btn-ghost" value="cancel">Abbrechen</button>
+        <button class="btn btn-primary" type="submit">Speichern</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="projectModal" class="modal modal-wide">
+    <form method="dialog" class="modal-card" id="projectForm">
+      <header>
+        <h3 id="projectModalTitle">Projekt anlegen</h3>
+      </header>
+      <div class="modal-grid">
+        <label>Projektname<input name="name" required placeholder="z. B. Website Relaunch"></label>
+        <label>Kunde (Verknüpfung)<select name="customerId" id="projectCustomerSelect"><option value="">— Kein Kunde —</option></select></label>
+        <label>Start<input name="startDate" type="date"></label>
+        <label>Ende<input name="endDate" type="date"></label>
+        <label>Status
+          <select name="status">
+            <option value="geplant">Geplant</option>
+            <option value="aktiv">Aktiv</option>
+            <option value="pausiert">Pausiert</option>
+            <option value="abgeschlossen">Abgeschlossen</option>
+          </select>
+        </label>
+        <label>Verantwortlich<input name="owner" placeholder="z. B. Alex"></label>
+        <label class="full-width">Kurzbeschreibung<textarea name="description" rows="2" placeholder="Ziel und Umfang des Projekts"></textarea></label>
+        <label class="full-width">Leistungen &amp; Aufgaben (eine Zeile pro Punkt)<textarea name="workItemsText" id="projectWorkItemsText" rows="5" placeholder="Konzeption&#10;Design&#10;Umsetzung&#10;Reporting"></textarea></label>
+        <label class="full-width">Projektdokumentation<textarea name="documentation" rows="6" placeholder="Ablauf, Besonderheiten, Abstimmungen, Ergebnisse …"></textarea></label>
+      </div>
+      <footer class="modal-actions">
+        <button class="btn btn-ghost" value="cancel">Abbrechen</button>
+        <button class="btn btn-primary" type="submit">Speichern</button>
+      </footer>
+    </form>
+  </dialog>
 
   <dialog id="dealModal" class="modal">
     <form method="dialog" class="modal-card" id="dealForm">
@@ -381,6 +621,7 @@ $bootstrap = [
             <label>Rolle
               <select name="role" id="userFormRole">
                 <option value="user">Nutzer</option>
+                <option value="fulfilment">Fulfilment</option>
                 <option value="admin">Admin</option>
               </select>
             </label>
@@ -401,6 +642,35 @@ $bootstrap = [
         <button class="btn btn-ghost" type="button" id="closeUsersModal">Schließen</button>
       </footer>
     </div>
+  </dialog>
+
+  <dialog id="trackingEntryModal" class="modal modal-wide">
+    <form method="dialog" class="modal-card" id="trackingEntryForm">
+      <header>
+        <h3>Tracking erfassen</h3>
+        <p class="muted" id="trackingEntryModalDate">Kennzahlen für den gewählten Tag</p>
+      </header>
+      <p class="tracking-entry-intro muted">Tragen Sie die Zahlen pro Nutzer ein – wird automatisch gespeichert.</p>
+      <div class="table-wrap tracking-entry-table-wrap">
+        <table class="tracking-entry-table">
+          <thead>
+            <tr>
+              <th>Nutzer</th>
+              <th>Anrufe</th>
+              <th>Termine</th>
+              <th>Sales Calls</th>
+              <th>Abschlüsse</th>
+            </tr>
+          </thead>
+          <tbody id="trackingEntryModalBody"></tbody>
+        </table>
+      </div>
+      <p class="empty-hint hidden" id="trackingEntryModalEmpty">Keine aktiven Nutzer – bitte zuerst unter „Nutzer“ anlegen.</p>
+      <footer class="modal-actions">
+        <p class="tracking-save-hint muted hidden" id="trackingEntryModalSaveHint" aria-live="polite"></p>
+        <button type="button" class="btn btn-primary" id="trackingEntryClose">Schließen</button>
+      </footer>
+    </form>
   </dialog>
 
   <dialog id="incomingCallModal" class="modal modal--intent-announce">
@@ -436,6 +706,7 @@ $bootstrap = [
     </article>
   </template>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
   <script src="<?php echo htmlspecialchars(crm_asset_url('assets/crm.js'), ENT_QUOTES, 'UTF-8'); ?>"></script>
 <?php endif; ?>
 </body>

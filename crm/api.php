@@ -95,6 +95,12 @@ try {
         if (!isset($state['activities']) || !is_array($state['activities'])) {
             $state['activities'] = [];
         }
+        if (!isset($state['customers']) || !is_array($state['customers'])) {
+            $state['customers'] = [];
+        }
+        if (!isset($state['projects']) || !is_array($state['projects'])) {
+            $state['projects'] = [];
+        }
         CrmDatabase::saveStatePayload($state);
         json_out(['ok' => true]);
     }
@@ -343,19 +349,38 @@ try {
         json_out(['ok' => true]);
     }
 
+    if ($action === 'lead_team_users' && $method === 'GET') {
+        current_user();
+        json_out(['ok' => true, 'users' => CrmDatabase::listActiveUsersBrief()]);
+    }
+
     if ($action === 'lead_lists' && $method === 'GET') {
         $user = current_user();
-        $items = CrmDatabase::listLeadListsForUser((int) $user['id']);
+        $isAdmin = ($user['role'] ?? '') === 'admin';
+        $scope = isset($_GET['scope']) ? (string) $_GET['scope'] : 'mine';
+        $filterUserId = null;
+        if ($scope === 'all' && $isAdmin) {
+            $filterUserId = null;
+        } elseif ($scope === 'user' && isset($_GET['userId'])) {
+            $filterUserId = (int) $_GET['userId'];
+            if (!$isAdmin && $filterUserId !== (int) $user['id']) {
+                json_out(['ok' => false, 'error' => 'Keine Berechtigung.'], 403);
+            }
+        } else {
+            $filterUserId = (int) $user['id'];
+        }
+        $items = CrmDatabase::listLeadListsForScope((int) $user['id'], $isAdmin, $filterUserId);
         json_out(['ok' => true, 'lists' => $items]);
     }
 
     if ($action === 'lead_list' && $method === 'GET') {
         $user = current_user();
+        $isAdmin = ($user['role'] ?? '') === 'admin';
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         if ($id <= 0) {
             json_out(['ok' => false, 'error' => 'Ungültige Listen-ID.'], 422);
         }
-        $list = CrmDatabase::getLeadListForUser($id, (int) $user['id']);
+        $list = CrmDatabase::getLeadListById($id, (int) $user['id'], $isAdmin);
         if ($list === null) {
             json_out(['ok' => false, 'error' => 'Liste nicht gefunden.'], 404);
         }
@@ -382,22 +407,34 @@ try {
             json_out(['ok' => false, 'error' => 'Maximal 8000 Zeilen pro Liste.'], 422);
         }
         $normalizedRows = normalize_lead_rows_for_save($rows);
+        $isAdmin = ($user['role'] ?? '') === 'admin';
+        $ownerUserId = (int) $user['id'];
+        if ($isAdmin && isset($body['ownerUserId'])) {
+            $ownerUserId = max(0, (int) $body['ownerUserId']);
+        }
+        if ($ownerUserId <= 0) {
+            $ownerUserId = (int) $user['id'];
+        }
+        if (!$isAdmin && $ownerUserId !== (int) $user['id']) {
+            json_out(['ok' => false, 'error' => 'Keine Berechtigung.'], 403);
+        }
         $listId = isset($body['id']) ? (int) $body['id'] : 0;
         if ($listId > 0) {
             try {
-                CrmDatabase::updateLeadList((int) $user['id'], $listId, $name, $normalizedRows);
+                CrmDatabase::updateLeadListForOwner($ownerUserId, $listId, $name, $normalizedRows, $isAdmin);
             } catch (\InvalidArgumentException $e) {
                 json_out(['ok' => false, 'error' => $e->getMessage()], 404);
             }
-            json_out(['ok' => true, 'id' => $listId]);
+            json_out(['ok' => true, 'id' => $listId, 'ownerUserId' => $ownerUserId]);
         }
-        $newId = CrmDatabase::createLeadList((int) $user['id'], $name, $normalizedRows);
-        json_out(['ok' => true, 'id' => $newId]);
+        $newId = CrmDatabase::createLeadList($ownerUserId, $name, $normalizedRows);
+        json_out(['ok' => true, 'id' => $newId, 'ownerUserId' => $ownerUserId]);
     }
 
     if ($action === 'lead_list_delete' && $method === 'POST') {
         require_csrf();
         $user = current_user();
+        $isAdmin = ($user['role'] ?? '') === 'admin';
         $raw = file_get_contents('php://input');
         $body = json_decode($raw ?: 'null', true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($body)) {
@@ -408,7 +445,7 @@ try {
             json_out(['ok' => false, 'error' => 'Ungültige Listen-ID.'], 422);
         }
         try {
-            CrmDatabase::deleteLeadList((int) $user['id'], $id);
+            CrmDatabase::deleteLeadListById($id, (int) $user['id'], $isAdmin);
         } catch (\InvalidArgumentException $e) {
             json_out(['ok' => false, 'error' => $e->getMessage()], 404);
         }
@@ -490,6 +527,85 @@ try {
         json_out(['ok' => true]);
     }
 
+    if ($action === 'tracking_daily' && $method === 'GET') {
+        $user = current_user();
+        $isAdmin = ($user['role'] ?? '') === 'admin';
+        $date = isset($_GET['date']) ? (string) $_GET['date'] : gmdate('Y-m-d');
+        try {
+            $date = CrmDatabase::normalizeTrackDate($date);
+        } catch (\InvalidArgumentException $e) {
+            json_out(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+        $rows = CrmDatabase::listDailyTrackingForDate($date);
+        $totals = ['calls' => 0, 'results' => 0, 'salesCalls' => 0, 'closures' => 0];
+        foreach ($rows as $row) {
+            $totals['calls'] += (int) $row['calls'];
+            $totals['results'] += (int) $row['results'];
+            $totals['salesCalls'] += (int) $row['salesCalls'];
+            $totals['closures'] += (int) $row['closures'];
+        }
+        $activeCount = count(array_filter($rows, static fn (array $row): bool => !empty($row['active'])));
+        json_out([
+            'ok' => true,
+            'date' => $date,
+            'rows' => $rows,
+            'userCount' => count($rows),
+            'activeUserCount' => $activeCount,
+            'totals' => $totals,
+            'canEdit' => $isAdmin,
+            'canEditAll' => $isAdmin,
+        ]);
+    }
+
+    if ($action === 'tracking_daily' && $method === 'POST') {
+        require_csrf();
+        $user = current_user();
+        $isAdmin = ($user['role'] ?? '') === 'admin';
+        $raw = file_get_contents('php://input');
+        $body = json_decode($raw ?: 'null', true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($body)) {
+            json_out(['ok' => false, 'error' => 'Ungültige Nutzdaten.'], 422);
+        }
+        $targetUserId = (int) ($body['userId'] ?? $user['id']);
+        $date = isset($body['date']) ? (string) $body['date'] : gmdate('Y-m-d');
+        try {
+            $saved = CrmDatabase::saveDailyTracking(
+                $targetUserId,
+                $date,
+                [
+                    'calls' => (int) ($body['calls'] ?? 0),
+                    'results' => (int) ($body['results'] ?? 0),
+                    'salesCalls' => (int) ($body['salesCalls'] ?? 0),
+                    'closures' => (int) ($body['closures'] ?? 0),
+                ],
+                (int) $user['id'],
+                $isAdmin
+            );
+        } catch (\InvalidArgumentException $e) {
+            json_out(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+        json_out(['ok' => true, 'row' => $saved]);
+    }
+
+    if ($action === 'tracking_series' && $method === 'GET') {
+        current_user();
+        $from = isset($_GET['from']) ? (string) $_GET['from'] : gmdate('Y-m-d', strtotime('-29 days'));
+        $to = isset($_GET['to']) ? (string) $_GET['to'] : gmdate('Y-m-d');
+        try {
+            $from = CrmDatabase::normalizeTrackDate($from);
+            $to = CrmDatabase::normalizeTrackDate($to);
+            $days = CrmDatabase::listDailyTrackingSeries($from, $to);
+        } catch (\InvalidArgumentException $e) {
+            json_out(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+        json_out([
+            'ok' => true,
+            'from' => $from,
+            'to' => $to,
+            'days' => $days,
+        ]);
+    }
+
     if ($action === 'call_intent_ack' && $method === 'POST') {
         require_csrf();
         $user = current_user();
@@ -538,6 +654,13 @@ function normalize_lead_rows_for_save(array $rows): array
         foreach ($keys as $k) {
             $v = isset($r[$k]) ? (string) $r[$k] : '';
             $line[$k] = function_exists('mb_substr') ? mb_substr($v, 0, 4000, 'UTF-8') : substr($v, 0, 4000);
+        }
+        if (isset($r['__rowColor'])) {
+            $c = strtolower(trim((string) $r['__rowColor']));
+            $allowed = ['#fde8e8', '#e8f5e9', '#eceff1', '#e3f2fd'];
+            if (in_array($c, $allowed, true)) {
+                $line['__rowColor'] = $c;
+            }
         }
         $outRows[] = $line;
     }
