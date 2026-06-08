@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 /**
  * Tägliche Indexierungsanfragen (max. 10 gesamt über alle aktiven Domains).
- * Cron: 0 8 * * * php /pfad/zum/indexierung-cron.php
+ *
+ * Hostinger Cron-Beispiel (täglich 08:00):
+ * 0 8 * * * /usr/bin/php /home/USER/domains/indexierung.deine-domain.de/public_html/cron.php
  */
 
 if (PHP_SAPI !== 'cli') {
@@ -12,7 +14,7 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
-require_once __DIR__ . '/indexierung/lib/IndexingService.php';
+require_once __DIR__ . '/lib/IndexingService.php';
 
 try {
     $result = IndexingService::runDailyBatch(gmdate('Y-m-d'));

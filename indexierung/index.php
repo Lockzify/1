@@ -1,8 +1,22 @@
 <?php
 declare(strict_types=1);
+
+/** URL der Hauptwebsite (für Footer-Links). Bei Bedarf anpassen. */
+const INDEXIERUNG_MAIN_SITE = 'https://adlions.de';
+
 session_start();
 if (!isset($_SESSION['indexierung_csrf'])) {
     $_SESSION['indexierung_csrf'] = bin2hex(random_bytes(32));
+}
+
+$assetBase = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/index.php')), '/');
+if ($assetBase === '' || $assetBase === '.') {
+    $assetBase = '';
+}
+function idx_asset(string $path): string
+{
+    global $assetBase;
+    return ($assetBase === '' ? '' : $assetBase) . '/assets/' . ltrim($path, '/');
 }
 ?>
 <!DOCTYPE html>
@@ -17,8 +31,8 @@ if (!isset($_SESSION['indexierung_csrf'])) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap"
     rel="stylesheet" />
-  <link href="/output-onlinepngtools-6.png" rel="icon" type="image/png" />
-  <link href="/css/indexierung.css" rel="stylesheet" type="text/css" />
+  <link href="<?php echo htmlspecialchars(idx_asset('favicon.png'), ENT_QUOTES, 'UTF-8'); ?>" rel="icon" type="image/png" />
+  <link href="<?php echo htmlspecialchars(idx_asset('indexierung.css'), ENT_QUOTES, 'UTF-8'); ?>" rel="stylesheet" type="text/css" />
   <style>
     :root {
       color-scheme: light;
@@ -28,9 +42,7 @@ if (!isset($_SESSION['indexierung_csrf'])) {
       --link: #0369a1;
       --border: #e2e8f0;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -39,12 +51,7 @@ if (!isset($_SESSION['indexierung_csrf'])) {
       color: var(--text);
       background: var(--bg);
     }
-
-    .site-header {
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-    }
-
+    .site-header { background: #fff; border-bottom: 1px solid var(--border); }
     .site-header-inner {
       max-width: 960px;
       margin: 0 auto;
@@ -55,39 +62,11 @@ if (!isset($_SESSION['indexierung_csrf'])) {
       gap: 1rem;
       flex-wrap: wrap;
     }
-
     .site-header a.logo { display: flex; align-items: center; text-decoration: none; }
     .site-header img { height: 40px; width: auto; }
-
-    .back {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--link);
-      text-decoration: none;
-    }
-
-    .back:hover { text-decoration: underline; }
-
-    h1 {
-      margin: 0 0 0.5rem;
-      font-size: clamp(1.75rem, 4vw, 2.25rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .page-intro {
-      margin: 0 0 1.5rem;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    .page-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.25rem;
-    }
-
+    h1 { margin: 0 0 0.5rem; font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; }
+    .page-intro { margin: 0 0 1.5rem; color: var(--muted); font-size: 16px; }
+    .page-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
     footer {
       border-top: 1px solid var(--border);
       padding: 1.5rem 1.25rem;
@@ -96,15 +75,8 @@ if (!isset($_SESSION['indexierung_csrf'])) {
       color: var(--muted);
       background: #fff;
     }
-
-    footer a {
-      color: var(--link);
-      font-weight: 600;
-      text-decoration: none;
-    }
-
+    footer a { color: var(--link); font-weight: 600; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
-
     .muted { color: var(--muted); }
     code { font-size: 0.9em; }
   </style>
@@ -113,8 +85,9 @@ if (!isset($_SESSION['indexierung_csrf'])) {
 <body>
   <header class="site-header">
     <div class="site-header-inner">
-      <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS" /></a>
-      <a class="back" href="/index.html">Zur Startseite</a>
+      <a class="logo" href="<?php echo htmlspecialchars(INDEXIERUNG_MAIN_SITE, ENT_QUOTES, 'UTF-8'); ?>">
+        <img src="<?php echo htmlspecialchars(idx_asset('logo.webp'), ENT_QUOTES, 'UTF-8'); ?>" alt="ADLIONS" />
+      </a>
     </div>
   </header>
 
@@ -250,10 +223,10 @@ if (!isset($_SESSION['indexierung_csrf'])) {
   <div id="indexierungToast" class="indexierung-toast hidden" role="status" aria-live="polite"></div>
 
   <footer>
-    <a href="/index.html">Startseite</a> · <a href="/impressum.html">Impressum</a> · <a href="/datenschutz.html">Datenschutz</a>
+    <a href="<?php echo htmlspecialchars(INDEXIERUNG_MAIN_SITE, ENT_QUOTES, 'UTF-8'); ?>">ADLIONS Website</a>
   </footer>
 
-  <script src="/js/indexierung.js"></script>
+  <script src="<?php echo htmlspecialchars(idx_asset('indexierung.js'), ENT_QUOTES, 'UTF-8'); ?>"></script>
 </body>
 
 </html>

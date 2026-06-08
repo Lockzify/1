@@ -1,0 +1,8 @@
+DirectoryIndex index.php
+
+# Daten und PHP-Bibliotheken nicht öffentlich ausliefern
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^data/ - [F,L]
+  RewriteRule ^lib/ - [F,L]
+</IfModule>

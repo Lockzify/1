@@ -1,6 +1,6 @@
 (() => {
   let csrfToken = "";
-  const apiHref = new URL("indexierung-api.php", window.location.href).href.split("?")[0];
+  const apiHref = new URL("api.php", window.location.href).href.split("?")[0];
 
   const els = {
     connection: document.getElementById("indexierungConnection"),
