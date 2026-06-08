@@ -1,5 +1,5 @@
 <?php
-/** @var string $activeView pipeline|customers|projects|activity|tracking|leads|indexing */
+/** @var string $activeView pipeline|customers|projects|activity|tracking|leads */
 /** @var array{displayName:string,email:string,role:string} $sessionUser */
 /** @var string $csrfToken */
 
@@ -65,12 +65,6 @@ if (!$canAccessFulfilmentViews) {
       <span class="crm-sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></span>
       <span class="crm-sidebar-label">Leads</span>
     </a>
-    <?php if ($canAccessFulfilmentViews): ?>
-    <a class="crm-sidebar-link<?php echo $activeView === 'indexing' ? ' is-active' : ''; ?>" href="<?php echo htmlspecialchars(crm_asset_url('indexing.php'), ENT_QUOTES, 'UTF-8'); ?>">
-      <span class="crm-sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6M8 11h6"/></svg></span>
-      <span class="crm-sidebar-label">Indexierung</span>
-    </a>
-    <?php endif; ?>
   </nav>
 
   <div class="crm-sidebar-footer">

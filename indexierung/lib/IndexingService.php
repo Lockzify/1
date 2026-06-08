@@ -2,24 +2,11 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/GoogleIndexingClient.php';
+require_once __DIR__ . '/IndexingDatabase.php';
 
 final class IndexingService
 {
-    public static function canAccess(?array $user): bool
-    {
-        return CrmDatabase::canAccessFulfilmentViews($user);
-    }
-
-    public static function requireAccess(?array $user): void
-    {
-        if (!self::canAccess($user)) {
-            throw new \RuntimeException('Keine Berechtigung für Indexierung.');
-        }
-    }
-
-    /**
-     * @return array{configured:bool,clientEmail:?string,sitesAccessible:int,apiOk:bool,apiMessage:string}
-     */
+    /** @return array{configured:bool,clientEmail:?string,sitesAccessible:int,apiOk:bool,apiMessage:string} */
     public static function connectionStatus(): array
     {
         if (!GoogleIndexingClient::hasCredentials()) {
@@ -33,12 +20,11 @@ final class IndexingService
         }
         try {
             $client = GoogleIndexingClient::loadFromFile(GoogleIndexingClient::credentialsPath());
-            $sites = $client->listSiteEntries();
 
             return [
                 'configured' => true,
                 'clientEmail' => $client->clientEmail(),
-                'sitesAccessible' => count($sites),
+                'sitesAccessible' => count($client->listSiteEntries()),
                 'apiOk' => true,
                 'apiMessage' => 'Verbindung zur Google Search Console API erfolgreich.',
             ];
@@ -77,12 +63,10 @@ final class IndexingService
         return $client->clientEmail();
     }
 
-    /**
-     * @return array{verified:bool,message:string,property:string}
-     */
+    /** @return array{verified:bool,message:string,property:string} */
     public static function verifyDomainProperty(int $domainId): array
     {
-        $domain = CrmDatabase::getIndexingDomain($domainId);
+        $domain = IndexingDatabase::getDomain($domainId);
         if ($domain === null) {
             throw new \InvalidArgumentException('Domain nicht gefunden.');
         }
@@ -92,7 +76,7 @@ final class IndexingService
         $client = GoogleIndexingClient::loadFromFile(GoogleIndexingClient::credentialsPath());
         $property = (string) $domain['gscProperty'];
         if (!$client->hasSiteAccess($property)) {
-            CrmDatabase::setIndexingDomainVerified($domainId, false);
+            IndexingDatabase::setDomainVerified($domainId, false);
 
             return [
                 'verified' => false,
@@ -101,7 +85,7 @@ final class IndexingService
                 'property' => $property,
             ];
         }
-        CrmDatabase::setIndexingDomainVerified($domainId, true);
+        IndexingDatabase::setDomainVerified($domainId, true);
 
         return [
             'verified' => true,
@@ -110,28 +94,23 @@ final class IndexingService
         ];
     }
 
-    /**
-     * @return array{added:int,skipped:int,total:int}
-     */
+    /** @return array{added:int,skipped:int,total:int} */
     public static function importSitemap(int $domainId, string $xmlContent, string $filename): array
     {
-        $domain = CrmDatabase::getIndexingDomain($domainId);
-        if ($domain === null) {
+        if (IndexingDatabase::getDomain($domainId) === null) {
             throw new \InvalidArgumentException('Domain nicht gefunden.');
         }
         $urls = self::parseSitemapXml($xmlContent);
         if ($urls === []) {
             throw new \InvalidArgumentException('Keine URLs in der Sitemap gefunden.');
         }
-        $result = CrmDatabase::importIndexingUrls($domainId, $urls);
-        CrmDatabase::updateIndexingDomainSitemapMeta($domainId, $filename, count($urls));
+        $result = IndexingDatabase::importUrls($domainId, $urls);
+        IndexingDatabase::updateSitemapMeta($domainId, $filename, count($urls));
 
         return $result;
     }
 
-    /**
-     * @return list<string>
-     */
+    /** @return list<string> */
     public static function parseSitemapXml(string $xmlContent): array
     {
         $xmlContent = trim($xmlContent);
@@ -149,12 +128,11 @@ final class IndexingService
 
         if ($xml->getName() === 'sitemapindex') {
             foreach ($xml->children($ns) as $child) {
-                if ($child->getName() !== 'sitemap') {
-                    continue;
-                }
-                $loc = trim((string) ($child->loc ?? ''));
-                if ($loc !== '' && filter_var($loc, FILTER_VALIDATE_URL)) {
-                    $urls[] = $loc;
+                if ($child->getName() === 'sitemap') {
+                    $loc = trim((string) ($child->loc ?? ''));
+                    if ($loc !== '' && filter_var($loc, FILTER_VALIDATE_URL)) {
+                        $urls[] = $loc;
+                    }
                 }
             }
             if ($urls !== []) {
@@ -165,12 +143,11 @@ final class IndexingService
         }
 
         foreach ($xml->children($ns) as $child) {
-            if ($child->getName() !== 'url') {
-                continue;
-            }
-            $loc = trim((string) ($child->loc ?? ''));
-            if ($loc !== '' && filter_var($loc, FILTER_VALIDATE_URL)) {
-                $urls[] = $loc;
+            if ($child->getName() === 'url') {
+                $loc = trim((string) ($child->loc ?? ''));
+                if ($loc !== '' && filter_var($loc, FILTER_VALIDATE_URL)) {
+                    $urls[] = $loc;
+                }
             }
         }
 
@@ -186,54 +163,45 @@ final class IndexingService
         return array_values(array_unique($urls));
     }
 
-    /**
-     * @return array{submitted:int,failed:int,remainingQuota:int,dailyLimit:int,log: list<array<string,mixed>>}
-     */
+    /** @return array{submitted:int,failed:int,remainingQuota:int,dailyLimit:int,log:list<array<string,mixed>>,message:string} */
     public static function runDailyBatch(?string $date = null): array
     {
         if (!GoogleIndexingClient::hasCredentials()) {
             throw new \RuntimeException('Service-Account-JSON fehlt.');
         }
         $date = $date ?? gmdate('Y-m-d');
-        $settings = CrmDatabase::getIndexingSettings();
-        $dailyLimit = (int) ($settings['dailyLimit'] ?? 10);
-        $already = CrmDatabase::countIndexingSubmissionsForDate($date);
-        $remaining = max(0, $dailyLimit - $already);
+        $settings = IndexingDatabase::getSettings();
+        $dailyLimit = (int) $settings['dailyLimit'];
+        $remaining = max(0, $dailyLimit - IndexingDatabase::countSubmissionsForDate($date));
         if ($remaining === 0) {
             return [
-                'submitted' => 0,
-                'failed' => 0,
-                'remainingQuota' => 0,
-                'dailyLimit' => $dailyLimit,
-                'log' => [],
-                'message' => 'Tageslimit bereits erreicht.',
+                'submitted' => 0, 'failed' => 0, 'remainingQuota' => 0,
+                'dailyLimit' => $dailyLimit, 'log' => [], 'message' => 'Tageslimit bereits erreicht.',
             ];
         }
 
         $client = GoogleIndexingClient::loadFromFile(GoogleIndexingClient::credentialsPath());
-        $candidates = CrmDatabase::pickPendingIndexingUrls($remaining);
         $submitted = 0;
         $failed = 0;
         $log = [];
 
-        foreach ($candidates as $row) {
+        foreach (IndexingDatabase::pickPendingUrls($remaining) as $row) {
             $domainId = (int) $row['domainId'];
             $urlId = (int) $row['id'];
             $url = (string) $row['url'];
-            $domain = CrmDatabase::getIndexingDomain($domainId);
-            if ($domain === null || !(int) $domain['active']) {
+            $domain = IndexingDatabase::getDomain($domainId);
+            if ($domain === null || !$domain['active']) {
                 continue;
             }
-            if (!(int) $domain['propertyVerified']) {
-                CrmDatabase::markIndexingUrlFailed($urlId, 'Property nicht verifiziert.');
+            if (!$domain['propertyVerified']) {
+                IndexingDatabase::markUrlFailed($urlId, 'Property nicht verifiziert.');
                 $failed++;
                 $log[] = ['url' => $url, 'ok' => false, 'message' => 'Property nicht verifiziert.'];
                 continue;
             }
-            $property = (string) $domain['gscProperty'];
-            if (!$client->hasSiteAccess($property)) {
-                CrmDatabase::setIndexingDomainVerified($domainId, false);
-                CrmDatabase::markIndexingUrlFailed($urlId, 'GSC-Property-Zugriff verloren.');
+            if (!$client->hasSiteAccess((string) $domain['gscProperty'])) {
+                IndexingDatabase::setDomainVerified($domainId, false);
+                IndexingDatabase::markUrlFailed($urlId, 'GSC-Property-Zugriff verloren.');
                 $failed++;
                 $log[] = ['url' => $url, 'ok' => false, 'message' => 'GSC-Zugriff verloren.'];
                 continue;
@@ -241,13 +209,13 @@ final class IndexingService
 
             $result = $client->requestIndexing($url);
             if ($result['ok']) {
-                CrmDatabase::markIndexingUrlSubmitted($urlId);
-                CrmDatabase::logIndexingSubmission($date, $urlId, $domainId, $url, true, (string) $result['message']);
+                IndexingDatabase::markUrlSubmitted($urlId);
+                IndexingDatabase::logSubmission($date, $urlId, $domainId, $url, true, (string) $result['message']);
                 $submitted++;
                 $log[] = ['url' => $url, 'ok' => true, 'message' => (string) $result['message']];
             } else {
-                CrmDatabase::markIndexingUrlFailed($urlId, (string) $result['message']);
-                CrmDatabase::logIndexingSubmission($date, $urlId, $domainId, $url, false, (string) $result['message']);
+                IndexingDatabase::markUrlFailed($urlId, (string) $result['message']);
+                IndexingDatabase::logSubmission($date, $urlId, $domainId, $url, false, (string) $result['message']);
                 $failed++;
                 $log[] = ['url' => $url, 'ok' => false, 'message' => (string) $result['message']];
             }
@@ -256,7 +224,7 @@ final class IndexingService
         return [
             'submitted' => $submitted,
             'failed' => $failed,
-            'remainingQuota' => max(0, $dailyLimit - CrmDatabase::countIndexingSubmissionsForDate($date)),
+            'remainingQuota' => max(0, $dailyLimit - IndexingDatabase::countSubmissionsForDate($date)),
             'dailyLimit' => $dailyLimit,
             'log' => $log,
             'message' => $submitted > 0
