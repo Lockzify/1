@@ -107,14 +107,31 @@ function idx_asset(string $path): string
         <div id="indexierungConnection" class="indexierung-connection">
           <p class="muted">Verbindungsstatus wird geladen …</p>
         </div>
-        <details class="indexierung-credentials-details">
-          <summary>Service-Account JSON hinterlegen</summary>
-          <div class="indexierung-credentials-form" style="margin-top:0.75rem;">
-            <p class="muted" style="font-size:15px;">Service Account in der Google Cloud mit Search Console API und Indexing API anlegen. Die E-Mail-Adresse als Eigentümer in jeder Search-Console-Property hinzufügen.</p>
-            <label>Service-Account JSON
-              <textarea id="indexierungCredentialsJson" rows="8" placeholder='{"type":"service_account", ...}'></textarea>
+        <div class="indexierung-oauth-setup" style="margin:1rem 0;">
+          <p class="muted" style="font-size:15px;margin-bottom:0.75rem;"><strong>Empfohlen:</strong> OAuth (kein Service-Account-Schlüssel nötig). Funktioniert auch wenn Ihre Organisation JSON-Schlüssel blockiert.</p>
+          <form id="indexierungOAuthConfigForm" class="indexierung-limit-form" style="flex-direction:column;align-items:stretch;">
+            <label>OAuth Client ID
+              <input type="text" id="indexierungOAuthClientId" placeholder="123456789.apps.googleusercontent.com" autocomplete="off">
             </label>
-            <p style="margin-top:0.75rem;"><button type="button" class="btn btn-primary" id="indexierungSaveCredentials">Speichern &amp; testen</button></p>
+            <label>OAuth Client Secret
+              <input type="password" id="indexierungOAuthClientSecret" placeholder="GOCSPX-..." autocomplete="off">
+            </label>
+            <p class="muted" style="font-size:13px;margin:0;">Redirect-URI in Google Cloud eintragen: <code id="indexierungRedirectUri">…</code></p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
+              <button type="submit" class="btn btn-secondary">Client speichern</button>
+              <button type="button" class="btn btn-primary" id="indexierungOAuthConnect">Mit Google verbinden</button>
+              <button type="button" class="btn btn-ghost" id="indexierungOAuthDisconnect">Verbindung trennen</button>
+            </div>
+          </form>
+        </div>
+        <details class="indexierung-credentials-details">
+          <summary>Alternativ: Service-Account JSON (falls erlaubt)</summary>
+          <div class="indexierung-credentials-form" style="margin-top:0.75rem;">
+            <p class="muted" style="font-size:15px;">Nur wenn Ihre Organisation JSON-Schlüssel erlaubt.</p>
+            <label>Service-Account JSON
+              <textarea id="indexierungCredentialsJson" rows="6" placeholder='{"type":"service_account", ...}'></textarea>
+            </label>
+            <p style="margin-top:0.75rem;"><button type="button" class="btn btn-secondary" id="indexierungSaveCredentials">JSON speichern &amp; testen</button></p>
           </div>
         </details>
         <form class="indexierung-limit-form" id="indexierungLimitForm">

@@ -64,13 +64,16 @@
     if (!els.connection) return;
     const ok = c.configured && c.apiOk;
     els.connection.className = "indexierung-connection " + (ok ? "is-ok" : "is-error");
+    const mode = c.authMode === "oauth" ? "OAuth" : c.authMode === "service_account" ? "Service Account" : "";
     if (!c.configured) {
-      els.connection.innerHTML = "<strong>API nicht konfiguriert</strong><span>Bitte Service-Account JSON hinterlegen.</span>";
+      els.connection.innerHTML = `<strong>Nicht verbunden</strong><span>${esc(c.apiMessage || "OAuth Client eintragen und mit Google verbinden.")}</span>`;
     } else if (!c.apiOk) {
-      els.connection.innerHTML = `<strong>API-Fehler</strong><span>${esc(c.apiMessage)}</span>`;
+      els.connection.innerHTML = `<strong>Verbindungsfehler</strong><span>${esc(c.apiMessage)}</span>`;
     } else {
-      els.connection.innerHTML = `<strong>API verbunden</strong><span>Service Account: <code>${esc(c.clientEmail || "")}</code></span><span>${c.sitesAccessible} Property(s) erreichbar.</span>`;
+      els.connection.innerHTML = `<strong>API verbunden</strong><span>Modus: ${esc(mode)} · <code>${esc(c.clientEmail || "")}</code></span><span>${c.sitesAccessible} Property(s) erreichbar.</span>`;
     }
+    const uriEl = document.getElementById("indexierungRedirectUri");
+    if (uriEl && c.redirectUri) uriEl.textContent = c.redirectUri;
   }
 
   function renderQuota(data) {
@@ -237,6 +240,43 @@
     }
   });
 
+  document.getElementById("indexierungOAuthConfigForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      await api("oauth_config", {
+        method: "POST",
+        body: {
+          clientId: document.getElementById("indexierungOAuthClientId")?.value?.trim() || "",
+          clientSecret: document.getElementById("indexierungOAuthClientSecret")?.value?.trim() || "",
+        },
+      });
+      showToast("OAuth-Client gespeichert.");
+      await loadStatus();
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  });
+
+  document.getElementById("indexierungOAuthConnect")?.addEventListener("click", async () => {
+    try {
+      const res = await api("oauth_url");
+      if (res.url) window.location.href = res.url;
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  });
+
+  document.getElementById("indexierungOAuthDisconnect")?.addEventListener("click", async () => {
+    if (!confirm("Google-Verbindung wirklich trennen?")) return;
+    try {
+      await api("oauth_disconnect", { method: "POST", body: {} });
+      showToast("Verbindung getrennt.");
+      await loadStatus();
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  });
+
   document.getElementById("indexierungSaveCredentials")?.addEventListener("click", async () => {
     const json = document.getElementById("indexierungCredentialsJson")?.value?.trim();
     if (!json) return showToast("JSON fehlt.", true);
@@ -273,6 +313,15 @@
       if (btn) btn.disabled = false;
     }
   });
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("oauth") === "ok") {
+    showToast("Google erfolgreich verbunden.");
+    window.history.replaceState({}, "", window.location.pathname);
+  } else if (params.get("oauth") === "error") {
+    showToast(decodeURIComponent(params.get("msg") || "OAuth fehlgeschlagen."), true);
+    window.history.replaceState({}, "", window.location.pathname);
+  }
 
   api("csrf").then((d) => {
     csrfToken = d.csrfToken || "";

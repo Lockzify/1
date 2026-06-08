@@ -1,66 +1,81 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/GoogleApiAuth.php';
 require_once __DIR__ . '/GoogleIndexingClient.php';
 require_once __DIR__ . '/IndexingDatabase.php';
 
 final class IndexingService
 {
-    /** @return array{configured:bool,clientEmail:?string,sitesAccessible:int,apiOk:bool,apiMessage:string} */
-    public static function connectionStatus(): array
+    private static function client(): GoogleIndexingClient
     {
         if (!GoogleIndexingClient::hasCredentials()) {
+            throw new \RuntimeException('Keine Google-Anmeldung. Bitte OAuth verbinden.');
+        }
+
+        return new GoogleIndexingClient();
+    }
+
+    /** @return array{configured:bool,authMode:string,clientEmail:?string,sitesAccessible:int,apiOk:bool,apiMessage:string,hasOAuthConfig:bool,redirectUri:?string} */
+    public static function connectionStatus(): array
+    {
+        $mode = GoogleApiAuth::authMode();
+        if ($mode === 'none') {
             return [
                 'configured' => false,
+                'authMode' => 'none',
                 'clientEmail' => null,
                 'sitesAccessible' => 0,
                 'apiOk' => false,
-                'apiMessage' => 'Service-Account-JSON fehlt.',
+                'apiMessage' => GoogleApiAuth::hasOAuthConfig()
+                    ? 'OAuth konfiguriert – bitte mit Google verbinden.'
+                    : 'Bitte OAuth Client ID/Secret eintragen und verbinden.',
+                'hasOAuthConfig' => GoogleApiAuth::hasOAuthConfig(),
+                'redirectUri' => GoogleApiAuth::hasOAuthConfig() ? GoogleApiAuth::redirectUri() : null,
             ];
         }
         try {
-            $client = GoogleIndexingClient::loadFromFile(GoogleIndexingClient::credentialsPath());
+            $client = self::client();
 
             return [
                 'configured' => true,
+                'authMode' => $mode,
                 'clientEmail' => $client->clientEmail(),
                 'sitesAccessible' => count($client->listSiteEntries()),
                 'apiOk' => true,
-                'apiMessage' => 'Verbindung zur Google Search Console API erfolgreich.',
+                'apiMessage' => $mode === 'oauth'
+                    ? 'OAuth-Verbindung zur Google Search Console API erfolgreich.'
+                    : 'Service-Account-Verbindung erfolgreich.',
+                'hasOAuthConfig' => GoogleApiAuth::hasOAuthConfig(),
+                'redirectUri' => GoogleApiAuth::redirectUri(),
             ];
         } catch (\Throwable $e) {
             return [
                 'configured' => true,
-                'clientEmail' => null,
+                'authMode' => $mode,
+                'clientEmail' => GoogleApiAuth::accountLabel(),
                 'sitesAccessible' => 0,
                 'apiOk' => false,
                 'apiMessage' => $e->getMessage(),
+                'hasOAuthConfig' => GoogleApiAuth::hasOAuthConfig(),
+                'redirectUri' => GoogleApiAuth::redirectUri(),
             ];
         }
     }
 
+    public static function saveOAuthConfig(string $clientId, string $clientSecret): void
+    {
+        GoogleApiAuth::saveOAuthConfig($clientId, $clientSecret);
+    }
+
     public static function saveCredentialsFromJson(string $json): string
     {
-        $json = trim($json);
-        if ($json === '') {
-            throw new \InvalidArgumentException('JSON-Inhalt fehlt.');
-        }
-        $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        if (!is_array($data)) {
-            throw new \InvalidArgumentException('Ungültiges JSON.');
-        }
-        $client = new GoogleIndexingClient($data);
-        $dir = dirname(GoogleIndexingClient::credentialsPath());
-        if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
-            throw new \RuntimeException('Datenverzeichnis konnte nicht angelegt werden.');
-        }
-        file_put_contents(
-            GoogleIndexingClient::credentialsPath(),
-            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
-        );
-        chmod(GoogleIndexingClient::credentialsPath(), 0600);
+        return GoogleApiAuth::saveServiceAccountJson($json);
+    }
 
-        return $client->clientEmail();
+    public static function disconnectOAuth(): void
+    {
+        GoogleApiAuth::disconnectOAuth();
     }
 
     /** @return array{verified:bool,message:string,property:string} */
@@ -71,19 +86,17 @@ final class IndexingService
             throw new \InvalidArgumentException('Domain nicht gefunden.');
         }
         if (!GoogleIndexingClient::hasCredentials()) {
-            throw new \RuntimeException('Service-Account-JSON fehlt. Bitte zuerst API-Zugang einrichten.');
+            throw new \RuntimeException('Keine Google-Anmeldung. Bitte zuerst OAuth verbinden.');
         }
-        $client = GoogleIndexingClient::loadFromFile(GoogleIndexingClient::credentialsPath());
+        $client = self::client();
         $property = (string) $domain['gscProperty'];
         if (!$client->hasSiteAccess($property)) {
             IndexingDatabase::setDomainVerified($domainId, false);
+            $hint = GoogleApiAuth::authMode() === 'oauth'
+                ? 'Das verbundene Google-Konto hat keinen Zugriff auf „' . $property . '“ in der Search Console.'
+                : 'Fügen Sie ' . $client->clientEmail() . ' in der Search Console als Inhaber für „' . $property . '“ hinzu.';
 
-            return [
-                'verified' => false,
-                'message' => 'Property nicht verknüpft. Fügen Sie ' . $client->clientEmail()
-                    . ' in der Google Search Console als Nutzer (Eigentümer) für „' . $property . '“ hinzu.',
-                'property' => $property,
-            ];
+            return ['verified' => false, 'message' => $hint, 'property' => $property];
         }
         IndexingDatabase::setDomainVerified($domainId, true);
 
@@ -167,7 +180,7 @@ final class IndexingService
     public static function runDailyBatch(?string $date = null): array
     {
         if (!GoogleIndexingClient::hasCredentials()) {
-            throw new \RuntimeException('Service-Account-JSON fehlt.');
+            throw new \RuntimeException('Keine Google-Anmeldung. OAuth zuerst verbinden.');
         }
         $date = $date ?? gmdate('Y-m-d');
         $settings = IndexingDatabase::getSettings();
@@ -180,7 +193,7 @@ final class IndexingService
             ];
         }
 
-        $client = GoogleIndexingClient::loadFromFile(GoogleIndexingClient::credentialsPath());
+        $client = self::client();
         $submitted = 0;
         $failed = 0;
         $log = [];

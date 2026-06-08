@@ -65,6 +65,42 @@ try {
         ]);
     }
 
+    if ($action === 'oauth_config' && $method === 'POST') {
+        require_csrf();
+        $raw = file_get_contents('php://input');
+        $body = json_decode($raw ?: 'null', true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($body)) {
+            json_out(['ok' => false, 'error' => 'Ungültige Nutzdaten.'], 422);
+        }
+        try {
+            IndexingService::saveOAuthConfig(
+                (string) ($body['clientId'] ?? ''),
+                (string) ($body['clientSecret'] ?? '')
+            );
+        } catch (\Throwable $e) {
+            json_out(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+        json_out([
+            'ok' => true,
+            'redirectUri' => GoogleApiAuth::redirectUri(),
+            'connection' => IndexingService::connectionStatus(),
+        ]);
+    }
+
+    if ($action === 'oauth_url' && $method === 'GET') {
+        try {
+            json_out(['ok' => true, 'url' => GoogleApiAuth::authorizationUrl(), 'redirectUri' => GoogleApiAuth::redirectUri()]);
+        } catch (\Throwable $e) {
+            json_out(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+    }
+
+    if ($action === 'oauth_disconnect' && $method === 'POST') {
+        require_csrf();
+        IndexingService::disconnectOAuth();
+        json_out(['ok' => true, 'connection' => IndexingService::connectionStatus()]);
+    }
+
     if ($action === 'credentials' && $method === 'POST') {
         require_csrf();
         $raw = file_get_contents('php://input');
