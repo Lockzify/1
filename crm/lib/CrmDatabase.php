@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/GoogleIndexingClient.php';
+
 final class CrmDatabase
 {
     /** @var list<string> */
@@ -116,7 +118,75 @@ final class CrmDatabase
         );
         $pdo->exec('CREATE INDEX IF NOT EXISTS idx_daily_tracking_date ON daily_tracking(track_date)');
 
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS indexing_settings (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                daily_limit INTEGER NOT NULL DEFAULT 10,
+                updated_at TEXT NOT NULL
+            )'
+        );
+
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS indexing_domains (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                label TEXT NOT NULL,
+                domain TEXT NOT NULL,
+                gsc_property TEXT NOT NULL,
+                customer_id TEXT NULL,
+                active INTEGER NOT NULL DEFAULT 1,
+                property_verified INTEGER NOT NULL DEFAULT 0,
+                property_verified_at TEXT NULL,
+                sitemap_filename TEXT NULL,
+                sitemap_uploaded_at TEXT NULL,
+                url_count INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )'
+        );
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_indexing_domains_active ON indexing_domains(active)');
+
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS indexing_urls (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                domain_id INTEGER NOT NULL,
+                url TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT \'pending\' CHECK (status IN (\'pending\', \'submitted\', \'failed\')),
+                submitted_at TEXT NULL,
+                error_message TEXT NULL,
+                created_at TEXT NOT NULL,
+                UNIQUE(domain_id, url),
+                FOREIGN KEY (domain_id) REFERENCES indexing_domains(id) ON DELETE CASCADE
+            )'
+        );
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_indexing_urls_status ON indexing_urls(domain_id, status)');
+
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS indexing_daily_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                log_date TEXT NOT NULL,
+                url_id INTEGER NOT NULL,
+                domain_id INTEGER NOT NULL,
+                url TEXT NOT NULL,
+                success INTEGER NOT NULL DEFAULT 0,
+                response_message TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )'
+        );
+        $pdo->exec('CREATE INDEX IF NOT EXISTS idx_indexing_daily_log_date ON indexing_daily_log(log_date)');
+
         self::ensureLeadVariablesSeed($pdo);
+        self::ensureIndexingSettingsSeed($pdo);
+    }
+
+    private static function ensureIndexingSettingsSeed(\PDO $pdo): void
+    {
+        $stmt = $pdo->query('SELECT id FROM indexing_settings WHERE id = 1');
+        if ($stmt && $stmt->fetchColumn()) {
+            return;
+        }
+        $now = gmdate('c');
+        $ins = $pdo->prepare('INSERT INTO indexing_settings (id, daily_limit, updated_at) VALUES (1, 10, :u)');
+        $ins->execute([':u' => $now]);
     }
 
     public static function normalizeTrackDate(string $date): string
@@ -1055,5 +1125,416 @@ final class CrmDatabase
         if ($stmt->rowCount() === 0) {
             throw new \InvalidArgumentException('Liste nicht gefunden.');
         }
+    }
+
+    /**
+     * @return array{dailyLimit:int,updatedAt:string}
+     */
+    public static function getIndexingSettings(): array
+    {
+        self::ensureIndexingSettingsSeed(self::pdo());
+        $stmt = self::pdo()->query('SELECT daily_limit, updated_at FROM indexing_settings WHERE id = 1');
+        $row = $stmt ? $stmt->fetch(\PDO::FETCH_ASSOC) : false;
+        if (!$row) {
+            return ['dailyLimit' => 10, 'updatedAt' => gmdate('c')];
+        }
+
+        return [
+            'dailyLimit' => max(1, min(200, (int) $row['daily_limit'])),
+            'updatedAt' => (string) $row['updated_at'],
+        ];
+    }
+
+    public static function saveIndexingDailyLimit(int $limit): array
+    {
+        $limit = max(1, min(200, $limit));
+        $now = gmdate('c');
+        $stmt = self::pdo()->prepare(
+            'UPDATE indexing_settings SET daily_limit = :l, updated_at = :u WHERE id = 1'
+        );
+        $stmt->execute([':l' => $limit, ':u' => $now]);
+
+        return self::getIndexingSettings();
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public static function listIndexingDomains(): array
+    {
+        $stmt = self::pdo()->query(
+            'SELECT d.*,
+                    SUM(CASE WHEN u.status = \'pending\' THEN 1 ELSE 0 END) AS pending_count,
+                    SUM(CASE WHEN u.status = \'submitted\' THEN 1 ELSE 0 END) AS submitted_count,
+                    SUM(CASE WHEN u.status = \'failed\' THEN 1 ELSE 0 END) AS failed_count
+             FROM indexing_domains d
+             LEFT JOIN indexing_urls u ON u.domain_id = d.id
+             GROUP BY d.id
+             ORDER BY d.label COLLATE NOCASE ASC'
+        );
+        $rows = $stmt ? $stmt->fetchAll(\PDO::FETCH_ASSOC) : [];
+        $out = [];
+        foreach ($rows ?: [] as $row) {
+            $out[] = self::mapIndexingDomainRow($row);
+        }
+
+        return $out;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public static function getIndexingDomain(int $id): ?array
+    {
+        $stmt = self::pdo()->prepare(
+            'SELECT d.*,
+                    SUM(CASE WHEN u.status = \'pending\' THEN 1 ELSE 0 END) AS pending_count,
+                    SUM(CASE WHEN u.status = \'submitted\' THEN 1 ELSE 0 END) AS submitted_count,
+                    SUM(CASE WHEN u.status = \'failed\' THEN 1 ELSE 0 END) AS failed_count
+             FROM indexing_domains d
+             LEFT JOIN indexing_urls u ON u.domain_id = d.id
+             WHERE d.id = :id
+             GROUP BY d.id'
+        );
+        $stmt->execute([':id' => $id]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $row ? self::mapIndexingDomainRow($row) : null;
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
+    private static function mapIndexingDomainRow(array $row): array
+    {
+        return [
+            'id' => (int) $row['id'],
+            'label' => (string) $row['label'],
+            'domain' => (string) $row['domain'],
+            'gscProperty' => (string) $row['gsc_property'],
+            'customerId' => $row['customer_id'] !== null ? (string) $row['customer_id'] : null,
+            'active' => (int) $row['active'] === 1,
+            'propertyVerified' => (int) $row['property_verified'] === 1,
+            'propertyVerifiedAt' => $row['property_verified_at'] !== null ? (string) $row['property_verified_at'] : null,
+            'sitemapFilename' => $row['sitemap_filename'] !== null ? (string) $row['sitemap_filename'] : null,
+            'sitemapUploadedAt' => $row['sitemap_uploaded_at'] !== null ? (string) $row['sitemap_uploaded_at'] : null,
+            'urlCount' => (int) ($row['url_count'] ?? 0),
+            'pendingCount' => (int) ($row['pending_count'] ?? 0),
+            'submittedCount' => (int) ($row['submitted_count'] ?? 0),
+            'failedCount' => (int) ($row['failed_count'] ?? 0),
+            'createdAt' => (string) $row['created_at'],
+            'updatedAt' => (string) $row['updated_at'],
+        ];
+    }
+
+    /**
+     * @param array{label:string,domain:string,gscProperty?:string,customerId?:?string,active?:bool} $data
+     */
+    public static function saveIndexingDomain(?int $id, array $data): array
+    {
+        $label = trim((string) ($data['label'] ?? ''));
+        $domain = trim((string) ($data['domain'] ?? ''));
+        if ($label === '' || $domain === '') {
+            throw new \InvalidArgumentException('Bezeichnung und Domain sind Pflichtfelder.');
+        }
+        $gscProperty = trim((string) ($data['gscProperty'] ?? ''));
+        if ($gscProperty === '') {
+            $gscProperty = GoogleIndexingClient::domainToDefaultProperty($domain);
+        } else {
+            $gscProperty = GoogleIndexingClient::normalizePropertyUrl($gscProperty);
+        }
+        $customerId = isset($data['customerId']) && $data['customerId'] !== ''
+            ? (string) $data['customerId']
+            : null;
+        $active = !isset($data['active']) || (bool) $data['active'];
+        $now = gmdate('c');
+        $pdo = self::pdo();
+
+        if ($id !== null && $id > 0) {
+            $existing = self::getIndexingDomain($id);
+            if ($existing === null) {
+                throw new \InvalidArgumentException('Domain nicht gefunden.');
+            }
+            $propertyChanged = $existing['gscProperty'] !== $gscProperty;
+            $stmt = $pdo->prepare(
+                'UPDATE indexing_domains
+                 SET label = :label, domain = :domain, gsc_property = :prop, customer_id = :cid,
+                     active = :active, property_verified = :verified, property_verified_at = :vat,
+                     updated_at = :u
+                 WHERE id = :id'
+            );
+            $stmt->execute([
+                ':label' => $label,
+                ':domain' => $domain,
+                ':prop' => $gscProperty,
+                ':cid' => $customerId,
+                ':active' => $active ? 1 : 0,
+                ':verified' => $propertyChanged ? 0 : ((int) $existing['propertyVerified']),
+                ':vat' => $propertyChanged ? null : $existing['propertyVerifiedAt'],
+                ':u' => $now,
+                ':id' => $id,
+            ]);
+
+            return self::getIndexingDomain($id) ?? throw new \RuntimeException('Domain konnte nicht geladen werden.');
+        }
+
+        $stmt = $pdo->prepare(
+            'INSERT INTO indexing_domains
+             (label, domain, gsc_property, customer_id, active, property_verified, created_at, updated_at)
+             VALUES (:label, :domain, :prop, :cid, :active, 0, :c, :u)'
+        );
+        $stmt->execute([
+            ':label' => $label,
+            ':domain' => $domain,
+            ':prop' => $gscProperty,
+            ':cid' => $customerId,
+            ':active' => $active ? 1 : 0,
+            ':c' => $now,
+            ':u' => $now,
+        ]);
+        $newId = (int) $pdo->lastInsertId();
+
+        return self::getIndexingDomain($newId) ?? throw new \RuntimeException('Domain konnte nicht geladen werden.');
+    }
+
+    public static function deleteIndexingDomain(int $id): void
+    {
+        $stmt = self::pdo()->prepare('DELETE FROM indexing_domains WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        if ($stmt->rowCount() === 0) {
+            throw new \InvalidArgumentException('Domain nicht gefunden.');
+        }
+    }
+
+    public static function setIndexingDomainVerified(int $id, bool $verified): void
+    {
+        $now = gmdate('c');
+        $stmt = self::pdo()->prepare(
+            'UPDATE indexing_domains
+             SET property_verified = :v, property_verified_at = :at, updated_at = :u
+             WHERE id = :id'
+        );
+        $stmt->execute([
+            ':v' => $verified ? 1 : 0,
+            ':at' => $verified ? $now : null,
+            ':u' => $now,
+            ':id' => $id,
+        ]);
+    }
+
+    public static function updateIndexingDomainSitemapMeta(int $id, string $filename, int $urlCount): void
+    {
+        $now = gmdate('c');
+        $stmt = self::pdo()->prepare(
+            'UPDATE indexing_domains
+             SET sitemap_filename = :f, sitemap_uploaded_at = :s, url_count = :c, updated_at = :u
+             WHERE id = :id'
+        );
+        $stmt->execute([
+            ':f' => $filename,
+            ':s' => $now,
+            ':c' => $urlCount,
+            ':u' => $now,
+            ':id' => $id,
+        ]);
+    }
+
+    /**
+     * @param list<string> $urls
+     * @return array{added:int,skipped:int,total:int}
+     */
+    public static function importIndexingUrls(int $domainId, array $urls): array
+    {
+        $pdo = self::pdo();
+        $added = 0;
+        $skipped = 0;
+        $now = gmdate('c');
+        $check = $pdo->prepare('SELECT status FROM indexing_urls WHERE domain_id = :d AND url = :u');
+        $insert = $pdo->prepare(
+            'INSERT INTO indexing_urls (domain_id, url, status, created_at)
+             VALUES (:d, :u, \'pending\', :c)'
+        );
+
+        foreach ($urls as $url) {
+            $url = trim($url);
+            if ($url === '') {
+                continue;
+            }
+            $check->execute([':d' => $domainId, ':u' => $url]);
+            $existing = $check->fetchColumn();
+            if ($existing !== false) {
+                $skipped++;
+                continue;
+            }
+            $insert->execute([':d' => $domainId, ':u' => $url, ':c' => $now]);
+            $added++;
+        }
+
+        return ['added' => $added, 'skipped' => $skipped, 'total' => count($urls)];
+    }
+
+    /**
+     * Gleichmäßig über aktive Domains: je eine URL pro Runde.
+     *
+     * @return list<array{id:int,domainId:int,url:string}>
+     */
+    public static function pickPendingIndexingUrls(int $limit): array
+    {
+        if ($limit <= 0) {
+            return [];
+        }
+        $domains = self::pdo()->query(
+            'SELECT id FROM indexing_domains WHERE active = 1 AND property_verified = 1 ORDER BY id ASC'
+        )->fetchAll(\PDO::FETCH_COLUMN);
+        if (!$domains) {
+            return [];
+        }
+        $domainIds = array_map('intval', $domains);
+        $picked = [];
+        $offset = 0;
+
+        while (count($picked) < $limit) {
+            $progress = false;
+            foreach ($domainIds as $domainId) {
+                if (count($picked) >= $limit) {
+                    break 2;
+                }
+                $stmt = self::pdo()->prepare(
+                    'SELECT id, domain_id, url FROM indexing_urls
+                     WHERE domain_id = :d AND status = \'pending\'
+                     ORDER BY id ASC LIMIT 1 OFFSET ' . (int) $offset
+                );
+                $stmt->bindValue(':d', $domainId, \PDO::PARAM_INT);
+                $stmt->execute();
+                $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+                if ($row) {
+                    $picked[] = [
+                        'id' => (int) $row['id'],
+                        'domainId' => (int) $row['domain_id'],
+                        'url' => (string) $row['url'],
+                    ];
+                    $progress = true;
+                }
+            }
+            if (!$progress) {
+                break;
+            }
+            $offset++;
+        }
+
+        return $picked;
+    }
+
+    public static function markIndexingUrlSubmitted(int $urlId): void
+    {
+        $now = gmdate('c');
+        $stmt = self::pdo()->prepare(
+            'UPDATE indexing_urls SET status = \'submitted\', submitted_at = :s, error_message = NULL WHERE id = :id'
+        );
+        $stmt->execute([':s' => $now, ':id' => $urlId]);
+    }
+
+    public static function markIndexingUrlFailed(int $urlId, string $message): void
+    {
+        $stmt = self::pdo()->prepare(
+            'UPDATE indexing_urls SET status = \'failed\', error_message = :m WHERE id = :id'
+        );
+        $stmt->execute([':m' => $message, ':id' => $urlId]);
+    }
+
+    public static function countIndexingSubmissionsForDate(string $date): int
+    {
+        $stmt = self::pdo()->prepare(
+            'SELECT COUNT(*) FROM indexing_daily_log WHERE log_date = :d AND success = 1'
+        );
+        $stmt->execute([':d' => $date]);
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    public static function logIndexingSubmission(
+        string $date,
+        int $urlId,
+        int $domainId,
+        string $url,
+        bool $success,
+        string $message
+    ): void {
+        $stmt = self::pdo()->prepare(
+            'INSERT INTO indexing_daily_log (log_date, url_id, domain_id, url, success, response_message, created_at)
+             VALUES (:d, :uid, :did, :url, :s, :m, :c)'
+        );
+        $stmt->execute([
+            ':d' => $date,
+            ':uid' => $urlId,
+            ':did' => $domainId,
+            ':url' => $url,
+            ':s' => $success ? 1 : 0,
+            ':m' => $message,
+            ':c' => gmdate('c'),
+        ]);
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public static function listIndexingDailyLog(string $date, int $limit = 50): array
+    {
+        $stmt = self::pdo()->prepare(
+            'SELECT l.*, d.label AS domain_label
+             FROM indexing_daily_log l
+             JOIN indexing_domains d ON d.id = l.domain_id
+             WHERE l.log_date = :d
+             ORDER BY l.id DESC
+             LIMIT :lim'
+        );
+        $stmt->bindValue(':d', $date);
+        $stmt->bindValue(':lim', max(1, min(200, $limit)), \PDO::PARAM_INT);
+        $stmt->execute();
+        $out = [];
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $out[] = [
+                'id' => (int) $row['id'],
+                'date' => (string) $row['log_date'],
+                'url' => (string) $row['url'],
+                'domainLabel' => (string) $row['domain_label'],
+                'success' => (int) $row['success'] === 1,
+                'message' => (string) $row['response_message'],
+                'createdAt' => (string) $row['created_at'],
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public static function listIndexingUrlsForDomain(int $domainId, ?string $status = null, int $limit = 100): array
+    {
+        $sql = 'SELECT id, url, status, submitted_at, error_message, created_at
+                FROM indexing_urls WHERE domain_id = :d';
+        $params = [':d' => $domainId];
+        if ($status !== null && in_array($status, ['pending', 'submitted', 'failed'], true)) {
+            $sql .= ' AND status = :s';
+            $params[':s'] = $status;
+        }
+        $sql .= ' ORDER BY id ASC LIMIT ' . max(1, min(500, $limit));
+        $stmt = self::pdo()->prepare($sql);
+        $stmt->execute($params);
+        $out = [];
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $out[] = [
+                'id' => (int) $row['id'],
+                'url' => (string) $row['url'],
+                'status' => (string) $row['status'],
+                'submittedAt' => $row['submitted_at'] !== null ? (string) $row['submitted_at'] : null,
+                'errorMessage' => $row['error_message'] !== null ? (string) $row['error_message'] : null,
+                'createdAt' => (string) $row['created_at'],
+            ];
+        }
+
+        return $out;
     }
 }

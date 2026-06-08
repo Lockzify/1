@@ -8,3 +8,4 @@ crm/data/*.sqlite
 crm/data/*.sqlite-journal
 crm/data/*.sqlite-wal
 crm/data/*.sqlite-shm
+crm/data/google-service-account.json
