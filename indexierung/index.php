@@ -34,7 +34,7 @@ function idx_asset(string $path): string
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="<?php echo htmlspecialchars(idx_asset('favicon.png'), ENT_QUOTES, 'UTF-8'); ?>" rel="icon" type="image/png" />
+  <link href="<?php echo htmlspecialchars(idx_asset('favicon.webp'), ENT_QUOTES, 'UTF-8'); ?>" rel="icon" type="image/webp" />
   <link href="<?php echo htmlspecialchars(idx_asset('indexierung.css'), ENT_QUOTES, 'UTF-8'); ?>" rel="stylesheet" type="text/css" />
 </head>
 
