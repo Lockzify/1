@@ -412,6 +412,40 @@
     max-width: min(100%, 420px);
     margin-inline: auto;
   }
+
+  .adlions-trust-stats {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .adlions-trust-stats li {
+    text-align: center;
+  }
+
+  .adlions-ueber-uns-title {
+    font-size: clamp(1.45rem, 5.5vw, 2rem) !important;
+  }
+
+  .adlions-ueber-uns-body p {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .adlions-bereich-case-kpis li {
+    font-size: 0.95rem;
+  }
+
+  .adlions-kontakt-card {
+    padding: 1.25rem 1rem;
+  }
 }
 
 #kontakt .header-centered .h2.white {

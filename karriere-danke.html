@@ -246,13 +246,16 @@
   <header class="topbar">
     <div class="topbar-inner">
       <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
-      <nav class="nav-main" aria-label="Hauptnavigation">
+      <button type="button" class="topbar-menu-btn" aria-expanded="false" aria-controls="topbar-nav"
+        aria-label="Menü öffnen"><span class="topbar-menu-icon" aria-hidden="true"></span></button>
+      <nav class="nav-main" id="topbar-nav" aria-label="Hauptnavigation">
         <a href="/index.html">Home</a>
         <a href="/index.html#ueber-uns">Über uns</a>
         <a href="/index.html#neukundengewinnung">Kernbereiche</a>
         <a href="/karriere.html" aria-current="page">Karriere</a>
-        <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
+        <a class="topbar-cta topbar-cta--mobile" href="/index.html#kontakt">Jetzt anfragen</a>
       </nav>
+      <a class="topbar-cta" href="/index.html#kontakt">Jetzt anfragen</a>
     </div>
   </header>
 
@@ -284,6 +287,7 @@
       <a href="/karriere.html">Karriere</a>
     </nav>
   </footer>
+  <script src="/js/adlions-topbar.js" defer></script>
 </body>
 
 <script>
