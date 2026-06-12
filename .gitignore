@@ -15,3 +15,4 @@ indexierung/data/*.sqlite-shm
 indexierung/data/google-service-account.json
 indexierung/data/oauth-config.json
 indexierung/data/oauth-token.json
+indexierung/config.oauth.php

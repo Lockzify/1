@@ -14,6 +14,8 @@
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap"
     rel="stylesheet" />
   <link href="/css/scalecom-2-0.shared.5897f168b.css" rel="stylesheet" type="text/css" />
+  <link href="/css/adlions-modern.css" rel="stylesheet" type="text/css" />
+  <link href="/css/adlions-topbar.css" rel="stylesheet" type="text/css" />
   <style>
     :root {
       --adlions-font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -77,37 +79,6 @@
         max-width: 100%;
       }
 
-      .adlions-zwei-bereiche-lead .cf-growth-h2-heading-56px {
-        max-width: 100%;
-        font-size: clamp(1.55rem, 6.5vw + 0.25rem, 2.75rem);
-        overflow-wrap: break-word;
-      }
-
-      .adlions-zwei-bereiche-lead .cf-growth-para-text-20px {
-        font-size: clamp(1rem, 3.8vw + 0.2rem, 1.45rem);
-        overflow-wrap: break-word;
-      }
-
-      .adlions-zwei-bereiche-lead.cf-growth-wrapper.large {
-        padding-left: clamp(1rem, 4vw, 1.65rem);
-        padding-right: clamp(1rem, 4vw, 1.65rem);
-      }
-
-      .adlions-zwei-bereiche-card {
-        padding-left: clamp(1.15rem, 4vw, 2rem);
-        padding-right: clamp(1.15rem, 4vw, 2rem);
-      }
-
-      .adlions-zwei-bereiche-card .cf-growth-heading-32px {
-        font-size: clamp(1.25rem, 5.2vw + 0.2rem, 2rem);
-        overflow-wrap: break-word;
-      }
-
-      .adlions-zwei-bereiche-card .cf-growth-para-text-18px {
-        font-size: clamp(0.95rem, 3.5vw + 0.15rem, 1.15rem);
-        overflow-wrap: break-word;
-      }
-
       .adlions-bereich-detail-title {
         font-size: clamp(1.35rem, 5vw + 0.2rem, 2rem);
         overflow-wrap: break-word;
@@ -133,17 +104,12 @@
         overflow-wrap: break-word;
       }
 
-      #fallstudien.adlions-case-studies-handwerk .waves---heading-2-no-margins,
-      #fallstudien.adlions-case-studies-handwerk .text-gradient-2.reels.weissanders.vielkleiner.sdfdsad.black {
-        font-size: clamp(1.2rem, 4.5vw + 0.35rem, 2rem) !important;
-        overflow-wrap: break-word;
-      }
     }
 
     /* Smooth-Scroll per JS (kurz gedeckelt) – siehe adlionsInitFasterNavScroll */
 
     #kontakt {
-      scroll-margin-top: 100px;
+      scroll-margin-top: 72px;
     }
 
     a.button.w-button {
@@ -194,425 +160,22 @@
       filter: brightness(0) invert(1);
     }
 
-    /* Navigation: höhere Leiste, größeres Logo, einheitliche Schrift für alle Haupt-Links */
-    .navigation .navbar {
-      height: 72px;
-      min-height: 72px;
-    }
-
-    .navigation .brand {
-      height: 72px;
-      min-height: 72px;
-    }
-
-    .navigation .brand img {
-      width: auto;
-      height: 48px;
-      max-height: 52px;
-      object-fit: contain;
-    }
-
-    .navigation .nav-menu .navlink.w-nav-link,
-    .navigation .nav-menu .dropdown-toggle.sichtbar {
-      height: 72px;
-      min-height: 72px;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      font-family: var(--adlions-font) !important;
-      font-size: 17px !important;
-      font-weight: 400;
-      font-style: normal;
-      line-height: 1.15;
-      letter-spacing: 0.03em;
-    }
-
-    .navigation .navbar.w-nav > .content-wrapper.w-container {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .navigation .navbar.w-nav .w-nav-brand {
-      float: none;
-      flex: 0 0 auto;
-    }
-
-    .navigation .navbar.w-nav .w-nav-menu {
-      float: none;
-      flex: 1 1 auto;
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0;
-    }
-
-    .navigation .navbar.w-nav .w-nav-button {
-      float: none;
-      flex: 0 0 auto;
-    }
-
-    .navigation .nav-menu .dropdown-toggle.sichtbar.w-dropdown-toggle {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      vertical-align: top;
-    }
-
-    .navigation .nav-menu .dropdown-toggle.sichtbar.w-dropdown-toggle > div:last-child {
-      white-space: nowrap;
-    }
-
-    .navigation .dropdown-arrow,
-    .navigation .w-icon-dropdown-toggle {
-      display: none !important;
-      visibility: hidden !important;
-      width: 0 !important;
-      height: 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      overflow: hidden !important;
-    }
-
-    .navigation .w-dropdown-toggle::before,
-    .navigation .w-dropdown-toggle::after,
-    .navigation .dropdown-toggle.sichtbar::before,
-    .navigation .dropdown-toggle.sichtbar::after {
-      content: none !important;
-      display: none !important;
-    }
-
-    .navigation .dropdown-link.w-dropdown-link {
-      font-family: var(--adlions-font) !important;
-      font-size: 17px !important;
-      font-weight: 400;
-      font-style: normal;
-      line-height: 1.15;
-      letter-spacing: 0.03em;
-    }
-
-    .navigation .nav-menu .button.top-border.weiss.men {
-      font-family: var(--adlions-font) !important;
-      font-size: 17px !important;
-      font-weight: 400 !important;
-      font-style: normal;
-      line-height: 1.15;
-      letter-spacing: 0.03em;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      align-self: center;
-    }
-
-    @media screen and (max-width: 991px) {
-      .navigation .navbar.w-nav > .content-wrapper.w-container {
-        display: block;
-      }
-
-      .navigation .navbar.w-nav .w-nav-brand {
-        float: left;
-      }
-
-      .navigation .navbar.w-nav .w-nav-menu {
-        float: right;
-        display: none;
-        flex: none;
-        justify-content: flex-start;
-      }
-
-      .navigation .navbar.w-nav .w-nav-button {
-        float: right;
-        display: block;
-      }
-
-      .navigation .nav-menu .navlink.w-nav-link,
-      .navigation .nav-menu .dropdown-toggle.sichtbar {
-        height: auto;
-        min-height: 0;
-        padding-top: 14px;
-        padding-bottom: 14px;
-      }
-
-      .navigation .nav-menu .dropdown-toggle.sichtbar.w-dropdown-toggle {
-        display: flex;
-        width: 100%;
-        box-sizing: border-box;
-      }
-    }
-
-    .adlions-zwei-bereiche-section {
-      scroll-margin-top: 100px;
-      position: relative;
-      z-index: 2;
-      isolation: isolate;
-      opacity: 1 !important;
-      visibility: visible !important;
-      display: block !important;
-      background: radial-gradient(ellipse 130% 85% at 50% -10%, #7dd3fc 0%, transparent 42%),
-        radial-gradient(ellipse 100% 70% at 100% 20%, rgba(14, 165, 233, 0.22) 0%, transparent 48%),
-        radial-gradient(ellipse 80% 60% at 0% 80%, rgba(56, 189, 248, 0.14) 0%, transparent 45%),
-        linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 38%, #dbeafe 100%);
-      padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 6vw, 5rem);
-      box-sizing: border-box;
-    }
-
-    .adlions-zwei-bereiche-inner {
-      max-width: 1320px;
-      margin-left: auto;
-      margin-right: auto;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(2rem, 4vw, 3.5rem);
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    #zwei-bereiche .adlions-zwei-bereiche-lead,
-    #zwei-bereiche .adlions-zwei-bereiche-grid,
-    #zwei-bereiche .adlions-zwei-bereiche-card {
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    .adlions-zwei-bereiche-lead .cf-growth-h2-heading-56px em {
-      font-style: italic;
-      font-weight: 700;
-      color: inherit;
-      -webkit-text-fill-color: currentColor;
-    }
-
-    .adlions-zwei-bereiche-lead.cf-growth-wrapper.large {
-      max-width: none;
-      width: 100%;
-      text-align: center;
-      align-items: center;
-      padding: clamp(2.75rem, 5vw, 4.25rem) clamp(1.75rem, 4vw, 4rem);
-      box-sizing: border-box;
-      color: #fff;
-      background-color: #082f49;
-      background-image: linear-gradient(135deg, #041e2e 0%, #062a40 22%, #0c4a6e 48%, #0a3d5c 72%, #051a28 100%);
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: 0 28px 64px rgba(2, 12, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .adlions-zwei-bereiche-lead.cf-growth-wrapper.large::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 75% 65% at 88% 12%, rgba(56, 189, 248, 0.12) 0%, transparent 52%),
-        radial-gradient(ellipse 55% 45% at 8% 88%, rgba(14, 165, 233, 0.07) 0%, transparent 48%);
-      pointer-events: none;
-    }
-
-    .adlions-zwei-bereiche-lead.cf-growth-wrapper.large > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .adlions-zwei-bereiche-lead .cf-growth-h2-heading-56px {
-      max-width: 22ch;
-      margin: 0 auto;
-      font-size: clamp(36px, 5.2vw, 58px);
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-
-    .adlions-zwei-bereiche-lead .cf-growth-para-text-20px {
-      max-width: 52rem;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: clamp(1.35rem, 2.8vw, 2.25rem);
-      font-size: clamp(20px, 2.5vw, 26px);
-      line-height: 1.6;
-      color: #e2e8f0;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-      opacity: 1;
-    }
-
-    .adlions-zwei-bereiche-lead strong {
-      color: #fff;
-      font-weight: 700;
-    }
-
-    .adlions-zwei-bereiche-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(2.25rem, 4vw, 3.75rem);
-      align-items: stretch;
-    }
-
-    @media screen and (max-width: 767px) {
-      .adlions-zwei-bereiche-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .adlions-zwei-bereiche-card {
-      --card-glow: rgba(56, 189, 248, 0.14);
-      position: relative;
-      background-color: #fff;
-      background-image: linear-gradient(165deg, #ffffff 0%, #fafbfc 45%, #f4f6f9 100%);
-      border-radius: 22px;
-      padding: clamp(2.75rem, 5vw, 4.25rem) clamp(2.25rem, 4vw, 3.75rem);
-      box-shadow: 0 8px 40px rgba(13, 14, 16, 0.06), 0 2px 8px rgba(13, 14, 16, 0.04),
-        0 1px 0 rgba(255, 255, 255, 0.95) inset;
-      box-sizing: border-box;
-      max-width: none;
-      border: 1px solid rgba(13, 14, 16, 0.07);
-      overflow: hidden;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
-    }
-
-    .adlions-zwei-bereiche-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: var(--card-accent, linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc));
-      border-radius: 22px 22px 0 0;
-    }
-
-    .adlions-zwei-bereiche-card::after {
-      content: "";
-      position: absolute;
-      width: 320px;
-      height: 320px;
-      right: -120px;
-      top: -100px;
-      background: radial-gradient(circle, var(--card-glow) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .adlions-zwei-bereiche-card--neu {
-      --card-accent: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 45%, #7dd3fc 100%);
-      --card-glow: rgba(14, 165, 233, 0.16);
-    }
-
-    .adlions-zwei-bereiche-card--team {
-      --card-accent: linear-gradient(90deg, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
-      --card-glow: rgba(2, 132, 199, 0.14);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .adlions-zwei-bereiche-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 20px 50px rgba(13, 14, 16, 0.1), 0 8px 24px rgba(13, 14, 16, 0.06),
-          0 1px 0 rgba(255, 255, 255, 0.95) inset;
-      }
-    }
-
-    .adlions-zwei-bereiche-card-top {
-      display: flex;
-      align-items: flex-start;
-      gap: clamp(1rem, 2vw, 1.35rem);
-      margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
-    }
-
-    .adlions-zwei-bereiche-card-index {
-      flex-shrink: 0;
-      width: clamp(2.75rem, 5vw, 3.25rem);
-      height: clamp(2.75rem, 5vw, 3.25rem);
-      display: flex;
+    .adlions-kontakt-icon {
+      display: flex !important;
       align-items: center;
       justify-content: center;
-      font-family: var(--adlions-font);
-      font-weight: 800;
-      font-size: clamp(15px, 1.5vw, 17px);
-      letter-spacing: -0.02em;
-      color: #fff;
-      background: var(--card-accent, #0ea5e9);
-      border-radius: 14px;
-      box-shadow: 0 6px 20px var(--card-glow);
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #ffffff !important;
+      border: 1px solid rgba(14, 165, 233, 0.22);
+      filter: none !important;
     }
 
-    .adlions-zwei-bereiche-card .cf-growth-heading-32px {
-      margin: 0;
-      flex: 1;
-      min-width: 0;
-      font-size: clamp(28px, 3.4vw, 42px);
-      line-height: 1.12;
-      letter-spacing: -0.025em;
-      color: #0d0e10;
-    }
-
-    .adlions-zwei-bereiche-card .cf-growth-para-text-18px {
-      margin-bottom: 0;
-      position: relative;
-      z-index: 1;
-      font-size: clamp(18px, 2.15vw, 22px);
-      line-height: 1.65;
-      color: #3f424a;
-    }
-
-    .adlions-zwei-bereiche-link {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .adlions-zwei-bereiche-link:hover {
-      color: #0369a1;
-    }
-
-    .adlions-zwei-bereiche-card--team .adlions-zwei-bereiche-link:hover {
-      color: #0284c7;
-    }
-
-    .adlions-zwei-bereiche-mehr {
-      position: relative;
-      z-index: 1;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      margin-top: clamp(1.75rem, 3vw, 2.25rem);
-      padding: 0.65rem 0;
-      font-family: var(--adlions-font);
-      font-weight: 700;
-      font-size: clamp(16px, 1.75vw, 19px);
-      letter-spacing: -0.015em;
-      color: #0ea5e9;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: color 0.2s ease, gap 0.25s ease, border-color 0.2s ease;
-    }
-
-    .adlions-zwei-bereiche-mehr::after {
-      content: "";
-      width: 0.4em;
-      height: 0.4em;
-      border-right: 2.5px solid currentColor;
-      border-bottom: 2.5px solid currentColor;
-      transform: rotate(-45deg) translateY(1px);
-      transition: transform 0.25s ease;
-    }
-
-    .adlions-zwei-bereiche-card--team .adlions-zwei-bereiche-mehr {
-      color: #0284c7;
-    }
-
-    .adlions-zwei-bereiche-mehr:hover {
-      color: #0369a1;
-      gap: 0.75rem;
-      border-bottom-color: rgba(14, 165, 233, 0.4);
-    }
-
-    .adlions-zwei-bereiche-mehr:hover::after {
-      transform: rotate(-45deg) translate(3px, -1px);
-    }
-
-    .adlions-zwei-bereiche-card--team .adlions-zwei-bereiche-mehr:hover {
-      color: #0369a1;
-      border-bottom-color: rgba(2, 132, 199, 0.4);
+    .adlions-kontakt-icon svg {
+      width: 22px;
+      height: 22px;
+      filter: none !important;
     }
 
     button.w-button {
@@ -620,29 +183,14 @@
       cursor: default;
     }
 
-    .section-blue._2 .adlions-tidycal-embed-col {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .section-blue._2 .adlions-tidycal-embed-col .tidycal-embed {
-      border-radius: 12px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.98);
-    }
-
-    #fallstudien.adlions-case-studies-handwerk {
-      scroll-margin-top: 100px;
-    }
-
     #neukundengewinnung,
     #mitarbeitergewinnung {
-      scroll-margin-top: 100px;
+      scroll-margin-top: 72px;
     }
 
     /* Kernbereiche: Detail-Sektionen mit Mini-Case-Studies */
     .adlions-bereich-detail {
-      scroll-margin-top: 100px;
+      scroll-margin-top: 72px;
       position: relative;
       padding: clamp(3.25rem, 7vw, 5.5rem) clamp(1rem, 4vw, 2rem);
       box-sizing: border-box;
@@ -681,13 +229,13 @@
       max-width: 1220px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: minmax(0, 1.02fr) minmax(280px, 520px);
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 600px);
       gap: clamp(2rem, 5vw, 3.5rem);
       align-items: start;
     }
 
     .adlions-bereich-detail--team .adlions-bereich-detail-inner {
-      grid-template-columns: minmax(280px, 520px) minmax(0, 1.02fr);
+      grid-template-columns: minmax(300px, 600px) minmax(0, 1fr);
     }
 
     .adlions-bereich-detail--team .adlions-bereich-detail-copy {
@@ -714,7 +262,7 @@
 
       .adlions-bereich-detail--team .adlions-bereich-detail-cases {
         justify-self: stretch;
-        max-width: min(100%, 520px);
+        max-width: min(100%, 640px);
         margin-inline: auto;
       }
     }
@@ -787,7 +335,7 @@
     .adlions-bereich-detail-cases {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: clamp(0.85rem, 2vw, 1.25rem);
+      gap: clamp(1rem, 2.5vw, 1.5rem);
       width: 100%;
       min-width: 0;
       justify-self: end;
@@ -803,7 +351,7 @@
     @media screen and (max-width: 560px) {
       .adlions-bereich-detail-cases {
         grid-template-columns: 1fr;
-        max-width: 320px;
+        max-width: min(100%, 400px);
         margin-inline: auto;
       }
     }
@@ -811,89 +359,73 @@
     .adlions-bereich-case-card {
       position: relative;
       min-width: 0;
-      border-radius: 16px;
-      overflow: visible;
-      border: 2px solid #1e3a8a;
-      box-shadow:
-        0 0 0 1px rgba(30, 58, 138, 0.9),
-        0 0 18px rgba(37, 99, 235, 0.48),
-        0 0 34px rgba(59, 130, 246, 0.26),
-        0 10px 28px rgba(15, 23, 42, 0.22);
-      background: #0f172a;
       width: 100%;
-      aspect-ratio: 3 / 4;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(14, 165, 233, 0.14);
+      background: #fff;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.07), 0 2px 8px rgba(14, 165, 233, 0.06);
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
       text-align: left;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
     }
 
     @media (hover: hover) and (pointer: fine) {
       .adlions-bereich-case-card:hover {
-        transform: translateY(-3px);
-        border-color: #2563eb;
-        box-shadow:
-          0 0 0 1px rgba(37, 99, 235, 1),
-          0 0 24px rgba(59, 130, 246, 0.62),
-          0 0 48px rgba(96, 165, 250, 0.35),
-          0 14px 36px rgba(15, 23, 42, 0.28);
+        transform: translateY(-4px);
+        box-shadow: 0 22px 52px rgba(15, 23, 42, 0.11), 0 8px 24px rgba(14, 165, 233, 0.1);
       }
+
     }
 
-    .adlions-bereich-case-card-media {
-      position: absolute;
-      inset: 0;
-      border-radius: 14px;
+    .adlions-bereich-case-card__visual {
+      position: relative;
+      height: clamp(168px, 34vw, 248px);
       overflow: hidden;
-      background-color: #13181f;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
+      flex-shrink: 0;
+      background: #cbd5e1;
     }
 
-    .adlions-bereich-case-card-media::after {
+    .adlions-bereich-case-card__visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+      display: block;
+      filter: saturate(0.92) contrast(0.96) brightness(0.98);
+    }
+
+    .adlions-bereich-case-card__visual::after {
       content: "";
       position: absolute;
       inset: 0;
-      z-index: 1;
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.55) 45%, rgba(12, 74, 110, 0.92) 100%);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0) 72%, rgba(255, 255, 255, 0.72) 100%);
+      pointer-events: none;
     }
 
-    .adlions-bereich-case-card--alcheikh .adlions-bereich-case-card-media {
-      background-image: url("/hintergrund/alcheikh.webp");
-    }
-
-    .adlions-bereich-case-card--solarpower .adlions-bereich-case-card-media {
-      background-image: url("/hintergrund/solarpower2.webp");
-    }
-
-    .adlions-bereich-case-card--tiger .adlions-bereich-case-card-media {
-      background-image: url("/hintergrund/tiger.webp");
-      background-size: cover;
-      background-position: center center;
-    }
-
-    .adlions-bereich-case-card--goth .adlions-bereich-case-card-media {
-      background-image: url("/hintergrund/goth2.webp");
-    }
-
-    .adlions-bereich-case-card-body {
+    .adlions-bereich-case-card__body {
       position: relative;
       z-index: 1;
-      padding: 0.85rem 0.9rem 1rem;
+      margin-top: -1.65rem;
+      padding: 0 1.15rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
     }
 
     .adlions-bereich-case-brand {
-      margin: 0 0 0.55rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      align-self: flex-start;
       max-width: 100%;
-      padding: 0.32rem 0.5rem;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.97);
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+      padding: 0.5rem 0.75rem;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid rgba(14, 165, 233, 0.12);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
       box-sizing: border-box;
     }
 
@@ -901,13 +433,15 @@
       display: block;
       width: auto;
       height: auto;
-      max-height: 38px;
-      max-width: min(152px, 100%);
+      max-height: 36px;
+      max-width: min(148px, 100%);
       object-fit: contain;
     }
 
-    .adlions-bereich-case-card--goth .adlions-bereich-case-brand img {
-      filter: brightness(0);
+    .adlions-bereich-case-card--solarpower .adlions-bereich-case-brand,
+    .adlions-bereich-case-card--goth .adlions-bereich-case-brand {
+      background: #0f172a;
+      border-color: rgba(0, 0, 0, 0.2);
     }
 
     .adlions-bereich-case-kpis {
@@ -916,188 +450,41 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.55rem;
     }
 
     .adlions-bereich-case-kpis li {
       font-family: var(--adlions-font);
-      font-size: clamp(13px, 1.5vw, 15px);
-      line-height: 1.4;
-      color: rgba(248, 250, 252, 0.94);
+      font-size: clamp(13px, 1.5vw, 14px);
+      line-height: 1.45;
+      color: #475569;
+      padding: 0.85rem 0.95rem;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #f8fafc, #f0f9ff);
+      border: 1px solid rgba(14, 165, 233, 0.1);
+    }
+
+    .adlions-bereich-detail--team .adlions-bereich-case-kpis li {
+      background: linear-gradient(145deg, #f8fafc, #ecfeff);
+      border-color: rgba(8, 145, 178, 0.12);
     }
 
     .adlions-bereich-case-kpis li strong {
-      color: #7dd3fc;
-      font-weight: 700;
-      font-size: clamp(14px, 1.65vw, 16px);
-      margin-right: 0.4rem;
+      display: block;
+      color: #0369a1;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 3.4vw, 1.85rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 0.25rem;
     }
 
-    /* Case Studies (Waves-Grid): Referenz-Hintergründe + KPI-Kacheln */
-    #fallstudien.adlions-case-studies-handwerk .waves-wide-tile-features-7.adlions-case-wide,
-    #fallstudien.adlions-case-studies-handwerk .waves-vertical-tile-features-7.adlions-case-tile {
-      background-color: #13181f;
-      background-repeat: no-repeat;
-      background-attachment: scroll;
-      border-left: 4px solid #51aad2;
-      box-shadow: 2px 2px 40px rgba(0, 0, 0, 0.18);
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .adlions-case-bg-tiger {
-      background-image: linear-gradient(125deg, rgba(19, 24, 31, 0.88) 0%, rgba(19, 24, 31, 0.72) 50%, rgba(19, 24, 31, 0.55) 100%),
-        url("/hintergrund/tiger.webp");
-      background-size: 100% 100%, 118% auto;
-      background-position: 0 0, center center;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .adlions-case-bg-alcheikh {
-      background-image: linear-gradient(125deg, rgba(19, 24, 31, 0.88) 0%, rgba(19, 24, 31, 0.72) 50%, rgba(19, 24, 31, 0.55) 100%),
-        url("/hintergrund/alcheikh.webp");
-      background-size: 100% 100%, cover;
-      background-position: 0 0, center center;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .adlions-case-bg-goth {
-      background-image: linear-gradient(125deg, rgba(19, 24, 31, 0.88) 0%, rgba(19, 24, 31, 0.72) 50%, rgba(19, 24, 31, 0.55) 100%),
-        url("/hintergrund/goth2.webp");
-      background-size: 100% 100%, cover;
-      background-position: 0 0, center center;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .adlions-case-bg-solarpower {
-      background-image: linear-gradient(125deg, rgba(19, 24, 31, 0.88) 0%, rgba(19, 24, 31, 0.72) 50%, rgba(19, 24, 31, 0.55) 100%),
-        url("/hintergrund/solarpower2.webp");
-      background-size: 100% 100%, cover;
-      background-position: 0 0, center center;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .adlions-case-bg-solarhase {
-      background-image: linear-gradient(125deg, rgba(19, 24, 31, 0.88) 0%, rgba(19, 24, 31, 0.72) 50%, rgba(19, 24, 31, 0.55) 100%),
-        url("/hintergrund/solarhase2.webp");
-      background-size: 100% 100%, cover;
-      background-position: 0 0, center center;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves---grid-features-7 {
-      align-items: stretch;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-wide-tile-features-7.adlions-case-wide,
-    #fallstudien.adlions-case-studies-handwerk .waves-vertical-tile-features-7.adlions-case-tile {
-      min-height: clamp(340px, 36vw, 440px);
-      height: 100%;
-      box-sizing: border-box;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-wide-tile-features-7.adlions-case-wide {
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-wide-tile-features-7.adlions-case-wide .div-block-69 {
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-wide-tile-features-7.adlions-case-wide .waves-inside-wide-feature-7 {
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      max-width: min(100%, 520px);
-      text-align: left;
-      align-items: flex-start;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-wide-tile-features-7.adlions-case-wide .div-block-68 {
-      margin-top: auto;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-vertical-tile-features-7.adlions-case-tile {
-      padding-top: 36px;
-      padding-bottom: 36px;
-      justify-content: space-between;
-      text-align: left;
-      align-items: stretch;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-inside-tile-vertical-features-7 {
-      align-items: flex-start !important;
-      text-align: left;
-      width: 100%;
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves-inside-tile-vertical-features-7 .div-block-68 {
-      margin-top: auto;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves---heading-3-no-margins,
-    #fallstudien.adlions-case-studies-handwerk .waves---heading-3-no-margins.wintergame {
-      color: #fff !important;
-      text-align: left;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .waves---heading-2-no-margins {
-      font-size: clamp(1.35rem, 4.5vw, 2.25rem) !important;
-      line-height: 1.12 !important;
-      overflow-wrap: break-word;
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .subtitle-medium-3.kleiner.black {
-      color: rgba(255, 255, 255, 0.96) !important;
-      font-size: clamp(15px, 1.75vw, 18px) !important;
-      line-height: 1.35 !important;
-      font-weight: 400 !important;
-      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55), 0 2px 24px rgba(0, 0, 0, 0.35);
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .text-gradient-2.reels.weissanders.vielkleiner.sdfdsad.black {
-      color: #fff !important;
-      -webkit-text-fill-color: #fff !important;
-      background: none !important;
-      background-clip: unset !important;
-      font-size: clamp(1.85rem, 4vw, 2.65rem) !important;
-      line-height: 1.08 !important;
-      font-weight: 800 !important;
-      font-style: normal !important;
-      letter-spacing: -0.02em;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55), 0 4px 28px rgba(0, 0, 0, 0.35),
-        0 0 40px rgba(89, 195, 234, 0.2);
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .div-block-68 {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      margin-top: 0.35rem;
-      padding: clamp(0.85rem, 2vw, 1.15rem) clamp(0.65rem, 1.5vw, 1rem);
-      background: rgba(8, 12, 18, 0.62);
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      gap: clamp(0.75rem, 2vw, 1.25rem);
-    }
-
-    #fallstudien.adlions-case-studies-handwerk .circle-div.links {
-      position: relative;
-      z-index: 1;
-      max-width: min(260px, 100%);
-      max-height: none;
+    .adlions-bereich-detail--team .adlions-bereich-case-kpis li strong {
+      color: #0e7490;
     }
 
     .adlions-saeulen-ads-section {
-      scroll-margin-top: 96px;
+      scroll-margin-top: 72px;
       position: relative;
       background: radial-gradient(120% 80% at 50% 0%, #1a1a1f 0%, #0d0d10 45%, #0a0a0c 100%);
       color: #f4f4f5;
@@ -1220,7 +607,7 @@
     }
 
     #agentur-vergleich.adlions-showdown-section {
-      scroll-margin-top: 96px;
+      scroll-margin-top: 72px;
     }
 
     .adlions-showdown-section {
@@ -1496,7 +883,7 @@
     }
 
     #ueber-uns.adlions-ueber-uns-section {
-      scroll-margin-top: 100px;
+      scroll-margin-top: 72px;
     }
 
     .adlions-ueber-uns-section {
@@ -1547,6 +934,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center 18%;
       display: block;
     }
 
@@ -2115,9 +1503,9 @@
   }],
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Landbsberger Straße 259",
-    "postalCode": "12623",
-    "addressLocality": "Berlin",
+    "streetAddress": "Handwerkerstraße 5a",
+    "postalCode": "15366",
+    "addressLocality": "Hoppegarten",
     "addressCountry": "DE"
   }
 }
@@ -2125,45 +1513,19 @@
 </head>
 
 <body>
-  <div data-w-id="2521de45-3755-ccfe-7da9-b8502f81e866" class="navigation">
-    <div class="navbar-top navbartopweg">
-      <div class="content-wrapper w-container">
-        <div class="navbar-top-box">
-          <div class="top-box-2 versrtes"><img
-              src="/assets/icons/mini-phone.webp"
-              width="12" alt="" class="mini-icon" /><a href="tel:+4915737288297" class="mini-link">015737288297</a>
-          </div>
-          <div class="top-box-2 asdf"><img
-              src="/assets/icons/mini-email.webp"
-              width="12" alt="" class="mini-icon" /><a href="mailto:info@adlions.de" class="mini-link">info@adlions.de</a></div>
-        </div>
-      </div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="/index.html" aria-label="ADLIONS – zur Startseite"><img src="/output-onlinepngtools-7.webp"
+          alt="ADLIONS Logo" /></a>
+      <nav class="nav-main" aria-label="Hauptnavigation">
+        <a href="/index.html" aria-current="page">Home</a>
+        <a href="/index.html#ueber-uns">Über uns</a>
+        <a href="/index.html#neukundengewinnung">Kernbereiche</a>
+        <a href="/karriere.html">Karriere</a>
+        <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
+      </nav>
     </div>
-    <div data-collapse="medium" data-animation="default" data-duration="400" data-easing="ease" data-easing2="ease"
-      role="banner" class="navbar w-nav">
-      <div class="content-wrapper w-container"><a href="#" class="brand w-nav-brand w--current"
-          aria-label="ADLIONS – zur Startseite"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
-        <nav role="navigation" class="nav-menu w-nav-menu">
-          <div data-delay="0" data-hover="true" class="dropdown-menu w-dropdown">
-            <div class="dropdown-toggle sichtbar w-dropdown-toggle" aria-haspopup="true">
-              <div>Bereiche</div>
-            </div>
-            <nav class="dropdown-list w-dropdown-list"><a href="#neukundengewinnung"
-                class="dropdown-link w-dropdown-link">Neukundengewinnung</a><a href="#mitarbeitergewinnung"
-                class="dropdown-link w-dropdown-link">Mitarbeitergewinnung</a></nav>
-          </div><a href="#zwei-bereiche"
-            class="navlink w-nav-link">Kernbereiche</a><a href="#fallstudien"
-            class="navlink w-nav-link">Fallstudien</a><a href="#ueber-uns"
-            class="navlink w-nav-link">Über uns</a><a href="/karriere.html"
-            class="navlink w-nav-link">Karriere</a><a href="#kontakt"
-            class="button top-border weiss men w-button">Jetzt anfragen</a>
-        </nav>
-        <div class="menu-button w-nav-button">
-          <div class="burger-icon w-icon-nav-menu"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </header>
   <div class="cf-hero-section-2 bg">
     <div class="cf-1140px-wrapper cf-hero-text-wrap">
       <div data-w-id="0ce0700b-2b31-f57d-0d7d-235797565214" class="home-left-wrapper">
@@ -2238,44 +1600,11 @@
         </div>
     </div>
   </div>
-  <section id="zwei-bereiche" class="adlions-zwei-bereiche-section" aria-labelledby="adlions-zwei-bereiche-title">
-    <div class="adlions-zwei-bereiche-inner">
-      <div class="cf-growth-wrapper large adlions-zwei-bereiche-lead">
-        <h2 id="adlions-zwei-bereiche-title" class="cf-growth-h2-heading-56px">Unsere zwei <em>Kernbereiche</em></h2>
-        <p class="cf-growth-para-text-20px">Wir fokussieren uns konsequent auf das, was Handwerksbetriebe am stärksten
-          voranbringt: <strong>Neukundengewinnung</strong> und <strong>Mitarbeitergewinnung</strong> – messbar, regional
-          und mit klaren Prozessen.</p>
-      </div>
-      <div class="adlions-zwei-bereiche-grid">
-        <article class="adlions-zwei-bereiche-card adlions-zwei-bereiche-card--neu">
-          <div class="adlions-zwei-bereiche-card-top">
-            <span class="adlions-zwei-bereiche-card-index" aria-hidden="true">01</span>
-            <h3 class="cf-growth-heading-32px"><a class="adlions-zwei-bereiche-link" href="#neukundengewinnung">Neukundengewinnung</a>
-            </h3>
-          </div>
-          <p class="cf-growth-para-text-18px">Wir sorgen für planbare Anfragen von passenden Kunden in deiner Region.
-            Mit lokal ausgesteuerten Kampagnen, klaren Angeboten und conversionstarken Landingpages erhöhen wir
-            Sichtbarkeit und Auslastung deines Betriebs.</p>
-          <a class="adlions-zwei-bereiche-mehr" href="#neukundengewinnung">Mehr zu Neukundengewinnung</a>
-        </article>
-        <article class="adlions-zwei-bereiche-card adlions-zwei-bereiche-card--team">
-          <div class="adlions-zwei-bereiche-card-top">
-            <span class="adlions-zwei-bereiche-card-index" aria-hidden="true">02</span>
-            <h3 class="cf-growth-heading-32px"><a class="adlions-zwei-bereiche-link" href="#mitarbeitergewinnung">Mitarbeitergewinnung</a>
-            </h3>
-          </div>
-          <p class="cf-growth-para-text-18px">Wir unterstützen dich dabei, qualifizierte Fachkräfte und Azubis zu
-            gewinnen. Durch gezielte Recruiting-Kampagnen, authentische Arbeitgeberkommunikation und einen einfachen
-            Bewerbungsprozess erhältst du mehr passende Bewerbungen.</p>
-          <a class="adlions-zwei-bereiche-mehr" href="#mitarbeitergewinnung">Mehr zu Mitarbeitergewinnung</a>
-        </article>
-      </div>
-    </div>
-  </section>
   <section id="neukundengewinnung" class="adlions-bereich-detail adlions-bereich-detail--neu"
     aria-labelledby="adlions-bereich-neu-title">
     <div class="adlions-bereich-detail-inner">
-      <div class="adlions-bereich-detail-copy">
+      <div class="adlions-bereich-detail-copy adlions-reveal">
+        <span class="adlions-eyebrow">Neukundengewinnung</span>
         <h2 id="adlions-bereich-neu-title" class="adlions-bereich-detail-title">Neukundengewinnung, die <em>messbar</em>
           trägt</h2>
         <p class="adlions-bereich-detail-lead">Wir bringen dir Anfragen von Menschen, die wirklich zu deinem Betrieb
@@ -2287,10 +1616,13 @@
           <li>Transparentes Tracking: du siehst, was sich lohnt – ohne Marketing-Bingo</li>
         </ul>
       </div>
-      <div class="adlions-bereich-detail-cases">
+      <div class="adlions-bereich-detail-cases adlions-reveal-stagger">
         <article class="adlions-bereich-case-card adlions-bereich-case-card--alcheikh">
-          <div class="adlions-bereich-case-card-media" aria-hidden="true"></div>
-          <div class="adlions-bereich-case-card-body">
+          <div class="adlions-bereich-case-card__visual">
+            <img src="/assets/cases/case-team-trockenbau.png" alt="Trockenbau-Team vor der Baustelle"
+              loading="lazy" decoding="async" />
+          </div>
+          <div class="adlions-bereich-case-card__body">
             <div class="adlions-bereich-case-brand">
               <img src="/vorschau/alcheikh.webp" alt="Al Cheikh Bau" width="152" height="38" loading="lazy"
                 decoding="async" />
@@ -2303,8 +1635,11 @@
           </div>
         </article>
         <article class="adlions-bereich-case-card adlions-bereich-case-card--solarpower">
-          <div class="adlions-bereich-case-card-media" aria-hidden="true"></div>
-          <div class="adlions-bereich-case-card-body">
+          <div class="adlions-bereich-case-card__visual">
+            <img src="/assets/cases/case-team-photovoltaik.png" alt="Solarmonteure auf dem Dach"
+              loading="lazy" decoding="async" />
+          </div>
+          <div class="adlions-bereich-case-card__body">
             <div class="adlions-bereich-case-brand">
               <img src="/vorschau/solarpower.webp" alt="Solarpower Berlin" width="152" height="38" loading="lazy"
                 decoding="async" />
@@ -2321,7 +1656,8 @@
   <section id="mitarbeitergewinnung" class="adlions-bereich-detail adlions-bereich-detail--team"
     aria-labelledby="adlions-bereich-team-title">
     <div class="adlions-bereich-detail-inner">
-      <div class="adlions-bereich-detail-copy">
+      <div class="adlions-bereich-detail-copy adlions-reveal">
+        <span class="adlions-eyebrow">Mitarbeitergewinnung</span>
         <h2 id="adlions-bereich-team-title" class="adlions-bereich-detail-title">Mitarbeitergewinnung mit <em>Klarheit</em>
           und Reichweite</h2>
         <p class="adlions-bereich-detail-lead">Fachkräfte und Azubis finden dich dort, wo sie suchen – mit
@@ -2332,10 +1668,13 @@
           <li>Weniger Streuverluste: mehr qualifizierte Bewerbungen pro Euro</li>
         </ul>
       </div>
-      <div class="adlions-bereich-detail-cases">
+      <div class="adlions-bereich-detail-cases adlions-reveal-stagger">
         <article class="adlions-bereich-case-card adlions-bereich-case-card--tiger">
-          <div class="adlions-bereich-case-card-media" aria-hidden="true"></div>
-          <div class="adlions-bereich-case-card-body">
+          <div class="adlions-bereich-case-card__visual">
+            <img src="/assets/cases/case-team-trockeneis.png" alt="Trockeneis-Team vor Ort"
+              loading="lazy" decoding="async" />
+          </div>
+          <div class="adlions-bereich-case-card__body">
             <div class="adlions-bereich-case-brand">
               <img src="/vorschau/Logo-a1d4fd7f-Photoroom.webp" alt="Tiger-Service" width="152" height="38"
                 loading="lazy" decoding="async" />
@@ -2347,8 +1686,11 @@
           </div>
         </article>
         <article class="adlions-bereich-case-card adlions-bereich-case-card--goth">
-          <div class="adlions-bereich-case-card-media" aria-hidden="true"></div>
-          <div class="adlions-bereich-case-card-body">
+          <div class="adlions-bereich-case-card__visual">
+            <img src="/assets/cases/case-team-elektro.png" alt="Elektriker-Team auf der Baustelle"
+              loading="lazy" decoding="async" />
+          </div>
+          <div class="adlions-bereich-case-card__body">
             <div class="adlions-bereich-case-brand">
               <img src="/vorschau/goth.png" alt="Goth Elektroanlagen" width="152" height="38" loading="lazy"
                 decoding="async" />
@@ -2364,40 +1706,45 @@
   </section>
   <section id="drei-saeulen-ads" class="adlions-saeulen-ads-section" aria-labelledby="adlions-saeulen-ads-title">
     <div class="adlions-saeulen-ads-inner">
-      <header class="adlions-saeulen-ads-header">
-        <h2 id="adlions-saeulen-ads-title" class="adlions-saeulen-ads-title">Unsere <span
-            class="adlions-saeulen-ads-accent">3 Säulen</span> für den Erfolg deiner Ads</h2>
+      <header class="adlions-saeulen-ads-header adlions-reveal">
+        <span class="adlions-eyebrow adlions-eyebrow--light">Unser Ansatz</span>
+        <h2 id="adlions-saeulen-ads-title" class="adlions-saeulen-ads-title">Drei Säulen für <span
+            class="adlions-saeulen-ads-accent">Ads, die liefern</span></h2>
       </header>
-      <div class="adlions-saeulen-ads-pillars">
+      <div class="adlions-saeulen-ads-pillars adlions-reveal-stagger">
         <article class="adlions-saeulen-ads-pillar">
           <span class="adlions-saeulen-ads-step" aria-hidden="true">01</span>
-          <h3>Tiefes Zielgruppenverständnis als Basis</h3>
-          <p>Zu Beginn der Zusammenarbeit nehmen wir uns ausgiebig Zeit, um die Zielgruppe bis ins kleinste Detail zu
-            verstehen und den Wettbewerb sowie die aktuellen Marketingaktivitäten zu analysieren. Auf Basis dessen wird
-            eine individuelle Strategie erstellt.</p>
+          <h3>Zielgruppe verstehen, bevor Budget fließt</h3>
+          <p>Bevor wir schalten, analysieren wir deine Zielgruppe, den Wettbewerb und dein bestehendes Marketing. So
+            wissen wir, wen du erreichen willst – und welche Botschaft bei genau diesen Menschen ankommt. Daraus
+            entsteht eine Strategie, die zu deinem Betrieb und deiner Region passt.</p>
         </article>
         <article class="adlions-saeulen-ads-pillar">
           <span class="adlions-saeulen-ads-step" aria-hidden="true">02</span>
-          <h3>exzellente creatives</h3>
-          <p>Unsere Erkenntnisse fließen in die Erstellung von hochwertigen Ads, die nicht nur gut aussehen, sondern deine
-            Zielgruppe auch genau ins Herz treffen und dich klar vom Wettbewerb abheben.</p>
+          <h3>Creatives, die Vertrauen schaffen</h3>
+          <p>Aus der Analyse entstehen Anzeigen und Inhalte, die zu deinem Handwerksbetrieb passen: klar, glaubwürdig
+            und visuell stark. Kein Austausch-Look – sondern Material, das im Feed auffällt und dich vom Wettbewerb
+            abhebt.</p>
         </article>
         <article class="adlions-saeulen-ads-pillar">
           <span class="adlions-saeulen-ads-step" aria-hidden="true">03</span>
-          <h3>analytisches Media buying am puls der zeit</h3>
-          <p>Die Creatives werden in einem klaren System und einer klaren Testing-Struktur geschaltet. Die Ergebnisse
-            werden zurück ins Creative-Team gespiegelt, welches stetig neue Assets produziert.</p>
+          <h3>Schalten, testen, skalieren</h3>
+          <p>Deine Ads laufen in einer festen Test-Struktur: Wir messen, was funktioniert, und optimieren gezielt nach.
+            Ergebnisse fließen direkt zurück ins Creative-Team – damit laufend neue Varianten entstehen und das Budget
+            dort einsetzt, wo es sich auszahlt.</p>
         </article>
       </div>
     </div>
   </section>
   <section id="agentur-vergleich" class="adlions-showdown-section" aria-labelledby="adlions-showdown-title">
     <div class="adlions-showdown-inner">
-      <header class="adlions-showdown-header">
+      <header class="adlions-showdown-header adlions-reveal">
+        <span class="adlions-eyebrow">Warum ADLIONS</span>
         <h2 id="adlions-showdown-title" class="adlions-showdown-title">Agentur im Vergleich: <span
             class="adlions-showdown-accent">unser Showdown</span></h2>
       </header>
-      <div class="adlions-showdown-grid">
+      <div class="adlions-showdown-grid adlions-reveal">
+        <div class="adlions-showdown-vs" aria-hidden="true">VS</div>
         <div class="adlions-showdown-col adlions-showdown-col--others">
           <header class="adlions-showdown-col-head">
             <h3 class="adlions-showdown-col-label">Andere Agenturen</h3>
@@ -2449,12 +1796,18 @@
   </section>
   <section id="ueber-uns" class="adlions-ueber-uns-section" aria-labelledby="adlions-ueber-uns-title">
     <div class="adlions-ueber-uns-inner">
-      <figure class="adlions-ueber-uns-media">
-        <img src="/8d5b92af-8029-4c85-8cae-2d921e2cea1d-2-5.webp" alt="Teamfoto von ADLIONS" loading="lazy" />
+      <figure class="adlions-ueber-uns-media adlions-reveal">
+        <img src="/assets/leander-portrait-office.png" alt="Leander Jede – ADLIONS" width="640" height="800"
+          loading="lazy" decoding="async" />
       </figure>
-      <div class="adlions-ueber-uns-copy">
+      <div class="adlions-ueber-uns-copy adlions-reveal">
+        <span class="adlions-eyebrow">Das Team</span>
         <h2 id="adlions-ueber-uns-title" class="adlions-ueber-uns-title">Über <span
             class="adlions-ueber-uns-accent">uns</span></h2>
+        <ul class="adlions-trust-stats" aria-label="Kennzahlen">
+          <li><strong>50+</strong><span>Partnerbetriebe</span></li>
+          <li><strong>2</strong><span>Kernbereiche</span></li>
+        </ul>
         <div class="adlions-ueber-uns-body">
           <p><strong>ADLIONS</strong> bündelt langjährige Marketing-Erfahrung im Team – mit nachweisbaren Erfolgen in
             unterschiedlichsten Branchen: Bau, Handwerk, Immobilien, Versicherungen und mehr. Überall dort, wo digitale
@@ -2468,140 +1821,10 @@
       </div>
     </div>
   </section>
-  <div id="fallstudien" class="waves---section-medium adlions-case-studies-handwerk">
-    <div class="waves---main-container w-container">
-      <div class="waves---sides-heading-button">
-        <h2 class="waves---heading-2-no-margins">Case Studies</h2>
-      </div>
-      <div class="w-layout-grid waves---grid-features-7">
-        <div id="w-node-_0a2f68ad-6766-6fef-3c7d-2019d81314d7-0d02ea2e"
-          class="waves-wide-tile-features-7 adlions-case-wide adlions-case-bg-tiger">
-          <div class="div-block-69">
-            <div class="waves-inside-wide-feature-7">
-              <h1 class="waves---heading-3-no-margins">Tiger-Service</h1>
-              <div class="div-block-68">
-                <div>
-                  <div class="circle-div links">
-                    <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">33</h3>
-                    <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Bewerbungen innerhalb von 14 Tagen</p>
-                  </div>
-                </div>
-                <div>
-                  <div class="circle-div links">
-                    <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">1</h3>
-                    <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">erfolgreiche Einstellung nach 2 Wochen</p>
-                  </div>
-                </div>
-                <div>
-                  <div class="circle-div links">
-                    <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">3,23 €</h3>
-                    <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Kosten pro Bewerbung</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="div-block-70"></div>
-        </div>
-        <div class="waves-vertical-tile-features-7 adlions-case-tile adlions-case-bg-alcheikh">
-          <div class="waves-inside-tile-vertical-features-7">
-            <h1 class="waves---heading-3-no-margins">Alcheikhbau</h1>
-            <div class="div-block-68">
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">23</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Leads in 3 Wochen</p>
-                </div>
-              </div>
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">750 €</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Ad-Budget</p>
-                </div>
-              </div>
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">20k+ €</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Umsatz</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="div-block-71"></div>
-        </div>
-        <div class="waves-vertical-tile-features-7 adlions-case-tile adlions-case-bg-goth">
-          <div class="waves-inside-tile-vertical-features-7">
-            <h1 class="waves---heading-3-no-margins">Goth Elektroanlagen</h1>
-            <div class="div-block-68 _2er">
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">14</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Bewerbungen in 7 Tagen</p>
-                </div>
-              </div>
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">17,40 €</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Kosten pro Bewerbung</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="div-block-71"></div>
-        </div>
-        <div class="waves-vertical-tile-features-7 adlions-case-tile adlions-case-bg-solarpower">
-          <div class="waves-inside-tile-vertical-features-7">
-            <h1 class="waves---heading-3-no-margins">Solarpower Berlin</h1>
-            <div class="div-block-68 _2er">
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">4+</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">wöchentlich neue Anfragen über die Website</p>
-                </div>
-              </div>
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">150+</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Orte mit SEO-Sichtbarkeit</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="div-block-71"></div>
-        </div>
-        <div class="waves-vertical-tile-features-7 adlions-case-tile adlions-case-bg-solarhase">
-          <div class="waves-inside-tile-vertical-features-7">
-            <h1 class="waves---heading-3-no-margins">Solarhase</h1>
-            <div class="div-block-68">
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">20</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">qualifizierte Anfragen in 3 Wochen</p>
-                </div>
-              </div>
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">22,80 €</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">im Schnitt pro Anfrage</p>
-                </div>
-              </div>
-              <div>
-                <div class="circle-div links">
-                  <h3 class="text-gradient-2 reels weissanders vielkleiner sdfdsad black">456 €</h3>
-                  <p class="subtitle-medium-3 dsafasdf dsafds kleiner black">Gesamt-Ad-Spend</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="div-block-71"></div>
-        </div>
-      </div>
-    </div>
-  </div>
   <div id="kontakt" data-w-id="cb932053-f9a8-a06a-22f3-679c6ae88ae3" style="opacity:0" class="section-blue _2">
     <div class="content-wrapper mittig w-container">
       <div class="div-block-77">
-        <div id="w-node-_79c3bd33-ec19-a5df-1dd9-1a935a65ffd8-0d02ea2e" class="div-block-78">
+        <div id="w-node-_79c3bd33-ec19-a5df-1dd9-1a935a65ffd8-0d02ea2e" class="div-block-78 adlions-reveal">
           <div class="header-centered wenigerabenst _65 _100">
             <h2 data-w-id="cb932053-f9a8-a06a-22f3-679c6ae88ae8" style="opacity:0"
               class="h2 white abunten asdfsf nmidsf links">Du suchst einen <strong
@@ -2612,9 +1835,25 @@
               Umsetzung. <br /></p>
           </div>
         </div>
-        <div class="adlions-tidycal-embed-col">
-          <div class="tidycal-embed" data-path="adlions/erstgesprach-1r6pzz2"></div>
-          <script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
+        <div class="adlions-kontakt-card adlions-reveal" aria-label="Kontakt für Terminvereinbarung">
+          <p class="adlions-kontakt-card-title">Termin vereinbaren</p>
+          <p class="adlions-kontakt-card-lead">Schreib uns oder ruf an – wir melden uns zeitnah bei dir.</p>
+          <div class="adlions-kontakt-links">
+            <a href="tel:+4915737288297" class="adlions-kontakt-link">
+              <span class="adlions-kontakt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+              <span>
+                <span class="adlions-kontakt-link-label">Telefon</span>
+                <span class="adlions-kontakt-link-value">0157 3728 8297</span>
+              </span>
+            </a>
+            <a href="mailto:info@adlions.de" class="adlions-kontakt-link">
+              <span class="adlions-kontakt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></span>
+              <span>
+                <span class="adlions-kontakt-link-label">E-Mail</span>
+                <span class="adlions-kontakt-link-value">info@adlions.de</span>
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -2635,14 +1874,13 @@
                 width="12" alt="" class="mini-icon" /><a href="tel:+4915737288297" class="mini-link footerlink">015737288297</a></div>
             <div class="top-box-2 footerlink n"><img
                 src="/assets/icons/standort.webp"
-                width="10" alt="" class="mini-icon" /><a href="#" class="mini-link footerlink nohover">Landbsberger Straße 259, 12623 Berlin</a></div>
+                width="10" alt="" class="mini-icon" /><a href="#" class="mini-link footerlink nohover">Handwerkerstraße 5a, 15366 Hoppegarten</a></div>
           </div>
           <div class="footer-column-2">
             <div class="footer-menu-left">
               <div class="mini-title-black border">Menü</div><a href="#"
                 class="menu-link w--current">Home</a><a
-                href="#zwei-bereiche" class="menu-link">Kernbereiche</a><a href="#fallstudien"
-                class="menu-link">Fallstudien</a><a href="#ueber-uns" class="menu-link">Über uns</a><a
+                href="#neukundengewinnung" class="menu-link">Kernbereiche</a><a href="#ueber-uns" class="menu-link">Über uns</a><a
                 href="/karriere.html" class="menu-link">Karriere</a>
             </div>
             <div class="footer-menu-left">
@@ -2729,12 +1967,44 @@
       });
     }
 
-    function ensureZweiBereicheSectionVisible() {
-      var root = document.getElementById('zwei-bereiche');
-      if (!root) return;
-      root.style.setProperty('opacity', '1', 'important');
-      root.style.setProperty('visibility', 'visible', 'important');
-      root.style.setProperty('display', 'block', 'important');
+    function initScrollReveal() {
+      var nodes = document.querySelectorAll('.adlions-reveal, .adlions-reveal-stagger');
+      if (!nodes.length) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        nodes.forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+        return;
+      }
+
+      if (!('IntersectionObserver' in window)) {
+        nodes.forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+      );
+
+      nodes.forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top < vh * 0.92) {
+          el.classList.add('is-visible');
+        } else {
+          observer.observe(el);
+        }
+      });
     }
 
     var adlionsScrollAnimRaf = null;
@@ -2840,7 +2110,7 @@
       optimizeOffscreenMedia();
       initCreativeMarquee();
       disableWebflowInteractions();
-      ensureZweiBereicheSectionVisible();
+      initScrollReveal();
       adlionsInitFasterNavScroll();
     }
 
@@ -2853,10 +2123,10 @@
     window.addEventListener('load', function () {
       initCreativeMarquee();
       disableWebflowInteractions();
-      ensureZweiBereicheSectionVisible();
+      initScrollReveal();
       adlionsInitFasterNavScroll();
       requestAnimationFrame(function () {
-        ensureZweiBereicheSectionVisible();
+        initScrollReveal();
       });
     });
   </script>

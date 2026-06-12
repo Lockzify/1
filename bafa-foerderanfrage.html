@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
     rel="stylesheet" />
   <link href="/output-onlinepngtools-6.png" rel="icon" type="image/png" />
+  <link href="/css/adlions-topbar.css" rel="stylesheet" type="text/css" />
   <link rel="preconnect" href="https://connect.facebook.net" />
   <link rel="preconnect" href="https://www.facebook.com" />
   <!-- Facebook Pixel Code -->
@@ -65,72 +66,6 @@
       line-height: 1.55;
       color: var(--text);
       background: var(--bg);
-    }
-
-    .topbar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
-    }
-
-    .topbar-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .topbar a.logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-
-    .topbar img {
-      height: 42px;
-      width: auto;
-    }
-
-    .nav-main {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.15rem 0.35rem;
-      justify-content: flex-end;
-    }
-
-    .nav-main a {
-      color: #334155;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 0.45rem 0.65rem;
-      border-radius: 8px;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .nav-main a:hover {
-      background: #f1f5f9;
-      color: var(--accent);
-    }
-
-    .nav-main a.cta {
-      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-      color: #fff;
-      font-weight: 600;
-      margin-left: 0.25rem;
-    }
-
-    .nav-main a.cta:hover {
-      filter: brightness(1.05);
-      color: #fff;
     }
 
     .hero {
@@ -409,12 +344,6 @@
       opacity: 1;
     }
 
-    @media (max-width: 640px) {
-      .nav-main {
-        width: 100%;
-        justify-content: flex-start;
-      }
-    }
   </style>
 </head>
 
@@ -425,9 +354,8 @@
       <nav class="nav-main" aria-label="Hauptnavigation">
         <a href="/index.html">Home</a>
         <a href="/index.html#ueber-uns">Über uns</a>
-        <a href="/index.html#zwei-bereiche">Kernbereiche</a>
-        <a href="/index.html#fallstudien">Fallstudien</a>
-        <a href="/vertrieb-funnel.html">Karriere</a>
+        <a href="/index.html#neukundengewinnung">Kernbereiche</a>
+        <a href="/karriere.html">Karriere</a>
         <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
       </nav>
     </div>

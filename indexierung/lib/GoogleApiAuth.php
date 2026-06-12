@@ -24,6 +24,33 @@ final class GoogleApiAuth
         return self::dataDir() . '/oauth-config.json';
     }
 
+    public static function oauthDefaultsPath(): string
+    {
+        return dirname(__DIR__) . '/config.oauth.php';
+    }
+
+    /** Liest config.oauth.php und schreibt oauth-config.json, falls noch nicht vorhanden. */
+    public static function ensureOAuthConfigFromDefaults(): void
+    {
+        if (self::hasOAuthConfig()) {
+            return;
+        }
+        $path = self::oauthDefaultsPath();
+        if (!is_readable($path)) {
+            return;
+        }
+        $data = require $path;
+        if (!is_array($data)) {
+            return;
+        }
+        $clientId = trim((string) ($data['clientId'] ?? ''));
+        $clientSecret = trim((string) ($data['clientSecret'] ?? ''));
+        if ($clientId === '' || $clientSecret === '') {
+            return;
+        }
+        self::saveOAuthConfig($clientId, $clientSecret);
+    }
+
     public static function oauthTokenPath(): string
     {
         return self::dataDir() . '/oauth-token.json';
@@ -90,22 +117,34 @@ final class GoogleApiAuth
     /** @return array{clientId:string,clientSecret:string}|null */
     public static function loadOAuthConfig(): ?array
     {
-        if (!is_readable(self::oauthConfigPath())) {
+        if (is_readable(self::oauthConfigPath())) {
+            try {
+                $data = json_decode((string) file_get_contents(self::oauthConfigPath()), true, 512, JSON_THROW_ON_ERROR);
+            } catch (\Throwable $e) {
+                $data = null;
+            }
+            if (is_array($data)) {
+                $clientId = trim((string) ($data['clientId'] ?? ''));
+                $clientSecret = trim((string) ($data['clientSecret'] ?? ''));
+                if ($clientId !== '' && $clientSecret !== '') {
+                    return ['clientId' => $clientId, 'clientSecret' => $clientSecret];
+                }
+            }
+        }
+        if (!is_readable(self::oauthDefaultsPath())) {
             return null;
         }
-        try {
-            $data = json_decode((string) file_get_contents(self::oauthConfigPath()), true, 512, JSON_THROW_ON_ERROR);
-        } catch (\Throwable $e) {
-            return null;
-        }
+        $data = require self::oauthDefaultsPath();
         if (!is_array($data)) {
             return null;
         }
+        $clientId = trim((string) ($data['clientId'] ?? ''));
+        $clientSecret = trim((string) ($data['clientSecret'] ?? ''));
+        if ($clientId === '' || $clientSecret === '') {
+            return null;
+        }
 
-        return [
-            'clientId' => trim((string) ($data['clientId'] ?? '')),
-            'clientSecret' => trim((string) ($data['clientSecret'] ?? '')),
-        ];
+        return ['clientId' => $clientId, 'clientSecret' => $clientSecret];
     }
 
     /** @return array{refreshToken:string,email:?string,updatedAt:string}|null */

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 session_start();
 
+require_once __DIR__ . '/lib/GoogleApiAuth.php';
+GoogleApiAuth::ensureOAuthConfigFromDefaults();
+
 require_once __DIR__ . '/lib/IndexingService.php';
 
 header('Content-Type: application/json; charset=utf-8');

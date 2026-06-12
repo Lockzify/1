@@ -14,6 +14,9 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
+require_once __DIR__ . '/lib/GoogleApiAuth.php';
+GoogleApiAuth::ensureOAuthConfigFromDefaults();
+
 require_once __DIR__ . '/lib/IndexingService.php';
 
 try {

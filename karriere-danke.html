@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
     rel="stylesheet" />
   <link href="/output-onlinepngtools-6.png" rel="icon" type="image/png" />
+  <link href="/css/adlions-topbar.css" rel="stylesheet" type="text/css" />
   <!-- Facebook Pixel Code (Meta Event-Setup-Tool; data-cfasync=false: Rocket Loader) -->
   <script data-cfasync="false">
     !function (f, b, e, v, n, t, s) {
@@ -66,68 +67,6 @@
         linear-gradient(180deg, #f0f9ff 0%, var(--bg) 38%, #e8f4fc 100%);
       background-attachment: fixed;
       min-height: 100vh;
-    }
-
-    .topbar {
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .topbar-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .topbar a.logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-
-    .topbar img {
-      height: 42px;
-      width: auto;
-    }
-
-    .nav-main {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.15rem 0.35rem;
-      justify-content: flex-end;
-    }
-
-    .nav-main a {
-      color: #334155;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 0.45rem 0.65rem;
-      border-radius: 8px;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .nav-main a:hover {
-      background: rgba(224, 242, 254, 0.85);
-      color: var(--accent-bright);
-    }
-
-    .nav-main a.cta {
-      background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 45%, #0284c7 100%);
-      color: #fff;
-      font-weight: 600;
-      margin-left: 0.25rem;
     }
 
     .hero {
@@ -266,10 +205,6 @@
     }
 
     @media (max-width: 640px) {
-      .topbar {
-        display: none;
-      }
-
       .hero {
         padding-left: 0.75rem;
         padding-right: 0.75rem;
@@ -313,7 +248,9 @@
       <a class="logo" href="/index.html"><img src="/output-onlinepngtools-7.webp" alt="ADLIONS Logo" /></a>
       <nav class="nav-main" aria-label="Hauptnavigation">
         <a href="/index.html">Home</a>
-        <a href="/karriere.html">Karriere</a>
+        <a href="/index.html#ueber-uns">Über uns</a>
+        <a href="/index.html#neukundengewinnung">Kernbereiche</a>
+        <a href="/karriere.html" aria-current="page">Karriere</a>
         <a class="cta" href="/index.html#kontakt">Jetzt anfragen</a>
       </nav>
     </div>

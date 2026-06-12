@@ -1,0 +1,117 @@
+/* ADLIONS — Einheitlicher Header (Karriere-Seite) */
+
+.topbar {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 24px rgba(14, 165, 233, 0.08);
+}
+
+.topbar-inner {
+  position: relative;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+}
+
+.topbar a.logo {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.topbar img {
+  height: 42px;
+  width: auto;
+}
+
+.nav-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 1.35rem;
+}
+
+.nav-main a {
+  color: #334155;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-main a:hover {
+  background: rgba(224, 242, 254, 0.85);
+  color: #0ea5e9;
+}
+
+.nav-main a.cta {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  margin-left: 0;
+  background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 45%, #0284c7 100%);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 16px rgba(14, 165, 233, 0.45), 0 0 24px rgba(56, 189, 248, 0.35);
+}
+
+.nav-main a.cta:hover {
+  filter: brightness(1.06);
+  color: #fff;
+  box-shadow: 0 4px 24px rgba(14, 165, 233, 0.55), 0 0 32px rgba(56, 189, 248, 0.4);
+}
+
+.nav-main a[aria-current="page"] {
+  color: #0284c7;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .topbar-inner {
+    min-height: 0;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-right: 8.5rem;
+  }
+
+  .topbar a.logo {
+    position: static;
+    transform: none;
+  }
+
+  .nav-main {
+    width: 100%;
+    margin-top: 0.65rem;
+    justify-content: center;
+    gap: 0.35rem 0.85rem;
+  }
+
+  .nav-main a:not(.cta) {
+    padding: 0.45rem 0.75rem;
+    font-size: 14px;
+  }
+
+  .nav-main a.cta {
+    top: 0.75rem;
+    transform: none;
+  }
+}
