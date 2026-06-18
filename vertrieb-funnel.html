@@ -756,8 +756,8 @@
           <input id="k-email" name="email" type="email" required autocomplete="email" />
         </div>
         <div class="field">
-          <label for="k-tel"><span class="inline-emoji" aria-hidden="true">📞</span>Telefon</label>
-          <input id="k-tel" name="telefon" type="tel" autocomplete="tel" />
+          <label for="k-tel"><span class="inline-emoji" aria-hidden="true">📞</span>Telefon <span style="color:#b91c1c">*</span></label>
+          <input id="k-tel" name="telefon" type="tel" required autocomplete="tel" />
         </div>
         <div class="field">
           <label for="k-msg"><span class="inline-emoji" aria-hidden="true">📝</span>Deine Nachricht (optional)</label>
@@ -881,8 +881,8 @@
         var tel = document.getElementById("k-tel").value.trim();
         var msg = document.getElementById("k-msg").value.trim();
         var dsgvo = document.getElementById("k-dsgvo").checked;
-        if (!name || !email) {
-          alert("Bitte Name und E-Mail ausfüllen.");
+        if (!name || !email || !tel) {
+          alert("Bitte Name, E-Mail und Telefon ausfüllen.");
           return;
         }
         if (!dsgvo) {
@@ -901,7 +901,7 @@
         lines.push("— Kontakt —");
         lines.push("Name: " + name);
         lines.push("E-Mail: " + email);
-        if (tel) lines.push("Telefon: " + tel);
+        lines.push("Telefon: " + tel);
         if (msg) lines.push("Nachricht: " + msg);
         var messageBody = lines.join("\n");
 
