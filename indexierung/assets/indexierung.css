@@ -356,6 +356,91 @@ html.idx-page *::after {
   padding-top: 1.25rem;
   border-top: 1px solid var(--af-line);
 }
+.indexierung-cron-panel {
+  margin-top: 0.5rem;
+}
+
+.indexierung-cron-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+  color: var(--af-ink-muted);
+}
+
+.indexierung-cron-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: stretch;
+  margin-bottom: 1rem;
+}
+
+.indexierung-cron-url {
+  flex: 1 1 280px;
+  min-width: 0;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 12px;
+  border: 1px solid var(--af-line);
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  background: var(--af-soft);
+  color: var(--af-ink);
+}
+
+.indexierung-cron-steps {
+  margin: 0 0 0.75rem;
+  padding-left: 1.2rem;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--af-ink-muted);
+}
+
+.indexierung-cron-steps li + li {
+  margin-top: 0.35rem;
+}
+
+.indexierung-cron-hint {
+  margin: 0;
+  font-size: 13px;
+}
+
+.indexierung-auto-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.indexierung-auto-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.indexierung-auto-form select {
+  min-width: 120px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--af-line);
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+}
+
+.indexierung-cron-advanced {
+  margin-top: 1rem;
+  border-top: 1px solid var(--af-line);
+  padding-top: 0.5rem;
+}
+
+.indexierung-cron-advanced summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--af-ink-muted);
+}
 
 .indexierung-limit-form label {
   display: grid;

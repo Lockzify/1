@@ -5,7 +5,9 @@ declare(strict_types=1);
 /**
  * Tägliche Indexierungsanfragen (max. 10 gesamt über alle aktiven Domains).
  *
- * Hostinger Cron-Beispiel (täglich 08:00):
+ * Alternative ohne Server-Pfad: cron-web.php per Hostinger-URL-Cron (siehe Indexierungs-Oberfläche).
+ *
+ * CLI (Hostinger Cron-Beispiel, täglich 08:00):
  * 0 8 * * * /usr/bin/php /home/USER/domains/indexierung.deine-domain.de/public_html/cron.php
  */
 

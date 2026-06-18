@@ -7,6 +7,7 @@ require_once __DIR__ . '/lib/GoogleApiAuth.php';
 GoogleApiAuth::ensureOAuthConfigFromDefaults();
 
 require_once __DIR__ . '/lib/IndexingService.php';
+require_once __DIR__ . '/lib/IndexingScheduler.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -41,6 +42,7 @@ try {
     }
 
     if ($action === 'status' && $method === 'GET') {
+        $auto = IndexingScheduler::maybeRun();
         $date = gmdate('Y-m-d');
         $settings = IndexingDatabase::getSettings();
         $domains = IndexingDatabase::listDomains();
@@ -65,6 +67,29 @@ try {
             ],
             'domains' => $domains,
             'todayLog' => IndexingDatabase::listDailyLog($date, 30),
+            'autoSchedule' => [
+                'enabled' => (bool) $settings['autoRunEnabled'],
+                'hour' => (int) $settings['autoRunHour'],
+                'lastRunDate' => $settings['lastAutoRunDate'],
+                'lastCheck' => $auto['reason'] ?? 'unknown',
+                'ranNow' => (bool) ($auto['ran'] ?? false),
+            ],
+        ]);
+    }
+
+    if ($action === 'auto_schedule_save' && $method === 'POST') {
+        require_csrf();
+        $raw = file_get_contents('php://input');
+        $body = json_decode($raw ?: 'null', true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($body)) {
+            json_out(['ok' => false, 'error' => 'Ungültige Nutzdaten.'], 422);
+        }
+        json_out([
+            'ok' => true,
+            'settings' => IndexingDatabase::saveAutoSchedule(
+                !isset($body['enabled']) || (bool) $body['enabled'],
+                (int) ($body['hour'] ?? 8)
+            ),
         ]);
     }
 
@@ -218,6 +243,20 @@ try {
             json_out(['ok' => false, 'error' => $e->getMessage()], 422);
         }
         json_out(['ok' => true, 'batch' => $result]);
+    }
+
+    if ($action === 'cron_info' && $method === 'GET') {
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = (string) ($_SERVER['HTTP_HOST'] ?? 'localhost');
+        $base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/api.php')), '/');
+        if ($base === '' || $base === '.') {
+            $base = '';
+        }
+        $cronUrl = $scheme . '://' . $host . ($base === '' ? '' : $base) . '/auto-run.php';
+        json_out([
+            'ok' => true,
+            'cronUrl' => $cronUrl,
+        ]);
     }
 
     json_out(['ok' => false, 'error' => 'Unbekannte Aktion.'], 404);

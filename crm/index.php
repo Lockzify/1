@@ -450,7 +450,18 @@ $bootstrap = [
             <option value="inaktiv">Inaktiv</option>
           </select>
         </label>
+        <label>Laufzeit (Monate)
+          <input name="runtimeMonths" type="number" min="1" max="60" step="1" placeholder="z. B. 12">
+        </label>
         <label class="full-width">Notizen<textarea name="notes" rows="3"></textarea></label>
+        <div class="full-width customer-workflow-panel" id="customerWorkflowPanel">
+          <h4 class="customer-workflow-heading">Ablauf & Fortschritt</h4>
+          <p class="muted customer-workflow-subtitle" id="customerWorkflowProgressText">Status wird geladen …</p>
+          <div class="customer-workflow-progress">
+            <span id="customerWorkflowProgressBar" style="width: 0%"></span>
+          </div>
+          <ul class="customer-workflow-list" id="customerWorkflowList"></ul>
+        </div>
         <div class="full-width customer-projects-panel hidden" id="customerProjectsPanel">
           <h4 class="customer-projects-heading">Verknüpfte Projekte</h4>
           <ul class="customer-linked-projects" id="customerLinkedProjectsList"></ul>

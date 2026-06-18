@@ -83,21 +83,71 @@ final class IndexingDatabase
             $ins = $pdo->prepare('INSERT INTO indexing_settings (id, daily_limit, updated_at) VALUES (1, 10, :u)');
             $ins->execute([':u' => $now]);
         }
+        self::ensureSettingsColumns($pdo);
     }
 
-    /** @return array{dailyLimit:int,updatedAt:string} */
+    private static function ensureSettingsColumns(\PDO $pdo): void
+    {
+        $cols = [];
+        $info = $pdo->query('PRAGMA table_info(indexing_settings)');
+        if ($info) {
+            while ($row = $info->fetch(\PDO::FETCH_ASSOC)) {
+                $cols[(string) $row['name']] = true;
+            }
+        }
+        if (!isset($cols['auto_run_enabled'])) {
+            $pdo->exec('ALTER TABLE indexing_settings ADD COLUMN auto_run_enabled INTEGER NOT NULL DEFAULT 1');
+        }
+        if (!isset($cols['auto_run_hour'])) {
+            $pdo->exec('ALTER TABLE indexing_settings ADD COLUMN auto_run_hour INTEGER NOT NULL DEFAULT 8');
+        }
+        if (!isset($cols['last_auto_run_date'])) {
+            $pdo->exec('ALTER TABLE indexing_settings ADD COLUMN last_auto_run_date TEXT NULL');
+        }
+    }
+
+    /** @return array{dailyLimit:int,autoRunEnabled:bool,autoRunHour:int,lastAutoRunDate:?string,updatedAt:string} */
     public static function getSettings(): array
     {
-        $stmt = self::pdo()->query('SELECT daily_limit, updated_at FROM indexing_settings WHERE id = 1');
+        $stmt = self::pdo()->query(
+            'SELECT daily_limit, auto_run_enabled, auto_run_hour, last_auto_run_date, updated_at FROM indexing_settings WHERE id = 1'
+        );
         $row = $stmt ? $stmt->fetch(\PDO::FETCH_ASSOC) : false;
         if (!$row) {
-            return ['dailyLimit' => 10, 'updatedAt' => gmdate('c')];
+            return [
+                'dailyLimit' => 10,
+                'autoRunEnabled' => true,
+                'autoRunHour' => 8,
+                'lastAutoRunDate' => null,
+                'updatedAt' => gmdate('c'),
+            ];
         }
 
         return [
             'dailyLimit' => max(1, min(200, (int) $row['daily_limit'])),
+            'autoRunEnabled' => (int) ($row['auto_run_enabled'] ?? 1) === 1,
+            'autoRunHour' => max(0, min(23, (int) ($row['auto_run_hour'] ?? 8))),
+            'lastAutoRunDate' => isset($row['last_auto_run_date']) && $row['last_auto_run_date'] !== null
+                ? (string) $row['last_auto_run_date'] : null,
             'updatedAt' => (string) $row['updated_at'],
         ];
+    }
+
+    public static function saveAutoSchedule(bool $enabled, int $hour): array
+    {
+        $hour = max(0, min(23, $hour));
+        $now = gmdate('c');
+        self::pdo()->prepare(
+            'UPDATE indexing_settings SET auto_run_enabled = :e, auto_run_hour = :h, updated_at = :u WHERE id = 1'
+        )->execute([':e' => $enabled ? 1 : 0, ':h' => $hour, ':u' => $now]);
+
+        return self::getSettings();
+    }
+
+    public static function markAutoRunDate(string $date): void
+    {
+        self::pdo()->prepare('UPDATE indexing_settings SET last_auto_run_date = :d, updated_at = :u WHERE id = 1')
+            ->execute([':d' => $date, ':u' => gmdate('c')]);
     }
 
     public static function saveDailyLimit(int $limit): array
@@ -108,6 +158,39 @@ final class IndexingDatabase
             ->execute([':l' => $limit, ':u' => $now]);
 
         return self::getSettings();
+    }
+
+    private static function cronSecretPath(): string
+    {
+        return dirname(__DIR__) . '/data/cron-secret.txt';
+    }
+
+    public static function getCronSecret(): string
+    {
+        $path = self::cronSecretPath();
+        if (is_readable($path)) {
+            $secret = trim((string) file_get_contents($path));
+            if ($secret !== '') {
+                return $secret;
+            }
+        }
+
+        return self::regenerateCronSecret();
+    }
+
+    public static function regenerateCronSecret(): string
+    {
+        $dir = dirname(__DIR__) . '/data';
+        if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
+            throw new \RuntimeException('Datenverzeichnis konnte nicht angelegt werden.');
+        }
+        $secret = bin2hex(random_bytes(24));
+        if (file_put_contents(self::cronSecretPath(), $secret, LOCK_EX) === false) {
+            throw new \RuntimeException('Cron-Schlüssel konnte nicht gespeichert werden.');
+        }
+        @chmod(self::cronSecretPath(), 0600);
+
+        return $secret;
     }
 
     /** @return list<array<string, mixed>> */

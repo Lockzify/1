@@ -76,6 +76,30 @@
     if (uriEl && c.redirectUri) uriEl.textContent = c.redirectUri;
   }
 
+  function renderAutoSchedule(data) {
+    const s = data.autoSchedule || {};
+    const enabled = document.getElementById("indexierungAutoEnabled");
+    const hour = document.getElementById("indexierungAutoHour");
+    const status = document.getElementById("indexierungAutoStatus");
+    if (enabled) enabled.checked = !!s.enabled;
+    if (hour && s.hour !== undefined) hour.value = String(s.hour);
+    if (!status) return;
+    const hh = String(s.hour ?? 8).padStart(2, "0");
+    if (!s.enabled) {
+      status.textContent = "Automatik ist aus. Nur manuell über „Heute senden“.";
+      return;
+    }
+    if (s.ranNow) {
+      status.textContent = `Gerade automatisch ausgeführt (geplant täglich ab ${hh}:00 Uhr).`;
+      return;
+    }
+    if (s.lastRunDate) {
+      status.textContent = `Heute bereits gelaufen (${s.lastRunDate}). Nächster Lauf morgen ab ${hh}:00 Uhr beim Seitenbesuch.`;
+      return;
+    }
+    status.textContent = `Wartet auf heutigen Lauf — startet automatisch ab ${hh}:00 Uhr, wenn du diese Seite öffnest.`;
+  }
+
   function renderQuota(data) {
     const q = data.quota || {};
     const s = data.stats || {};
@@ -134,6 +158,7 @@
     statusData = data;
     renderConnection(data.connection || {});
     renderQuota(data);
+    renderAutoSchedule(data);
     renderDomains(data.domains || []);
     renderLog(data.todayLog || []);
   }
@@ -300,6 +325,49 @@
     }
   });
 
+  document.getElementById("indexierungAutoForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      await api("auto_schedule_save", {
+        method: "POST",
+        body: {
+          enabled: !!document.getElementById("indexierungAutoEnabled")?.checked,
+          hour: parseInt(document.getElementById("indexierungAutoHour")?.value || "8", 10),
+        },
+      });
+      showToast("Automatik gespeichert.");
+      await loadStatus();
+    } catch (err) {
+      showToast(err.message, true);
+    }
+  });
+
+  async function loadCronInfo() {
+    const input = document.getElementById("indexierungCronUrl");
+    if (!input) return;
+    try {
+      const res = await api("cron_info");
+      input.value = res.cronUrl || "";
+    } catch (err) {
+      input.value = "";
+      showToast(err.message, true);
+    }
+  }
+
+  document.getElementById("indexierungCronCopy")?.addEventListener("click", async () => {
+    const input = document.getElementById("indexierungCronUrl");
+    const url = input?.value?.trim();
+    if (!url) return showToast("Cron-URL noch nicht geladen.", true);
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast("Cron-URL kopiert.");
+    } catch {
+      input.select();
+      document.execCommand("copy");
+      showToast("Cron-URL kopiert.");
+    }
+  });
+
   document.getElementById("indexierungRunBatch")?.addEventListener("click", async () => {
     const btn = document.getElementById("indexierungRunBatch");
     if (btn) btn.disabled = true;
@@ -325,6 +393,6 @@
 
   api("csrf").then((d) => {
     csrfToken = d.csrfToken || "";
-    return loadStatus();
+    return Promise.all([loadStatus(), loadCronInfo()]);
   }).catch((e) => showToast(e.message, true));
 })();

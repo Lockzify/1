@@ -260,6 +260,23 @@
       color: #b91c1c;
     }
 
+    .flow-reject h3 {
+      color: #0c4a6e;
+    }
+
+    .flow-reject .reject-lead {
+      margin: 0 0 1rem;
+      color: #334e68;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .flow-reject .btn-primary {
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .card {
       background: linear-gradient(165deg, #ffffff 0%, #f8fcff 100%);
       border-radius: var(--radius);
@@ -600,7 +617,7 @@
   </div>
 
   <main>
-    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 9</p>
+    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 12</p>
 
     <div class="flow-screen" data-flow-step="0">
       <div class="card flow-card">
@@ -640,6 +657,17 @@
 
     <div class="flow-screen quiz-screen" data-flow-step="3" hidden>
       <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">🎂</span>Wie alt bist du?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="alter" data-value="16 - 25"><span class="inline-emoji" aria-hidden="true">🧑</span>16 – 25</button>
+          <button type="button" class="choice-btn" data-key="alter" data-value="25 - 30"><span class="inline-emoji" aria-hidden="true">👤</span>25 – 30</button>
+          <button type="button" class="choice-btn" data-key="alter" data-value="30+"><span class="inline-emoji" aria-hidden="true">🧔</span>30+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="4" hidden>
+      <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">💼</span>Hast du bereits Erfahrung im Vertrieb?</h3>
         <div class="choice-grid">
           <button type="button" class="choice-btn" data-key="vertrieb_erfahrung" data-value="Ja, habe ich!"><span class="inline-emoji" aria-hidden="true">✅</span>Ja, habe ich!</button>
@@ -649,7 +677,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="4" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="5" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">🎓</span>Welchen höchsten Abschluss hast du?</h3>
         <div class="choice-grid">
@@ -662,7 +690,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="5" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="6" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📈</span>Wie ist deine aktuelle berufliche Situation?</h3>
         <div class="choice-grid">
@@ -674,7 +702,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="6" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="7" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📍</span>Wohnst du in Berlin oder bist du bereit, in Berlin zu arbeiten?</h3>
         <p class="hint" style="margin-top:0"><span class="inline-emoji" aria-hidden="true">🏢</span>(Homeoffice ist nicht möglich)</p>
@@ -686,7 +714,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="7" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="8" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">🎯</span>Was ist dir bei der Arbeit besonders wichtig?</h3>
         <div class="choice-grid">
@@ -698,7 +726,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="8" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="9" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">🗣️</span>Wie sicher sind deine Deutschkenntnisse?</h3>
         <div class="choice-grid">
@@ -710,7 +738,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="9" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="10" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📆</span>Ab wann kannst du bei uns durchstarten?</h3>
         <div class="choice-grid">
@@ -721,7 +749,7 @@
       </div>
     </div>
 
-    <div class="flow-screen funnel-contact" data-flow-step="10" hidden>
+    <div class="flow-screen funnel-contact" data-flow-step="11" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">🎉</span>Das sieht gut aus – wir möchten dich gerne kennenlernen!</h3>
         <p class="hint"><span class="inline-emoji" aria-hidden="true">💬</span>Wie können wir dich am besten erreichen, um mit dir über die Trainee-Stelle zu sprechen?</p>
@@ -751,6 +779,15 @@
       </div>
     </div>
 
+    <div class="flow-screen flow-reject" data-flow-step="12" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">🙏</span>Vielen Dank für dein Interesse</h3>
+        <p class="reject-lead">Nach deinen Angaben passt du leider aktuell nicht zu dem Profil, das wir für unsere Trainee-Stelle im Vertrieb suchen. Wir wünschen dir alles Gute für deinen weiteren Weg.</p>
+        <p class="hint"><span class="inline-emoji" aria-hidden="true">💡</span>Falls sich deine Situation ändert, kannst du dich jederzeit erneut bewerben.</p>
+        <a class="btn-primary" href="/index.html" style="text-decoration:none;display:inline-flex;"><span class="inline-emoji" aria-hidden="true">🏠</span>Zur Startseite</a>
+      </div>
+    </div>
+
   </main>
 
   <footer>
@@ -771,10 +808,13 @@
       var THANKYOU_QUERY = "funnel_bewerbung=1";
       /** Danke-Seite darf Meta-Lead erneut senden, wenn Nutzer den Funnel erneut startet */
       var DANKE_LEAD_FLAG = "adlions_danke_lead_sent";
-      var TOTAL_STEPS = 11;
+      var TOTAL_STEPS = 12;
       var INTRO_LAST = 2;
       var QUIZ_FIRST = 3;
-      var QUIZ_LAST = 9;
+      var QUIZ_LAST = 10;
+      var CONTACT_STEP = 11;
+      var REJECT_STEP = 12;
+      var AGE_QUALIFIED = "16 - 25";
 
       function clearDankeLeadFlag() {
         try {
@@ -792,16 +832,35 @@
       var progressEl = document.getElementById("flow-progress");
       var resultEl = document.getElementById("form-result");
 
+      function isAgeQualified() {
+        return answers.alter === AGE_QUALIFIED;
+      }
+
       function showFlowStep(i) {
         document.querySelectorAll(".flow-screen").forEach(function (el) {
           el.hidden = Number(el.getAttribute("data-flow-step")) !== i;
         });
-        progressEl.textContent =
-          "🎯 Schritt " + (i + 1) + " von " + TOTAL_STEPS;
+        if (i === REJECT_STEP) {
+          progressEl.hidden = true;
+        } else {
+          progressEl.hidden = false;
+          progressEl.textContent =
+            "🎯 Schritt " + (i + 1) + " von " + TOTAL_STEPS;
+        }
         var mainEl = document.querySelector("main");
         if (mainEl && typeof mainEl.scrollIntoView === "function") {
           mainEl.scrollIntoView({ behavior: "smooth", block: "start" });
         }
+      }
+
+      function advanceAfterQuiz() {
+        if (flowStep < QUIZ_LAST) {
+          flowStep++;
+          showFlowStep(flowStep);
+          return;
+        }
+        flowStep = isAgeQualified() ? CONTACT_STEP : REJECT_STEP;
+        showFlowStep(flowStep);
       }
 
       document.querySelectorAll(".btn-next").forEach(function (btn) {
@@ -819,8 +878,7 @@
           var value = btn.getAttribute("data-value");
           answers[key] = value;
           if (flowStep >= QUIZ_FIRST && flowStep <= QUIZ_LAST) {
-            flowStep++;
-            showFlowStep(flowStep);
+            advanceAfterQuiz();
           }
         });
       });

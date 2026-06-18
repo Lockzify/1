@@ -45,6 +45,10 @@
   const projectStatusFilter = document.getElementById("projectStatusFilter");
   const customerModalTitle = document.getElementById("customerModalTitle");
   const customerProjectsPanel = document.getElementById("customerProjectsPanel");
+  const customerWorkflowPanel = document.getElementById("customerWorkflowPanel");
+  const customerWorkflowList = document.getElementById("customerWorkflowList");
+  const customerWorkflowProgressText = document.getElementById("customerWorkflowProgressText");
+  const customerWorkflowProgressBar = document.getElementById("customerWorkflowProgressBar");
   const customerLinkedProjectsList = document.getElementById("customerLinkedProjectsList");
   const customerProjectsEmpty = document.getElementById("customerProjectsEmpty");
   const linkProjectToCustomerSelect = document.getElementById("linkProjectToCustomerSelect");
@@ -84,6 +88,17 @@
     editingProjectId: null,
     editingPhaseId: null,
   };
+
+  const CUSTOMER_WORKFLOW_TEMPLATE = [
+    { key: "cc", label: "CC", duration: "5min" },
+    { key: "qc", label: "QC", duration: "15min" },
+    { key: "sc", label: "SC", duration: "60min" },
+    { key: "onboarding", label: "Onboarding", duration: "30min" },
+    { key: "drehtag", label: "Drehtag", duration: "5h" },
+    { key: "weekly_calls_1", label: "Weekly Calls", duration: "15min" },
+    { key: "upsell", label: "Upsell", duration: "30min" },
+    { key: "weekly_calls_2", label: "Weekly Calls", duration: "15min" },
+  ];
 
   const baseState = {
     phases: [
@@ -253,11 +268,14 @@
           comments: Array.isArray(deal.comments) ? deal.comments : [],
         }))
       : [];
+    const normalizedCustomers = (Array.isArray(raw.customers) ? raw.customers : []).map((customer) =>
+      normalizeCustomerRecord(customer)
+    );
     const migrated = migratePipelinePhases(rawPhases, rawDeals);
     return {
       phases: migrated.phases,
       contacts: Array.isArray(raw.contacts) ? raw.contacts : [],
-      customers: Array.isArray(raw.customers) ? raw.customers : [],
+      customers: normalizedCustomers,
       projects: Array.isArray(raw.projects)
         ? raw.projects.map((project) => ({
             ...project,
@@ -267,6 +285,43 @@
       deals: migrated.deals,
       activities: Array.isArray(raw.activities) ? raw.activities : [],
     };
+  }
+
+  function buildDefaultCustomerWorkflow() {
+    return CUSTOMER_WORKFLOW_TEMPLATE.map((step) => ({
+      key: step.key,
+      label: step.label,
+      duration: step.duration,
+      done: false,
+      doneAt: null,
+    }));
+  }
+
+  function normalizeCustomerWorkflow(items) {
+    const incomingByKey = new Map(
+      (Array.isArray(items) ? items : [])
+        .filter((entry) => entry && typeof entry === "object")
+        .map((entry) => [String(entry.key || ""), entry])
+    );
+    return CUSTOMER_WORKFLOW_TEMPLATE.map((step) => {
+      const existing = incomingByKey.get(step.key);
+      return {
+        key: step.key,
+        label: step.label,
+        duration: step.duration,
+        done: Boolean(existing?.done),
+        doneAt: existing?.doneAt || null,
+      };
+    });
+  }
+
+  function normalizeCustomerRecord(customer) {
+    const normalized = customer && typeof customer === "object" ? { ...customer } : {};
+    normalized.status = normalized.status === "inaktiv" ? "inaktiv" : "aktiv";
+    const runtime = Number.parseInt(String(normalized.runtimeMonths ?? "12"), 10);
+    normalized.runtimeMonths = Number.isFinite(runtime) && runtime > 0 ? Math.min(runtime, 60) : 12;
+    normalized.workflow = normalizeCustomerWorkflow(normalized.workflow);
+    return normalized;
   }
 
   async function hydrateFromServer() {
@@ -1008,6 +1063,16 @@
         }
         if (customerModal && typeof customerModal.close === "function") customerModal.close();
         openProjectModal(null, customerId);
+      });
+    }
+    if (customerWorkflowList) {
+      customerWorkflowList.addEventListener("change", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+        if (!target.matches('input[type="checkbox"][data-workflow-key]')) return;
+        const stepKey = String(target.dataset.workflowKey || "");
+        if (!stepKey) return;
+        void toggleCustomerWorkflowStep(stepKey, target.checked);
       });
     }
     if (dealAddCommentBtn) {
@@ -2231,14 +2296,19 @@
       const row = document.createElement("tr");
       const projectCount = countProjectsForCustomer(customer.id);
       const contactParts = [customer.email, customer.phone].filter(Boolean).join(" · ") || "—";
+      const workflowSteps = Array.isArray(customer.workflow) ? customer.workflow : [];
+      const doneCount = workflowSteps.filter((step) => step.done).length;
+      const progressText = workflowSteps.length ? `${doneCount}/${workflowSteps.length}` : "0/0";
+      const runtimeText = `${customer.runtimeMonths || 12} Mon.`;
       row.innerHTML = `
         <td><strong>${escapeHtml(customer.company || "—")}</strong></td>
         <td>${escapeHtml(customer.contactName || "—")}</td>
         <td>${escapeHtml(contactParts)}</td>
         <td><span class="status-pill status-${escapeHtml(customer.status || "aktiv")}">${customer.status === "inaktiv" ? "Inaktiv" : "Aktiv"}</span></td>
-        <td class="customer-project-count">${projectCount}</td>
+        <td class="customer-project-count">${projectCount} Projekt(e)<br><span class="table-sub">Ablauf: ${progressText} · ${runtimeText}</span></td>
         <td class="table-actions"></td>
       `;
+      row.classList.toggle("customer-row-inaktiv", customer.status === "inaktiv");
       const actions = row.querySelector(".table-actions");
       const projectBtn = document.createElement("button");
       projectBtn.type = "button";
@@ -2439,6 +2509,7 @@
       zip: String(data.get("zip") || "").trim(),
       city: String(data.get("city") || "").trim(),
       status: String(data.get("status") || "aktiv"),
+      runtimeMonths: Math.max(1, Math.min(60, Number.parseInt(String(data.get("runtimeMonths") || "12"), 10) || 12)),
       notes: String(data.get("notes") || "").trim(),
     };
     if (!payload.company) return;
@@ -2449,12 +2520,13 @@
       const idx = state.customers.findIndex((c) => c.id === uiState.editingCustomerId);
       if (idx >= 0) {
         const merged = { ...state.customers[idx], ...payload };
+        merged.workflow = normalizeCustomerWorkflow(merged.workflow);
         stampCustomer(merged, false);
         state.customers[idx] = merged;
         logActivity("Kunde", `Kunde „${payload.company}“ wurde von ${actorLabel()} bearbeitet.`);
       }
     } else {
-      const customer = { id: uid(), ...payload };
+      const customer = { id: uid(), ...payload, workflow: buildDefaultCustomerWorkflow() };
       stampCustomer(customer, true);
       state.customers.unshift(customer);
       uiState.editingCustomerId = customer.id;
@@ -2510,6 +2582,63 @@
     }
     await persistAndRerender();
     closeDialog(projectModal, form);
+  }
+
+  function renderCustomerWorkflowPanel(customerId) {
+    if (!customerWorkflowPanel || !customerWorkflowList) return;
+    if (!customerId) {
+      customerWorkflowPanel.classList.add("hidden");
+      return;
+    }
+    const customer = state.customers.find((c) => c.id === customerId);
+    if (!customer) {
+      customerWorkflowPanel.classList.add("hidden");
+      return;
+    }
+    customerWorkflowPanel.classList.remove("hidden");
+    customer.workflow = normalizeCustomerWorkflow(customer.workflow);
+    const total = customer.workflow.length;
+    const done = customer.workflow.filter((step) => step.done).length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    if (customerWorkflowProgressText) {
+      customerWorkflowProgressText.textContent = `${done} von ${total} Schritten erledigt (${pct}%)`;
+    }
+    if (customerWorkflowProgressBar) {
+      customerWorkflowProgressBar.style.width = `${pct}%`;
+    }
+
+    customerWorkflowList.innerHTML = "";
+    customer.workflow.forEach((step) => {
+      const li = document.createElement("li");
+      li.className = "customer-workflow-item";
+      li.innerHTML = `
+        <label>
+          <input type="checkbox" data-workflow-key="${escapeHtml(step.key)}" ${step.done ? "checked" : ""}>
+          <span>${escapeHtml(step.label)}</span>
+        </label>
+        <span class="customer-workflow-duration">${escapeHtml(step.duration)}</span>
+      `;
+      customerWorkflowList.appendChild(li);
+    });
+  }
+
+  async function toggleCustomerWorkflowStep(stepKey, checked) {
+    const customerId = uiState.editingCustomerId;
+    if (!customerId) return;
+    const customer = state.customers.find((c) => c.id === customerId);
+    if (!customer) return;
+    customer.workflow = normalizeCustomerWorkflow(customer.workflow);
+    const step = customer.workflow.find((item) => item.key === stepKey);
+    if (!step) return;
+    step.done = Boolean(checked);
+    step.doneAt = step.done ? new Date().toISOString() : null;
+    stampCustomer(customer, false);
+    logActivity(
+      "Kunde",
+      `Ablauf bei „${customer.company || "Kunde"}“: ${step.label} ${step.done ? "erledigt" : "offen"} (${actorLabel()}).`
+    );
+    renderCustomerWorkflowPanel(customerId);
+    await persistAndRerender();
   }
 
   function renderCustomerProjectsPanel(customerId) {
@@ -2639,11 +2768,15 @@
         setFormValue(customerForm, "zip", customer.zip || "");
         setFormValue(customerForm, "city", customer.city || "");
         setFormValue(customerForm, "status", customer.status || "aktiv");
+        setFormValue(customerForm, "runtimeMonths", String(customer.runtimeMonths || 12));
         setFormValue(customerForm, "notes", customer.notes || "");
       }
+      renderCustomerWorkflowPanel(customerId);
       renderCustomerProjectsPanel(customerId);
     } else if (customerProjectsPanel) {
       customerProjectsPanel.classList.add("hidden");
+      if (customerWorkflowPanel) customerWorkflowPanel.classList.add("hidden");
+      setFormValue(customerForm, "runtimeMonths", "12");
     }
     openDialog(customerModal);
   }

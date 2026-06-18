@@ -934,7 +934,7 @@ a.crm-nav-link {
   padding: 0.45rem 0.55rem;
   gap: 0.45rem;
   border-radius: 11px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 128px), 1fr));
+  grid-template-columns: minmax(220px, 1.5fr) minmax(140px, 1fr) minmax(140px, 1fr) minmax(240px, auto);
   box-shadow: var(--shadow-soft);
 }
 
@@ -951,6 +951,7 @@ a.crm-nav-link {
 
 .pipeline-topbar-body .filter-actions {
   gap: 0.35rem;
+  justify-content: flex-end;
 }
 
 .pipeline-topbar-body .filter-actions .btn,
@@ -958,6 +959,17 @@ a.crm-nav-link {
   padding: 0.38rem 0.55rem;
   font-size: 0.76rem;
   border-radius: 9px;
+}
+
+@media (max-width: 1180px) {
+  .pipeline-topbar-body .filter-bar {
+    grid-template-columns: minmax(200px, 1fr) minmax(130px, 1fr);
+  }
+
+  .pipeline-topbar-body .filter-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
 }
 
 body.crm-body:has(#viewPipeline:not(.hidden)) #toolbarPipeline .btn {
@@ -1011,7 +1023,7 @@ body.crm-body:has(#viewPipeline:not(.hidden)) #toolbarPipeline .btn {
   box-shadow: var(--shadow);
   padding: 0.8rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  grid-template-columns: minmax(240px, 1.6fr) minmax(160px, 1fr) minmax(160px, 1fr) minmax(280px, auto);
   gap: 0.65rem;
   min-width: 0;
   max-width: 100%;
@@ -1020,15 +1032,22 @@ body.crm-body:has(#viewPipeline:not(.hidden)) #toolbarPipeline .btn {
 .filter-group {
   display: grid;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .filter-group label {
   font-size: 0.8rem;
 }
 
+.filter-group input,
+.filter-group select {
+  width: 100%;
+  min-width: 0;
+}
+
 .filter-actions {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: flex-end;
   gap: 0.45rem;
   flex-wrap: wrap;
@@ -1733,7 +1752,7 @@ th {
 .projects-filter-row select {
   min-width: 0;
   max-width: 100%;
-  flex: 1 1 10rem;
+  flex: 1 1 14rem;
 }
 
 .customers-panel-full,
@@ -1848,6 +1867,82 @@ th {
   border-top: 1px solid var(--line);
   padding-top: 0.85rem;
   margin-top: 0.25rem;
+}
+
+.customer-workflow-panel {
+  border-top: 1px solid var(--line);
+  padding-top: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.customer-workflow-heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+}
+
+.customer-workflow-subtitle {
+  margin: 0 0 0.55rem;
+  font-size: 0.8rem;
+}
+
+.customer-workflow-progress {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-bottom: 0.7rem;
+}
+
+.customer-workflow-progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #4a9eff, #64d4ff);
+  transition: width 0.2s ease;
+}
+
+.customer-workflow-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.customer-workflow-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.45rem 0.55rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.customer-workflow-item label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-soft);
+  font-size: 0.84rem;
+  margin: 0;
+}
+
+.customer-workflow-item input[type="checkbox"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.customer-workflow-duration {
+  font-size: 0.74rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.customers-table tr.customer-row-inaktiv td {
+  background: rgba(255, 107, 122, 0.06);
 }
 
 .customer-projects-heading {
@@ -2059,6 +2154,15 @@ th {
 }
 
 @media (max-width: 1040px) {
+  .filter-bar {
+    grid-template-columns: minmax(220px, 1fr) minmax(150px, 1fr);
+  }
+
+  .filter-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+
   .grid-two {
     grid-template-columns: 1fr;
   }
@@ -2094,6 +2198,16 @@ th {
 
   .filter-actions {
     justify-content: flex-start;
+  }
+
+  .filter-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-actions .btn,
+  .filter-actions .import-label {
+    width: 100%;
+    justify-content: center;
   }
 
   #viewPipeline #crmApp.crm-layout {

@@ -8,6 +8,9 @@ require_once __DIR__ . '/lib/GoogleApiAuth.php';
 GoogleApiAuth::ensureOAuthConfigFromDefaults();
 $oauthDefaults = GoogleApiAuth::loadOAuthConfig();
 
+require_once __DIR__ . '/lib/IndexingScheduler.php';
+IndexingScheduler::maybeRun();
+
 session_start();
 if (!isset($_SESSION['indexierung_csrf'])) {
     $_SESSION['indexierung_csrf'] = bin2hex(random_bytes(32));
@@ -118,6 +121,38 @@ function idx_asset(string $path): string
           </label>
           <button type="submit" class="btn btn-secondary">Limit speichern</button>
         </form>
+      </section>
+
+      <section class="indexierung-block indexierung-cron-block">
+        <h2>Automatisch jeden Tag</h2>
+        <p class="indexierung-subtitle">Ohne Hostinger-Cron: läuft von selbst, sobald die Seite nach der Uhrzeit geöffnet oder aktualisiert wird.</p>
+        <form class="indexierung-auto-form" id="indexierungAutoForm">
+          <label class="indexierung-checkbox-label">
+            <input type="checkbox" id="indexierungAutoEnabled" checked>
+            Automatisch täglich ausführen
+          </label>
+          <label>Uhrzeit (deutsche Zeit)
+            <select id="indexierungAutoHour">
+              <?php for ($h = 0; $h < 24; $h++) : ?>
+                <option value="<?php echo $h; ?>"<?php echo $h === 8 ? ' selected' : ''; ?>><?php echo sprintf('%02d:00', $h); ?> Uhr</option>
+              <?php endfor; ?>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-secondary">Speichern</button>
+        </form>
+        <p class="indexierung-cron-hint muted" id="indexierungAutoStatus">Status wird geladen …</p>
+        <details class="indexierung-cron-advanced">
+          <summary>Optional: Hostinger-Cron oder Lesezeichen (100 % ohne Seitenbesuch)</summary>
+          <div class="indexierung-cron-panel">
+            <p class="muted" style="font-size:14px;margin-top:0.75rem;">Wenn die Seite tagelang niemand öffnet, einmal täglich diese URL aufrufen lassen (Cron oder Lesezeichen):</p>
+            <label class="indexierung-cron-label" for="indexierungCronUrl">Ping-URL</label>
+            <div class="indexierung-cron-row">
+              <input type="text" id="indexierungCronUrl" readonly class="indexierung-cron-url" value="Wird geladen …">
+              <button type="button" class="btn btn-secondary" id="indexierungCronCopy">Kopieren</button>
+            </div>
+            <p class="indexierung-cron-hint muted">Hostinger: Typ <strong>Custom</strong> → <code>curl -fsS "PING-URL"</code> oder Typ <strong>PHP</strong> → nur <code>domains/…/public_html/auto-run.php</code></p>
+          </div>
+        </details>
       </section>
 
       <section class="indexierung-block">
