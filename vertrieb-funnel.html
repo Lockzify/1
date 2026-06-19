@@ -706,10 +706,6 @@
           <label for="k-tel"><span class="inline-emoji" aria-hidden="true">📞</span>Telefon <span style="color:#b91c1c">*</span></label>
           <input id="k-tel" name="telefon" type="tel" required autocomplete="tel" />
         </div>
-        <div class="field">
-          <label for="k-msg"><span class="inline-emoji" aria-hidden="true">📝</span>Deine Nachricht (optional)</label>
-          <textarea id="k-msg" name="nachricht" placeholder="z. B. bevorzugte Erreichbarkeit"></textarea>
-        </div>
         <div class="checkbox-row">
           <input id="k-dsgvo" type="checkbox" required />
           <label for="k-dsgvo">Ich akzeptiere die <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzbestimmungen</a>.</label>
@@ -815,7 +811,6 @@
         var name = document.getElementById("k-name").value.trim();
         var email = document.getElementById("k-email").value.trim();
         var tel = document.getElementById("k-tel").value.trim();
-        var msg = document.getElementById("k-msg").value.trim();
         var dsgvo = document.getElementById("k-dsgvo").checked;
         if (!name || !email || !tel) {
           alert("Bitte Name, E-Mail und Telefon ausfüllen.");
@@ -838,7 +833,6 @@
         lines.push("Name: " + name);
         lines.push("E-Mail: " + email);
         lines.push("Telefon: " + tel);
-        if (msg) lines.push("Nachricht: " + msg);
         var messageBody = lines.join("\n");
 
         var submitBtn = document.getElementById("funnel-submit");
