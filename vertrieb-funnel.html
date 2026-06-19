@@ -705,10 +705,27 @@
       </div>
     </div>
 
-    <div class="flow-screen flow-reject" data-flow-step="7" hidden>
+    <div class="flow-screen funnel-contact" data-flow-step="7" hidden>
       <div class="card funnel-card">
-        <h3><span class="inline-emoji" aria-hidden="true">🙏</span>Vielen Dank für dein Interesse</h3>
-        <p class="reject-lead">Nach deinen Angaben passt du leider aktuell nicht zu dem Profil, das wir für unsere Trainee-Stelle im Vertrieb suchen. Wir wünschen dir alles Gute für deinen weiteren Weg.</p>
+        <h3><span class="inline-emoji" aria-hidden="true">📇</span>Deine Kontaktdaten</h3>
+        <div class="field">
+          <label for="k-name-alt"><span class="inline-emoji" aria-hidden="true">👤</span>Name <span style="color:#b91c1c">*</span></label>
+          <input id="k-name-alt" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="k-email-alt"><span class="inline-emoji" aria-hidden="true">📧</span>E-Mail <span style="color:#b91c1c">*</span></label>
+          <input id="k-email-alt" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="k-tel-alt"><span class="inline-emoji" aria-hidden="true">📞</span>Telefon <span style="color:#b91c1c">*</span></label>
+          <input id="k-tel-alt" name="telefon" type="tel" required autocomplete="tel" />
+        </div>
+        <div class="checkbox-row">
+          <input id="k-dsgvo-alt" type="checkbox" required />
+          <label for="k-dsgvo-alt">Ich akzeptiere die <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzbestimmungen</a>.</label>
+        </div>
+        <button type="button" class="btn-primary" id="funnel-submit-alt"><span class="inline-emoji" aria-hidden="true">📤</span>Bewerbung absenden</button>
+        <p id="form-result-alt" role="status" aria-live="polite"></p>
       </div>
     </div>
 
@@ -736,8 +753,9 @@
       var QUIZ_FIRST = 0;
       var QUIZ_LAST = 5;
       var CONTACT_STEP = 6;
-      var REJECT_STEP = 7;
+      var DECOY_CONTACT_STEP = 7;
       var AGE_QUALIFIED = "16 - 25";
+      var DECOY_SEND_MS = 900;
 
       function clearDankeLeadFlag() {
         try {
@@ -763,13 +781,9 @@
         document.querySelectorAll(".flow-screen").forEach(function (el) {
           el.hidden = Number(el.getAttribute("data-flow-step")) !== i;
         });
-        if (i === REJECT_STEP) {
-          progressEl.hidden = true;
-        } else {
-          progressEl.hidden = false;
-          progressEl.textContent =
-            "🎯 Schritt " + (i + 1) + " von " + TOTAL_STEPS;
-        }
+        progressEl.hidden = false;
+        progressEl.textContent =
+          "🎯 Schritt " + Math.min(i + 1, TOTAL_STEPS) + " von " + TOTAL_STEPS;
         var mainEl = document.querySelector("main");
         if (mainEl && typeof mainEl.scrollIntoView === "function") {
           mainEl.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -782,8 +796,49 @@
           showFlowStep(flowStep);
           return;
         }
-        flowStep = isAgeQualified() ? CONTACT_STEP : REJECT_STEP;
+        flowStep = isAgeQualified() ? CONTACT_STEP : DECOY_CONTACT_STEP;
         showFlowStep(flowStep);
+      }
+
+      function validateContactForm(name, email, tel, dsgvo) {
+        if (!name || !email || !tel) {
+          alert("Bitte Name, E-Mail und Telefon ausfüllen.");
+          return false;
+        }
+        if (!dsgvo) {
+          alert("Bitte die Datenschutzbestimmungen akzeptieren.");
+          return false;
+        }
+        return true;
+      }
+
+      function redirectToThankYou(trackLead) {
+        if (trackLead) {
+          var sep = THANKYOU_URL.indexOf("?") >= 0 ? "&" : "?";
+          window.location.href = THANKYOU_URL + sep + THANKYOU_QUERY;
+          return;
+        }
+        window.location.href = THANKYOU_URL;
+      }
+
+      function submitDecoyApplication() {
+        var name = document.getElementById("k-name-alt").value.trim();
+        var email = document.getElementById("k-email-alt").value.trim();
+        var tel = document.getElementById("k-tel-alt").value.trim();
+        var dsgvo = document.getElementById("k-dsgvo-alt").checked;
+        if (!validateContactForm(name, email, tel, dsgvo)) {
+          return;
+        }
+
+        var submitBtn = document.getElementById("funnel-submit-alt");
+        var resultElAlt = document.getElementById("form-result-alt");
+        submitBtn.disabled = true;
+        resultElAlt.textContent = "Wird gesendet …";
+        resultElAlt.className = "";
+
+        window.setTimeout(function () {
+          redirectToThankYou(false);
+        }, DECOY_SEND_MS);
       }
 
       document.querySelectorAll(".choice-btn").forEach(function (btn) {
@@ -802,12 +857,7 @@
         var email = document.getElementById("k-email").value.trim();
         var tel = document.getElementById("k-tel").value.trim();
         var dsgvo = document.getElementById("k-dsgvo").checked;
-        if (!name || !email || !tel) {
-          alert("Bitte Name, E-Mail und Telefon ausfüllen.");
-          return;
-        }
-        if (!dsgvo) {
-          alert("Bitte die Datenschutzbestimmungen akzeptieren.");
+        if (!validateContactForm(name, email, tel, dsgvo)) {
           return;
         }
 
@@ -859,8 +909,7 @@
           })
           .then(function (out) {
             if (out.ok && out.data && out.data.success) {
-              var sep = THANKYOU_URL.indexOf("?") >= 0 ? "&" : "?";
-              window.location.href = THANKYOU_URL + sep + THANKYOU_QUERY;
+              redirectToThankYou(true);
             } else {
               var errMsg =
                 (out.data && (out.data.message || out.data.error)) || "Unbekannter Fehler";
@@ -875,6 +924,8 @@
             submitBtn.disabled = false;
           });
       });
+
+      document.getElementById("funnel-submit-alt").addEventListener("click", submitDecoyApplication);
 
       showFlowStep(0);
     })();
