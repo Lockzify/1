@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /crm/
+Disallow: /indexierung/
+Disallow: /bafa-foerderanfrage.html
+Disallow: /karriere-danke.html
+Disallow: /vertrieb-funnel.html
+
+Sitemap: https://www.adlions.de/sitemap.xml
