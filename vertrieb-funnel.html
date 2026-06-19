@@ -610,7 +610,7 @@
   </div>
 
   <main>
-    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 8</p>
+    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 7</p>
 
     <div class="flow-screen quiz-screen" data-flow-step="0">
       <div class="card funnel-card">
@@ -625,16 +625,6 @@
 
     <div class="flow-screen quiz-screen" data-flow-step="1" hidden>
       <div class="card funnel-card">
-        <h3><span class="inline-emoji" aria-hidden="true">💼</span>Hast du bereits Erfahrung im Vertrieb?</h3>
-        <div class="choice-grid">
-          <button type="button" class="choice-btn" data-key="vertrieb_erfahrung" data-value="Ja, habe ich!"><span class="inline-emoji" aria-hidden="true">✅</span>Ja, habe ich!</button>
-          <button type="button" class="choice-btn" data-key="vertrieb_erfahrung" data-value="Noch nicht!"><span class="inline-emoji" aria-hidden="true">💡</span>Noch nicht!</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="flow-screen quiz-screen" data-flow-step="2" hidden>
-      <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📈</span>Wie ist deine aktuelle berufliche Situation?</h3>
         <div class="choice-grid">
           <button type="button" class="choice-btn" data-key="situation" data-value="Angestellt"><span class="inline-emoji" aria-hidden="true">💼</span>Angestellt</button>
@@ -645,7 +635,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="3" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="2" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📍</span>Wohnst du in Berlin oder bist du bereit, in Berlin zu arbeiten?</h3>
         <div class="choice-grid">
@@ -655,7 +645,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="4" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="3" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">🎯</span>Was ist dir bei der Arbeit besonders wichtig?</h3>
         <div class="choice-grid">
@@ -668,7 +658,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="5" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="4" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">🗣️</span>Wie sicher sind deine Deutschkenntnisse?</h3>
         <div class="choice-grid">
@@ -680,7 +670,7 @@
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="6" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="5" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📆</span>Ab wann kannst du bei uns durchstarten?</h3>
         <div class="choice-grid">
@@ -691,7 +681,7 @@
       </div>
     </div>
 
-    <div class="flow-screen funnel-contact" data-flow-step="7" hidden>
+    <div class="flow-screen funnel-contact" data-flow-step="6" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📇</span>Deine Kontaktdaten</h3>
         <div class="field">
@@ -715,7 +705,7 @@
       </div>
     </div>
 
-    <div class="flow-screen flow-reject" data-flow-step="8" hidden>
+    <div class="flow-screen flow-reject" data-flow-step="7" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">🙏</span>Vielen Dank für dein Interesse</h3>
         <p class="reject-lead">Nach deinen Angaben passt du leider aktuell nicht zu dem Profil, das wir für unsere Trainee-Stelle im Vertrieb suchen. Wir wünschen dir alles Gute für deinen weiteren Weg.</p>
@@ -742,11 +732,11 @@
       var THANKYOU_QUERY = "funnel_bewerbung=1";
       /** Danke-Seite darf Meta-Lead erneut senden, wenn Nutzer den Funnel erneut startet */
       var DANKE_LEAD_FLAG = "adlions_danke_lead_sent";
-      var TOTAL_STEPS = 8;
+      var TOTAL_STEPS = 7;
       var QUIZ_FIRST = 0;
-      var QUIZ_LAST = 6;
-      var CONTACT_STEP = 7;
-      var REJECT_STEP = 8;
+      var QUIZ_LAST = 5;
+      var CONTACT_STEP = 6;
+      var REJECT_STEP = 7;
       var AGE_QUALIFIED = "16 - 25";
 
       function clearDankeLeadFlag() {
