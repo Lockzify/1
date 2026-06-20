@@ -5,7 +5,7 @@ Disallow: /crm/
 Disallow: /indexierung/
 Disallow: /bafa-foerderanfrage.html
 Disallow: /karriere-danke.html
-Disallow: /karriere-danke-decoy.html
+Disallow: /karriere-danke-1.html
 Disallow: /vertrieb-funnel.html
 
 Sitemap: https://www.adlions.de/sitemap.xml

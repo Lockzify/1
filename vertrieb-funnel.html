@@ -803,7 +803,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <div class="flow-screen funnel-contact" data-flow-step="7" data-application="decoy" hidden>
+    <div class="flow-screen funnel-contact" data-flow-step="7" data-application="alt" hidden>
       <div class="card funnel-card">
         <h3>Deine Kontaktdaten</h3>
         <p class="contact-lead">Trage deine Daten ein und sende deine Bewerbung mit einem Klick ab.</p>
@@ -844,7 +844,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
     (function () {
       var WEB3FORMS_KEY = "d7aa098b-83d4-4a29-8a31-a336d22d12da";
       var THANKYOU_URL_REAL = "/karriere-danke.html";
-      var THANKYOU_URL_DECOY = "/karriere-danke-decoy.html";
+      var THANKYOU_URL_1 = "/karriere-danke-1.html";
       /** Query fuer Meta „Benutzerdefinierte Konversion“ (Regel: URL enthaelt funnel_bewerbung=1) */
       var THANKYOU_QUERY = "funnel_bewerbung=1";
       /** Danke-Seite darf Meta-Lead erneut senden, wenn Nutzer den Funnel erneut startet */
@@ -918,7 +918,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           window.location.href = THANKYOU_URL_REAL + sep + THANKYOU_QUERY;
           return;
         }
-        window.location.href = THANKYOU_URL_DECOY;
+        window.location.href = THANKYOU_URL_1;
       }
 
       function submitDecoyApplication() {
