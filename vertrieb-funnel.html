@@ -845,10 +845,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       var WEB3FORMS_KEY = "d7aa098b-83d4-4a29-8a31-a336d22d12da";
       var THANKYOU_URL_REAL = "/karriere-danke.html";
       var THANKYOU_URL_1 = "/karriere-danke-1.html";
-      /** Query fuer Meta „Benutzerdefinierte Konversion“ (Regel: URL enthaelt funnel_bewerbung=1) */
+      /** Query fuer Meta Event-Setup (Lead bei URL mit funnel_bewerbung=1) */
       var THANKYOU_QUERY = "funnel_bewerbung=1";
-      /** Danke-Seite darf Meta-Lead erneut senden, wenn Nutzer den Funnel erneut startet */
-      var DANKE_LEAD_FLAG = "adlions_danke_lead_sent";
       var TOTAL_STEPS = 7;
       var QUIZ_FIRST = 0;
       var QUIZ_LAST = 5;
@@ -856,17 +854,6 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       var DECOY_CONTACT_STEP = 7;
       var AGE_QUALIFIED = "16 - 25";
       var DECOY_SEND_MS = 900;
-
-      function clearDankeLeadFlag() {
-        try {
-          sessionStorage.removeItem(DANKE_LEAD_FLAG);
-        } catch (e) { /* ignore */ }
-      }
-      clearDankeLeadFlag();
-      /** Nach „Zurück“ aus der Danke-Seite kann der Funnel aus dem bfcache kommen — dann lief kein erneutes Script; Flag sonst blockiert Lead beim zweiten Absenden. */
-      window.addEventListener("pageshow", function (ev) {
-        if (ev.persisted) clearDankeLeadFlag();
-      });
 
       var answers = {};
       var flowStep = 0;
@@ -912,11 +899,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         return true;
       }
 
-      function redirectToThankYou(trackLead) {
-        if (trackLead) {
-          try {
-            sessionStorage.setItem("adlions_funnel_real_submit", "1");
-          } catch (e) { /* ignore */ }
+      function redirectToThankYou(isRealApplication) {
+        if (isRealApplication) {
           var sep = THANKYOU_URL_REAL.indexOf("?") >= 0 ? "&" : "?";
           window.location.href = THANKYOU_URL_REAL + sep + THANKYOU_QUERY;
           return;

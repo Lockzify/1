@@ -27,9 +27,8 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-window.ADLIONS_META_PIXEL_ID = '4466988160210272';
 fbq('init', '4466988160210272', {}, { autoConfig: false });
-fbq('trackSingle', window.ADLIONS_META_PIXEL_ID, 'PageView');
+fbq('track', 'PageView');
 </script>
   <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
@@ -260,8 +259,6 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
     </div>
   </div>
 
-  <!-- Meta Werbemanager: Benutzerdefinierte Konversion mit Regel „URL enthaelt funnel_bewerbung=1“
-       (zusaetzlich zum Pixel-Lead; unabhaengig von Aggregated Events / Prioritaetenliste). -->
   <main>
     <div class="card">
       <h2>Was passiert als Nächstes?</h2>
@@ -283,64 +280,5 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   </footer>
   <script src="/js/adlions-topbar.js" defer></script>
 </body>
-
-<script>
-  (function () {
-    var params = new URLSearchParams(window.location.search || "");
-    /** Mit ?debug_pixel=1 in der URL: Konsolen-Hinweise, warum Lead feuert oder nicht (ohne Parameter bleibt die Konsole still). */
-    var dbg = params.get("debug_pixel") === "1";
-    function log(msg, extra) {
-      if (!dbg || typeof console === "undefined" || !console.info) return;
-      console.info("[ADLIONS Pixel]", msg, extra !== undefined ? extra : "");
-    }
-
-    if (typeof window.fbq !== "function") {
-      log("Kein Lead: fbq fehlt (Adblocker, Netzwerk oder Pixel-Script nicht geladen).");
-      return;
-    }
-    /** Nur Abschluss aus dem Vertrieb-Funnel (Redirect mit ?funnel_bewerbung=1), nicht bei direktem Aufruf der Danke-URL. */
-    if (params.get("funnel_bewerbung") !== "1") {
-      log("Kein Lead: funnel_bewerbung ist nicht 1 (URL-Parameter fehlt oder ist anders).");
-      return;
-    }
-
-    var SUBMIT_FLAG = "adlions_funnel_real_submit";
-    try {
-      if (sessionStorage.getItem(SUBMIT_FLAG) !== "1") {
-        log("Kein Lead: keine echte Funnel-Absendung in dieser Sitzung (Session-Flag fehlt).");
-        return;
-      }
-      sessionStorage.removeItem(SUBMIT_FLAG);
-    } catch (e) {
-      log("sessionStorage nicht nutzbar", e);
-      return;
-    }
-
-    var FLAG = "adlions_danke_lead_sent";
-    try {
-      if (sessionStorage.getItem(FLAG) === "1") {
-        log("Kein Lead: schon einmal in dieser Sitzung gesendet (sessionStorage). Zum Retest: sessionStorage.removeItem(\"" + FLAG + "\") in der Konsole.");
-        return;
-      }
-      sessionStorage.setItem(FLAG, "1");
-    } catch (e) {
-      log("sessionStorage nicht nutzbar", e);
-    }
-    var pid = window.ADLIONS_META_PIXEL_ID || "4466988160210272";
-    var leadPayload = {
-      content_name: "Karriere Vertrieb Funnel",
-      content_category: "Bewerbung",
-      content_ids: ["https://www.adlions.de/vertrieb-funnel.html"],
-      status: "completed"
-    };
-    log("Sende Lead + KarriereFunnelBewerbungAbgeschlossen …", { pixel_id: pid, leadPayload: leadPayload });
-    var eventId = "funnel-lead-" + Date.now();
-    window.fbq("trackSingle", pid, "Lead", leadPayload, { eventID: eventId });
-    window.fbq("trackSingleCustom", pid, "KarriereFunnelBewerbungAbgeschlossen", {
-      content_name: "Karriere Vertrieb Funnel"
-    }, { eventID: eventId + "-custom" });
-    log("fbq trackSingle / trackSingleCustom wurden aufgerufen (Netzwerk-Tab: facebook.com/tr prüfen).");
-  })();
-</script>
 
 </html>
