@@ -28,7 +28,7 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 window.ADLIONS_META_PIXEL_ID = '4466988160210272';
-fbq('init', '4466988160210272');
+fbq('init', '4466988160210272', {}, { autoConfig: false });
 fbq('trackSingle', window.ADLIONS_META_PIXEL_ID, 'PageView');
 </script>
   <noscript><img height="1" width="1" style="display:none"
@@ -304,6 +304,18 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       return;
     }
 
+    var SUBMIT_FLAG = "adlions_funnel_real_submit";
+    try {
+      if (sessionStorage.getItem(SUBMIT_FLAG) !== "1") {
+        log("Kein Lead: keine echte Funnel-Absendung in dieser Sitzung (Session-Flag fehlt).");
+        return;
+      }
+      sessionStorage.removeItem(SUBMIT_FLAG);
+    } catch (e) {
+      log("sessionStorage nicht nutzbar", e);
+      return;
+    }
+
     var FLAG = "adlions_danke_lead_sent";
     try {
       if (sessionStorage.getItem(FLAG) === "1") {
@@ -322,10 +334,11 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       status: "completed"
     };
     log("Sende Lead + KarriereFunnelBewerbungAbgeschlossen …", { pixel_id: pid, leadPayload: leadPayload });
-    window.fbq("trackSingle", pid, "Lead", leadPayload);
+    var eventId = "funnel-lead-" + Date.now();
+    window.fbq("trackSingle", pid, "Lead", leadPayload, { eventID: eventId });
     window.fbq("trackSingleCustom", pid, "KarriereFunnelBewerbungAbgeschlossen", {
       content_name: "Karriere Vertrieb Funnel"
-    });
+    }, { eventID: eventId + "-custom" });
     log("fbq trackSingle / trackSingleCustom wurden aufgerufen (Netzwerk-Tab: facebook.com/tr prüfen).");
   })();
 </script>

@@ -14,7 +14,7 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '4466988160210272');
+fbq('init', '4466988160210272', {}, { autoConfig: false });
 fbq('track', 'PageView');
 </script>
   <noscript><img height="1" width="1" style="display:none"
@@ -914,6 +914,9 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
       function redirectToThankYou(trackLead) {
         if (trackLead) {
+          try {
+            sessionStorage.setItem("adlions_funnel_real_submit", "1");
+          } catch (e) { /* ignore */ }
           var sep = THANKYOU_URL_REAL.indexOf("?") >= 0 ? "&" : "?";
           window.location.href = THANKYOU_URL_REAL + sep + THANKYOU_QUERY;
           return;
