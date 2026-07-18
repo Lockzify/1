@@ -14,38 +14,40 @@
 .topbar-inner {
   max-width: 1160px;
   margin: 0 auto;
-  padding: 0.55rem 1rem;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-areas: "logo nav cta";
-  align-items: center;
-  gap: 0.75rem 1rem;
+  padding: 0 1rem;
   min-height: 56px;
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-sizing: border-box;
 }
 
 .topbar a.logo {
-  grid-area: logo;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
+  flex: 0 0 auto;
+  height: 28px;
   text-decoration: none;
-  flex-shrink: 0;
   line-height: 0;
 }
 
 .topbar a.logo img {
   display: block;
-  height: 32px;
+  height: 28px;
   width: auto;
-  max-width: 150px;
+  max-height: 28px;
+  max-width: 140px;
   object-fit: contain;
   object-position: left center;
 }
 
 .topbar-menu-btn {
   display: none;
-  grid-area: menu;
   align-items: center;
   justify-content: center;
   width: 36px;
@@ -55,7 +57,7 @@
   border-radius: 10px;
   background: #fff;
   cursor: pointer;
-  flex-shrink: 0;
+  flex: 0 0 auto;
 }
 
 .topbar-menu-icon,
@@ -103,12 +105,12 @@
 }
 
 .nav-main {
-  grid-area: nav;
   display: flex;
+  flex: 1 1 auto;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 0.15rem 0.85rem;
+  gap: 0.15rem 0.75rem;
   min-width: 0;
   height: 36px;
 }
@@ -118,13 +120,14 @@
   text-decoration: none;
   font-size: 15px;
   font-weight: 500;
-  padding: 0.4rem 0.75rem;
+  padding: 0 0.7rem;
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
   white-space: nowrap;
-  line-height: 1.2;
+  line-height: 1;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   height: 36px;
   box-sizing: border-box;
 }
@@ -139,13 +142,11 @@
   font-weight: 600;
 }
 
-.topbar-cta {
-  grid-area: cta;
-  justify-self: end;
-  align-self: center;
+.topbar > .topbar-inner > .topbar-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   height: 36px;
   text-decoration: none;
   font-size: 14px;
@@ -161,63 +162,66 @@
   line-height: 1;
 }
 
-.topbar-cta:hover {
+.topbar > .topbar-inner > .topbar-cta:hover {
   filter: brightness(1.06);
   color: #fff;
   box-shadow: 0 4px 24px rgba(14, 165, 233, 0.55), 0 0 32px rgba(56, 189, 248, 0.4);
 }
 
-.topbar-cta--mobile {
-  display: none;
+/* Mobile-CTA im Nav: auf Desktop immer versteckt */
+.topbar .topbar-cta--mobile,
+.nav-main .topbar-cta--mobile {
+  display: none !important;
 }
 
-/* Tablet: Navigation enger, sonst Überlappung */
+/* Tablet: Navigation enger */
 @media (max-width: 1100px) and (min-width: 992px) {
   .nav-main {
-    gap: 0.1rem 0.45rem;
+    gap: 0.1rem 0.4rem;
   }
 
   .nav-main a {
     font-size: 14px;
-    padding: 0.4rem 0.55rem;
+    padding: 0 0.5rem;
   }
 
-  .topbar-cta {
+  .topbar > .topbar-inner > .topbar-cta {
     font-size: 13px;
     padding: 0 0.85rem;
   }
-
-  .topbar a.logo img {
-    height: 30px;
-    max-width: 140px;
-  }
 }
 
-/* Mobile: Hamburger-Menü — Logo + Menü bleiben eine Zeile */
+/* Mobile: Hamburger — Logo + Menü eine Zeile, gleiche Höhe */
 @media (max-width: 991px) {
   .topbar-inner {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "logo menu"
-      "nav nav";
-    padding: 0.5rem 1rem;
-    gap: 0;
+    height: auto;
     min-height: 52px;
+    padding: 0.5rem 1rem;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .topbar a.logo {
+    order: 1;
+    margin-right: auto;
   }
 
   .topbar-menu-btn {
     display: inline-flex;
+    order: 2;
   }
 
-  .topbar-cta {
-    display: none;
+  .topbar > .topbar-inner > .topbar-cta {
+    display: none !important;
   }
 
   .nav-main {
+    order: 3;
     display: none;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: stretch;
+    justify-content: flex-start;
     gap: 0.15rem;
     width: 100%;
     height: auto;
@@ -233,24 +237,30 @@
   .nav-main a {
     width: 100%;
     height: auto;
+    min-height: 44px;
     box-sizing: border-box;
     font-size: 16px;
     padding: 0.75rem 0.85rem;
     white-space: normal;
     text-align: left;
+    justify-content: flex-start;
   }
 
-  .nav-main .topbar-cta--mobile {
-    display: inline-flex;
+  .topbar.is-open .nav-main .topbar-cta--mobile {
+    display: inline-flex !important;
     width: 100%;
     height: auto;
     min-height: 44px;
     margin-top: 0.5rem;
+    justify-content: center;
     text-align: center;
-    box-sizing: border-box;
     font-size: 16px;
     padding: 0.85rem 1rem;
     white-space: nowrap;
+    color: #fff;
+    background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 45%, #0284c7 100%);
+    box-shadow: 0 2px 16px rgba(14, 165, 233, 0.45);
+    border-radius: 999px;
   }
 
   body.topbar-nav-open {
@@ -260,11 +270,12 @@
 
 @media (max-width: 480px) {
   .topbar a.logo {
-    height: 32px;
+    height: 26px;
   }
 
   .topbar a.logo img {
-    height: 28px;
+    height: 26px;
+    max-height: 26px;
     max-width: 120px;
   }
 }
