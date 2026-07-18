@@ -274,20 +274,22 @@
 
 .adlions-trust-stats strong {
   display: block;
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-size: clamp(1.25rem, 2.8vw, 1.65rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: #0369a1;
   margin-bottom: 0.2rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .adlions-trust-stats span {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #64748b;
+  line-height: 1.25;
 }
 
 .adlions-ueber-uns-media {
