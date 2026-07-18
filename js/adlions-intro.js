@@ -25,7 +25,7 @@
     }
 
     root.addEventListener("animationend", onAnimEnd);
-    window.setTimeout(finish, reduced ? 500 : 1300);
+    window.setTimeout(finish, reduced ? 350 : 750);
   }
 
   function start() {
@@ -34,8 +34,8 @@
         root.classList.add("is-ready");
         window.setTimeout(function () {
           if (!reduced) root.classList.add("is-shine");
-        }, reduced ? 0 : 720);
-        window.setTimeout(leave, reduced ? 700 : 2100);
+        }, reduced ? 0 : 280);
+        window.setTimeout(leave, reduced ? 450 : 1050);
       });
     });
   }
