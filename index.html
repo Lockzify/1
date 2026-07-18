@@ -1445,14 +1445,56 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       }
     }
 
-    /* Below-the-fold: less layout/paint cost while scrolling */
-    .adlions-bereich-detail,
-    .adlions-showdown,
-    .adlions-saeulen-ads,
-    .footer-section,
-    footer {
-      content-visibility: auto;
-      contain-intrinsic-size: auto 720px;
+    /* content-visibility nur Desktop – auf Mobile erzeugt der Platzhalter leere Lücken */
+    @media screen and (min-width: 992px) {
+      .adlions-bereich-detail,
+      .adlions-showdown-section,
+      .adlions-saeulen-ads-section,
+      .footer-section,
+      footer {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 480px;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      .adlions-bereich-detail {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+      }
+
+      .adlions-bereich-detail-inner {
+        gap: 1.25rem !important;
+      }
+
+      .adlions-saeulen-ads-section {
+        padding-top: 2.25rem !important;
+        padding-bottom: 2.25rem !important;
+      }
+
+      .adlions-saeulen-ads-header {
+        margin-bottom: 1.35rem !important;
+      }
+
+      .adlions-saeulen-ads-pillars {
+        gap: 0.9rem !important;
+      }
+
+      .adlions-saeulen-ads-pillar {
+        padding: 1.25rem 1.1rem !important;
+      }
+
+      .adlions-showdown-section {
+        padding-top: 2.25rem !important;
+        padding-bottom: 2.25rem !important;
+      }
+
+      /* Reveal nicht als leerer Block: sofort sichtbar, nur leichter Fade */
+      .adlions-reveal,
+      .adlions-reveal-stagger > * {
+        opacity: 1;
+        transform: none;
+      }
     }
 
   </style>
@@ -2157,14 +2199,11 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       var nodes = document.querySelectorAll('.adlions-reveal, .adlions-reveal-stagger');
       if (!nodes.length) return;
 
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        nodes.forEach(function (el) {
-          el.classList.add('is-visible');
-        });
-        return;
-      }
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-      if (!('IntersectionObserver' in window)) {
+      // Mobile: kein verzögertes Einblenden – vermeidet große leere Flächen
+      if (reduceMotion || isMobile || !('IntersectionObserver' in window)) {
         nodes.forEach(function (el) {
           el.classList.add('is-visible');
         });
@@ -2179,13 +2218,13 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
             observer.unobserve(entry.target);
           });
         },
-        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+        { root: null, rootMargin: '0px 0px -4% 0px', threshold: 0.08 }
       );
 
       nodes.forEach(function (el) {
         var rect = el.getBoundingClientRect();
         var vh = window.innerHeight || document.documentElement.clientHeight;
-        if (rect.top < vh * 0.92) {
+        if (rect.top < vh * 0.95) {
           el.classList.add('is-visible');
         } else {
           observer.observe(el);
