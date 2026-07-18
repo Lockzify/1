@@ -280,3 +280,30 @@
     max-width: 170px;
   }
 }
+
+/* —— Site-Footer (Karriere-Stil, alle Seiten) —— */
+footer.adlions-site-footer {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  border: 0;
+}
+
+footer.adlions-site-footer nav {
+  display: block;
+}
+
+footer.adlions-site-footer a {
+  color: #7dd3fc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer.adlions-site-footer a:hover {
+  text-decoration: underline;
+  color: #bae6fd;
+}
