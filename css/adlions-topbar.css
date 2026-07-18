@@ -15,8 +15,8 @@
   max-width: 1160px;
   margin: 0 auto;
   padding: 0 1rem;
-  min-height: 56px;
-  height: 56px;
+  min-height: 64px;
+  height: 64px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -31,7 +31,7 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  height: 28px;
+  height: 42px;
   margin: 0 !important;
   text-decoration: none;
   line-height: 0;
@@ -39,10 +39,10 @@
 
 .topbar a.logo img {
   display: block;
-  height: 28px;
+  height: 42px;
   width: auto;
-  max-height: 28px;
-  max-width: 140px;
+  max-height: 42px;
+  max-width: 200px;
   object-fit: contain;
   object-position: left center;
 }
@@ -271,12 +271,12 @@
 
 @media (max-width: 480px) {
   .topbar a.logo {
-    height: 26px;
+    height: 36px;
   }
 
   .topbar a.logo img {
-    height: 26px;
-    max-height: 26px;
-    max-width: 120px;
+    height: 36px;
+    max-height: 36px;
+    max-width: 170px;
   }
 }
