@@ -32,9 +32,6 @@
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         root.classList.add("is-ready");
-        window.setTimeout(function () {
-          if (!reduced) root.classList.add("is-shine");
-        }, reduced ? 0 : 280);
         window.setTimeout(leave, reduced ? 450 : 1050);
       });
     });
