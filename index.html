@@ -33,6 +33,23 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   <link href="/css/scalecom-2-0.shared.5897f168b.css" rel="stylesheet" type="text/css" />
   <link href="/css/adlions-modern.css" rel="stylesheet" type="text/css" />
   <link href="/css/adlions-topbar.css" rel="stylesheet" type="text/css" />
+  <link href="/css/adlions-intro.css" rel="stylesheet" type="text/css" />
+  <link rel="preload" href="/assets/adlions-lion.webp" as="image" type="image/webp" />
+  <link rel="preload" href="/assets/adlions-logo-white.webp" as="image" type="image/webp" />
+  <script>
+    document.documentElement.classList.add("adlions-intro-active");
+    window.setTimeout(function () {
+      document.documentElement.classList.remove("adlions-intro-active");
+      var el = document.getElementById("adlions-intro");
+      if (el) el.remove();
+    }, 5000);
+  </script>
+  <noscript>
+    <style>
+      html.adlions-intro-active { overflow: auto !important; }
+      #adlions-intro { display: none !important; }
+    </style>
+  </noscript>
   <style>
     :root {
       --adlions-font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -1538,6 +1555,23 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 </head>
 
 <body>
+  <div id="adlions-intro" class="adlions-intro" aria-hidden="true">
+    <div class="adlions-intro__veil"></div>
+    <div class="adlions-intro__noise" aria-hidden="true"></div>
+    <div class="adlions-intro__glow" aria-hidden="true"></div>
+    <div class="adlions-intro__ring" aria-hidden="true"></div>
+    <div class="adlions-intro__stage">
+      <div class="adlions-intro__mark-wrap">
+        <img class="adlions-intro__mark" src="/assets/adlions-lion.webp" alt="" width="220" height="220" decoding="async" />
+      </div>
+      <div class="adlions-intro__wordmark-wrap">
+        <img class="adlions-intro__wordmark" src="/assets/adlions-logo-white.webp" alt="ADLIONS" width="520" height="180" decoding="async" />
+        <span class="adlions-intro__shine" aria-hidden="true"></span>
+      </div>
+      <div class="adlions-intro__rule" aria-hidden="true"></div>
+      <p class="adlions-intro__tag">Marketing für Handwerk</p>
+    </div>
+  </div>
   <header class="topbar">
     <div class="topbar-inner">
       <a class="logo" href="/index.html" aria-label="ADLIONS – zur Startseite"><img src="/output-onlinepngtools-7.webp"
@@ -2158,6 +2192,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
     });
   </script>
   <script src="/js/adlions-topbar.js" defer></script>
+  <script src="/js/adlions-intro.js" defer></script>
 </body>
 
 </html>
