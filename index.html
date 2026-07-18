@@ -31,9 +31,9 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap"
     rel="stylesheet" />
   <link href="/css/scalecom-2-0.shared.5897f168b.css" rel="stylesheet" type="text/css" />
-  <link href="/css/adlions-modern.css" rel="stylesheet" type="text/css" />
-  <link href="/css/adlions-topbar.css" rel="stylesheet" type="text/css" />
-  <link href="/css/adlions-intro.css" rel="stylesheet" type="text/css" />
+  <link href="/css/adlions-modern.css?v=20260718b" rel="stylesheet" type="text/css" />
+  <link href="/css/adlions-topbar.css?v=20260718b" rel="stylesheet" type="text/css" />
+  <link href="/css/adlions-intro.css?v=20260718b" rel="stylesheet" type="text/css" />
   <link rel="preload" href="/assets/adlions-logo-white.webp" as="image" type="image/webp" />
   <script>
     document.documentElement.classList.add("adlions-intro-active");
@@ -363,45 +363,52 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       align-items: start;
     }
 
+    /* Team: HTML-Reihenfolge cases → copy; Desktop legt Cases links */
     .adlions-bereich-detail--team .adlions-bereich-detail-inner {
       grid-template-columns: minmax(300px, 600px) minmax(0, 1fr);
     }
 
-    .adlions-bereich-detail--team .adlions-bereich-detail-copy {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
     .adlions-bereich-detail--team .adlions-bereich-detail-cases {
-      grid-column: 1;
-      grid-row: 1;
       justify-self: start;
     }
 
     @media screen and (max-width: 991px) {
-      /* Höhere Spezifität nötig: sonst bleibt Team-Desktop-Grid (2 Spalten) aktiv */
+      /* Flex statt Grid: verhindert 0px-Spalten / unsichtbare Case-Karten auf iOS */
       .adlions-bereich-detail-inner,
       .adlions-bereich-detail--neu .adlions-bereich-detail-inner,
       .adlions-bereich-detail--team .adlions-bereich-detail-inner {
-        grid-template-columns: minmax(0, 1fr) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
         width: 100%;
         max-width: 100%;
       }
 
-      .adlions-bereich-detail--team .adlions-bereich-detail-copy,
-      .adlions-bereich-detail--team .adlions-bereich-detail-cases,
+      .adlions-bereich-detail-copy,
+      .adlions-bereich-detail-cases,
       .adlions-bereich-detail--neu .adlions-bereich-detail-copy,
-      .adlions-bereich-detail--neu .adlions-bereich-detail-cases {
-        grid-column: 1 / -1 !important;
-        grid-row: auto !important;
-        justify-self: stretch !important;
+      .adlions-bereich-detail--neu .adlions-bereich-detail-cases,
+      .adlions-bereich-detail--team .adlions-bereich-detail-copy,
+      .adlions-bereich-detail--team .adlions-bereich-detail-cases {
+        display: block !important;
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
+        flex: 0 0 auto !important;
+        justify-self: stretch !important;
       }
 
       .adlions-bereich-detail-cases {
+        display: grid !important;
         grid-template-columns: minmax(0, 1fr) !important;
+      }
+
+      .adlions-bereich-detail-cases,
+      .adlions-bereich-detail-cases > *,
+      .adlions-bereich-case-card {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
       }
     }
 
@@ -1509,8 +1516,9 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       /* Reveal nicht als leerer Block: sofort sichtbar */
       .adlions-reveal,
       .adlions-reveal-stagger > * {
-        opacity: 1;
-        transform: none;
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
       }
     }
 
@@ -1862,7 +1870,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           <li>Transparentes Tracking: du siehst, was sich lohnt – ohne Marketing-Bingo</li>
         </ul>
       </div>
-      <div class="adlions-bereich-detail-cases adlions-reveal-stagger">
+      <div class="adlions-bereich-detail-cases">
         <article class="adlions-bereich-case-card adlions-bereich-case-card--alcheikh">
           <div class="adlions-bereich-case-card__visual">
             <img src="/assets/cases/case-team-trockenbau.webp" alt="Trockenbau-Team vor der Baustelle"
@@ -1901,6 +1909,41 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   <section id="mitarbeitergewinnung" class="adlions-bereich-detail adlions-bereich-detail--team"
     aria-labelledby="adlions-bereich-team-title">
     <div class="adlions-bereich-detail-inner">
+      <!-- Cases zuerst im DOM: auf Mobile sofort sichtbar; Desktop via Grid links -->
+      <div class="adlions-bereich-detail-cases">
+        <article class="adlions-bereich-case-card adlions-bereich-case-card--tiger">
+          <div class="adlions-bereich-case-card__visual">
+            <img src="/assets/cases/case-team-trockeneis.webp" alt="Trockeneis-Team vor Ort"
+              width="960" height="640" loading="eager" decoding="async" fetchpriority="high" />
+          </div>
+          <div class="adlions-bereich-case-card__body">
+            <div class="adlions-bereich-case-brand">
+              <img src="/vorschau/Logo-a1d4fd7f-Photoroom.webp" alt="Tiger-Service" width="152" height="38"
+                loading="eager" decoding="async" />
+            </div>
+            <ul class="adlions-bereich-case-kpis">
+              <li><strong>33</strong> Bewerbungen in 14 Tagen</li>
+              <li><strong>1</strong> erfolgreiche Einstellung nach 2 Wochen</li>
+            </ul>
+          </div>
+        </article>
+        <article class="adlions-bereich-case-card adlions-bereich-case-card--goth">
+          <div class="adlions-bereich-case-card__visual">
+            <img src="/assets/cases/case-team-elektro.webp" alt="Elektriker-Team auf der Baustelle"
+              width="960" height="640" loading="eager" decoding="async" />
+          </div>
+          <div class="adlions-bereich-case-card__body">
+            <div class="adlions-bereich-case-brand">
+              <img src="/vorschau/goth.webp" alt="Goth Elektroanlagen" width="152" height="38" loading="eager"
+                decoding="async" />
+            </div>
+            <ul class="adlions-bereich-case-kpis">
+              <li><strong>14</strong> Bewerbungen in 7 Tagen</li>
+              <li><strong>17,40 €</strong> Kosten pro Bewerbung</li>
+            </ul>
+          </div>
+        </article>
+      </div>
       <div class="adlions-bereich-detail-copy adlions-reveal">
         <span class="adlions-eyebrow">Mitarbeitergewinnung</span>
         <h2 id="adlions-bereich-team-title" class="adlions-bereich-detail-title">Mitarbeitergewinnung mit <em>Klarheit</em>
@@ -1912,40 +1955,6 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           <li>Targeting auf passende Bewerber in deiner Region</li>
           <li>Weniger Streuverluste: mehr qualifizierte Bewerbungen pro Euro</li>
         </ul>
-      </div>
-      <div class="adlions-bereich-detail-cases adlions-reveal-stagger">
-        <article class="adlions-bereich-case-card adlions-bereich-case-card--tiger">
-          <div class="adlions-bereich-case-card__visual">
-            <img src="/assets/cases/case-team-trockeneis.webp" alt="Trockeneis-Team vor Ort"
-              width="960" height="640" loading="lazy" decoding="async" />
-          </div>
-          <div class="adlions-bereich-case-card__body">
-            <div class="adlions-bereich-case-brand">
-              <img src="/vorschau/Logo-a1d4fd7f-Photoroom.webp" alt="Tiger-Service" width="152" height="38"
-                loading="lazy" decoding="async" />
-            </div>
-            <ul class="adlions-bereich-case-kpis">
-              <li><strong>33</strong> Bewerbungen in 14 Tagen</li>
-              <li><strong>1</strong> erfolgreiche Einstellung nach 2 Wochen</li>
-            </ul>
-          </div>
-        </article>
-        <article class="adlions-bereich-case-card adlions-bereich-case-card--goth">
-          <div class="adlions-bereich-case-card__visual">
-            <img src="/assets/cases/case-team-elektro.webp" alt="Elektriker-Team auf der Baustelle"
-              width="960" height="640" loading="lazy" decoding="async" />
-          </div>
-          <div class="adlions-bereich-case-card__body">
-            <div class="adlions-bereich-case-brand">
-              <img src="/vorschau/goth.webp" alt="Goth Elektroanlagen" width="152" height="38" loading="lazy"
-                decoding="async" />
-            </div>
-            <ul class="adlions-bereich-case-kpis">
-              <li><strong>14</strong> Bewerbungen in 7 Tagen</li>
-              <li><strong>17,40 €</strong> Kosten pro Bewerbung</li>
-            </ul>
-          </div>
-        </article>
       </div>
     </div>
   </section>
