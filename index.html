@@ -71,38 +71,85 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
       body {
         overflow-x: hidden;
+        max-width: 100%;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      img,
+      svg,
+      video,
+      iframe {
+        max-width: 100%;
+        height: auto;
+      }
+
+      h1, h2, h3, h4, h5, h6,
+      p, li, a, span, label, button,
+      .button, .w-button {
+        overflow-wrap: anywhere;
+        word-wrap: break-word;
+        word-break: break-word;
+        max-width: 100%;
       }
 
       .cf-1140px-wrapper,
-      .cf-1140px-wrapper.cf-hero-text-wrap {
+      .cf-1140px-wrapper.cf-hero-text-wrap,
+      .adlions-bereich-detail-inner,
+      .adlions-bereich-detail-copy,
+      .adlions-bereich-detail-cases,
+      .adlions-showdown-grid,
+      .adlions-showdown-col,
+      .adlions-saeulen-ads-pillars,
+      .adlions-saeulen-ads-pillar,
+      .adlions-ueber-uns-inner,
+      .adlions-kontakt-card,
+      .footer,
+      .footer-section {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         box-sizing: border-box;
       }
 
       .cf-hero-section-2.bg .home-left-wrapper {
         width: 100% !important;
         max-width: 100% !important;
-        min-width: 0;
+        min-width: 0 !important;
         box-sizing: border-box;
         align-items: stretch !important;
         text-align: left !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
       }
 
       .cf-hero-section-2.bg .home-left-wrapper .cf-64px-heading {
-        font-size: clamp(1.35rem, 6vw + 0.35rem, 2.5rem) !important;
-        line-height: 1.14 !important;
-        max-width: 100%;
+        font-size: clamp(1.3rem, 6.2vw + 0.2rem, 2.15rem) !important;
+        line-height: 1.16 !important;
+        max-width: 100% !important;
+        width: 100% !important;
         text-align: left !important;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        word-break: break-word;
         hyphens: auto;
+      }
+
+      .cf-hero-section-2.bg .home-left-wrapper .cf-64px-heading .text-span-22,
+      .cf-hero-section-2.bg .home-left-wrapper .cf-64px-heading em {
+        display: inline;
+        white-space: normal !important;
+        overflow-wrap: anywhere;
       }
 
       .cf-hero-section-2.bg .home-left-wrapper .cf-18px-paragraph.header-2 {
         max-width: 100% !important;
+        width: 100% !important;
         text-align: left !important;
-        overflow-wrap: break-word;
+        overflow-wrap: anywhere;
       }
 
       .cf-hero-section-2.bg .home-left-wrapper .button.w-button {
@@ -110,33 +157,70 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         text-align: center;
         box-sizing: border-box;
         max-width: 100%;
+        width: 100%;
       }
 
-      .adlions-bereich-detail-title {
-        font-size: clamp(1.35rem, 5vw + 0.2rem, 2rem);
-        overflow-wrap: break-word;
+      .adlions-bereich-detail {
+        padding-left: max(1rem, env(safe-area-inset-left, 0px));
+        padding-right: max(1rem, env(safe-area-inset-right, 0px));
+        overflow-x: clip;
+      }
+
+      .adlions-bereich-detail-copy {
+        padding: 1.1rem 1rem !important;
+      }
+
+      .adlions-bereich-detail-title,
+      .adlions-saeulen-ads-title,
+      .adlions-showdown-title,
+      .adlions-ueber-uns-title,
+      #kontakt .header-centered .h2.white {
+        font-size: clamp(1.3rem, 5.4vw + 0.15rem, 1.95rem) !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        max-width: 100%;
+        hyphens: auto;
       }
 
       .adlions-bereich-detail-lead,
-      .adlions-bereich-detail-list li {
+      .adlions-bereich-detail-list li,
+      .adlions-saeulen-ads-pillar p,
+      .adlions-showdown-item,
+      .adlions-showdown-item p,
+      .adlions-ueber-uns-body p,
+      .adlions-kontakt-card-lead,
+      .adlions-kontakt-link-value,
+      .menu-link {
         max-width: 100%;
-        overflow-wrap: break-word;
-      }
-
-      .adlions-saeulen-ads-title {
-        font-size: clamp(1.35rem, 5vw + 0.2rem, 2.25rem);
-        overflow-wrap: break-word;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: normal !important;
       }
 
       .adlions-saeulen-ads-step {
-        font-size: clamp(1.65rem, 7vw, 2.75rem);
+        font-size: clamp(1.5rem, 6.5vw, 2.25rem);
       }
 
-      .adlions-showdown-title {
-        font-size: clamp(1.35rem, 5vw + 0.2rem, 2.35rem);
-        overflow-wrap: break-word;
+      .adlions-showdown-col {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
       }
 
+      .adlions-showdown-item {
+        min-width: 0;
+      }
+
+      .footer .menu-link {
+        white-space: normal !important;
+        display: inline-block;
+      }
+
+      .cf-hero-creatives-side,
+      .cf-hero-creatives-side .waves-gallery-hero-1,
+      .cf-hero-creatives-side .adlions-creative-marquee {
+        max-width: 100%;
+        overflow: hidden;
+      }
     }
 
     /* Smooth-Scroll per JS (kurz gedeckelt) – siehe adlionsInitFasterNavScroll */
@@ -296,7 +380,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     @media screen and (max-width: 991px) {
       .adlions-bereich-detail-inner {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .adlions-bereich-detail--team .adlions-bereich-detail-copy,
@@ -379,10 +463,11 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     .adlions-bereich-detail-cases {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: clamp(1rem, 2.5vw, 1.5rem);
       width: 100%;
       min-width: 0;
+      max-width: 100%;
       justify-self: end;
       align-items: stretch;
     }
@@ -395,8 +480,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     @media screen and (max-width: 560px) {
       .adlions-bereich-detail-cases {
-        grid-template-columns: 1fr;
-        max-width: min(100%, 400px);
+        grid-template-columns: minmax(0, 1fr);
+        max-width: 100%;
         margin-inline: auto;
       }
     }
@@ -580,15 +665,18 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     .adlions-saeulen-ads-pillars {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(1.25rem, 2.5vw, 2rem);
       align-items: stretch;
+      min-width: 0;
+      max-width: 100%;
     }
 
     @media screen and (max-width: 991px) {
       .adlions-saeulen-ads-pillars {
-        grid-template-columns: 1fr;
-        max-width: 32rem;
+        grid-template-columns: minmax(0, 1fr);
+        max-width: min(32rem, 100%);
+        width: 100%;
         margin: 0 auto;
       }
     }
@@ -708,14 +796,16 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     .adlions-showdown-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: clamp(1.5rem, 3.5vw, 2.5rem);
       align-items: stretch;
+      min-width: 0;
+      max-width: 100%;
     }
 
     @media screen and (max-width: 900px) {
       .adlions-showdown-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .adlions-showdown-col-head {
@@ -961,7 +1051,9 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     @media screen and (max-width: 900px) {
       .adlions-ueber-uns-inner {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+        max-width: 100%;
       }
     }
 

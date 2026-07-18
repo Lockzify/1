@@ -437,14 +437,43 @@
   body {
     font-size: 16px;
     line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .adlions-bereich-detail-copy,
+  .adlions-bereich-detail-inner,
+  .adlions-bereich-detail-cases,
+  .adlions-bereich-case-card,
+  .adlions-kontakt-card,
+  .adlions-kontakt-links,
+  .adlions-kontakt-link {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .adlions-bereich-detail-copy {
+    padding: 1.1rem 1rem;
   }
 
   .adlions-bereich-case-kpis li {
     font-size: 0.95rem;
+    overflow-wrap: anywhere;
   }
 
   .adlions-kontakt-card {
     padding: 1.25rem 1rem;
+    width: 100%;
+  }
+
+  .adlions-kontakt-link-value {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .adlions-ueber-uns-body,
+  .adlions-ueber-uns-body p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 }
 
