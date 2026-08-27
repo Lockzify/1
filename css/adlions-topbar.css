@@ -4,11 +4,11 @@
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  border-bottom: 1px solid rgba(139, 26, 24, 0.2);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 24px rgba(14, 165, 233, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 24px rgba(92, 2, 1, 0.08);
 }
 
 .topbar-inner {
@@ -54,7 +54,7 @@
   width: 36px;
   height: 36px;
   padding: 0;
-  border: 1px solid rgba(14, 165, 233, 0.25);
+  border: 1px solid rgba(92, 2, 1, 0.25);
   border-radius: 10px;
   background: #fff;
   cursor: pointer;
@@ -134,12 +134,12 @@
 }
 
 .nav-main a:hover {
-  background: rgba(224, 242, 254, 0.85);
-  color: #0ea5e9;
+  background: rgba(241, 240, 240, 0.85);
+  color: #5C0201;
 }
 
 .nav-main a[aria-current="page"] {
-  color: #0284c7;
+  color: #4A0101;
   font-weight: 600;
 }
 
@@ -156,8 +156,8 @@
   border-radius: 999px;
   white-space: nowrap;
   color: #fff;
-  background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 45%, #0284c7 100%);
-  box-shadow: 0 2px 16px rgba(14, 165, 233, 0.45), 0 0 24px rgba(56, 189, 248, 0.35);
+  background: linear-gradient(135deg, #8B1A18 0%, #5C0201 45%, #4A0101 100%);
+  box-shadow: 0 2px 16px rgba(92, 2, 1, 0.45), 0 0 24px rgba(139, 26, 24, 0.35);
   transition: filter 0.15s ease, box-shadow 0.15s ease;
   box-sizing: border-box;
   line-height: 1;
@@ -166,7 +166,7 @@
 .topbar > .topbar-inner > .topbar-cta:hover {
   filter: brightness(1.06);
   color: #fff;
-  box-shadow: 0 4px 24px rgba(14, 165, 233, 0.55), 0 0 32px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 24px rgba(92, 2, 1, 0.55), 0 0 32px rgba(139, 26, 24, 0.4);
 }
 
 /* Mobile-CTA im Nav: auf Desktop immer versteckt */
@@ -228,7 +228,7 @@
     height: auto;
     margin-top: 0.65rem;
     padding: 0.65rem 0 0.25rem;
-    border-top: 1px solid rgba(14, 165, 233, 0.15);
+    border-top: 1px solid rgba(92, 2, 1, 0.15);
   }
 
   .topbar.is-open .nav-main {
@@ -259,8 +259,8 @@
     padding: 0.85rem 1rem;
     white-space: nowrap;
     color: #fff;
-    background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 45%, #0284c7 100%);
-    box-shadow: 0 2px 16px rgba(14, 165, 233, 0.45);
+    background: linear-gradient(135deg, #8B1A18 0%, #5C0201 45%, #4A0101 100%);
+    box-shadow: 0 2px 16px rgba(92, 2, 1, 0.45);
     border-radius: 999px;
   }
 
@@ -283,8 +283,8 @@
 
 /* —— Site-Footer (Karriere-Stil, alle Seiten) —— */
 footer.adlions-site-footer {
-  background: #0f172a;
-  color: #94a3b8;
+  background: #1E1A1A;
+  color: #a8a29e;
   padding: 2rem 1.25rem;
   text-align: center;
   font-size: 14px;
@@ -298,12 +298,12 @@ footer.adlions-site-footer nav {
 }
 
 footer.adlions-site-footer a {
-  color: #7dd3fc;
+  color: #C48A88;
   text-decoration: none;
   font-weight: 500;
 }
 
 footer.adlions-site-footer a:hover {
   text-decoration: underline;
-  color: #bae6fd;
+  color: #E8C4C2;
 }
