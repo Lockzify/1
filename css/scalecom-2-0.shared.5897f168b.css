@@ -2266,16 +2266,16 @@ textarea.w-input, textarea.w-select {
   --untitled-ui--gray800: #1d2939;
   --untitled-ui--gray100: #f2f4f7;
   --untitled-ui--primary800: #53389e;
-  --conversion-flow-library--sandy-brown: #8B1A18;
+  --conversion-flow-library--sandy-brown: #59c3ea;
   --conversion-flow-library--light-coral: #ff5e69;
-  --conversion-flow-library--medium-purple: #5C0201;
+  --conversion-flow-library--medium-purple: #4990b7;
   --conversion-flow-library--coral: #ff8a56;
   --waves-library--dark-elevation: #ede0d8;
   --waves-library--black: #131313;
   --radiant-ui-components-library-marketplace--color--heading-dark: #150438;
   --radiant-ui-components-library-marketplace--color--white: white;
   --radiant-ui-components-library-marketplace--color--body-font-dark: #6d6d6d;
-  --radiant-ui-components-library-marketplace--color--theme-color: #5C0201;
+  --radiant-ui-components-library-marketplace--color--theme-color: #116df8;
   --radiant-ui-components-library-marketplace--color--linear-color-two: #eff2ff;
   --radiant-ui-components-library-marketplace--linear-color-three: #e0ecff;
   --radiant-ui-components-library-marketplace--color--button-background-dark: #131218;
@@ -2698,7 +2698,7 @@ figcaption {
 
 .button {
   text-align: center;
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   border-radius: 2px;
   min-width: 200px;
   height: 48px;
@@ -2718,7 +2718,7 @@ figcaption {
 }
 
 .button.top-border.weiss {
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   min-width: 0;
   margin-top: 0;
   font-weight: 700;
@@ -2752,7 +2752,7 @@ figcaption {
 }
 
 .button.top-border.weiss.obenabdn.abstnadoben {
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   margin-top: 40px;
 }
 
@@ -2769,7 +2769,7 @@ figcaption {
 }
 
 .button.top-border.weiss.sdaf {
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   height: 42px;
   padding-top: 6px;
   padding-bottom: 6px;
@@ -2808,7 +2808,7 @@ figcaption {
 
 .button.weiss {
   text-transform: uppercase;
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   border-radius: 25px;
   padding-top: 9px;
   padding-left: 25px;
@@ -2819,7 +2819,7 @@ figcaption {
 
 .button.weiss:hover {
   color: #fff;
-  background-image: linear-gradient(133deg, #5C0201, #13181f);
+  background-image: linear-gradient(133deg, #4990b7, #13181f);
   border-style: none;
   border-color: #fff;
   padding-top: 9px;
@@ -2833,12 +2833,12 @@ figcaption {
 }
 
 .button.weiss.reelacademy.blau {
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
 }
 
 .button.sdfs {
   text-transform: uppercase;
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   border-radius: 25px;
   margin-top: 20px;
   padding-top: 9px;
@@ -2850,13 +2850,13 @@ figcaption {
 
 .button.sdfs:hover {
   color: #fff;
-  background-image: linear-gradient(133deg, #5C0201, #030303);
+  background-image: linear-gradient(133deg, #4990b7, #030303);
   border-style: none;
   padding-top: 11px;
 }
 
 .button.sdfs.adsfa {
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   font-family: Montserrat o, sans-serif;
   font-style: italic;
   font-weight: 700;
@@ -2934,9 +2934,9 @@ figcaption {
 }
 
 .button-3.top-border:hover {
-  color: #8B1A18;
+  color: #59c3ea;
   background-image: none;
-  border-color: #8B1A18;
+  border-color: #59c3ea;
 }
 
 .rich-text-block {
@@ -2953,7 +2953,7 @@ figcaption {
 
 .rich-text-block a {
   color: #fff;
-  background-image: linear-gradient(102deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(102deg, #4990b7, #59c3ea);
   border: 1px #000;
   border-radius: 20px;
   justify-content: space-between;
@@ -3383,7 +3383,7 @@ figcaption {
 
 .hero-intro {
   background-color: #003fe5;
-  background-image: linear-gradient(133deg, #8B1A18, #5C0201);
+  background-image: linear-gradient(133deg, #59c3ea, #4990b7);
   overflow: hidden;
 }
 
@@ -3696,7 +3696,7 @@ figcaption {
 }
 
 .section-blue._2 {
-  background-image: linear-gradient(111deg, #5C0201, #8B1A18b0), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/66d824758bb21aece5d3629f_BG_Webseite.png");
+  background-image: linear-gradient(111deg, #4990b7, #59c3eab0), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/66d824758bb21aece5d3629f_BG_Webseite.png");
   background-position: 0 0, 50%;
   background-repeat: repeat, no-repeat;
   background-size: auto, cover;
@@ -3981,7 +3981,7 @@ figcaption {
   background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee0172361533a91ce3c9a_rawpixel-com-340967.jpg"), linear-gradient(133deg, #1f33fc, #06f 99%);
   background-position: 50%, 0 0;
   background-size: cover, auto;
-  border-top: 9px solid #5C0201;
+  border-top: 9px solid #4990b7;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   justify-content: center;
@@ -4468,7 +4468,7 @@ figcaption {
 
 .services-icon._1.safd {
   background-color: var(--white);
-  background-image: linear-gradient(#13181f, #13181f), linear-gradient(133deg, #5C0201, #8B1A18), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee017236153a7fcce3ccc_diseno-de-sitio-web-simbolo.svg");
+  background-image: linear-gradient(#13181f, #13181f), linear-gradient(133deg, #4990b7, #59c3ea), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee017236153a7fcce3ccc_diseno-de-sitio-web-simbolo.svg");
   background-position: 0 0, 0 0, 45% 55%;
   background-repeat: repeat, repeat, no-repeat;
   background-size: auto, auto, 28px;
@@ -4616,7 +4616,7 @@ figcaption {
 
 .testimonial-box._1000 {
   background-color: var(--background);
-  background-image: linear-gradient(93deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(93deg, #4990b7, #59c3ea);
   border-style: none;
   border-radius: 2px;
   width: 100%;
@@ -4889,7 +4889,7 @@ figcaption {
 }
 
 .submit-button {
-  background-color: #8B1A18;
+  background-color: #59c3ea;
   border-radius: 3px;
   width: 100%;
   height: 50px;
@@ -5245,7 +5245,7 @@ figcaption {
 }
 
 .menu-link.w--current {
-  color: #5C0201;
+  color: #4990b7;
 }
 
 .menu-link.no-border {
@@ -5284,7 +5284,7 @@ figcaption {
 }
 
 .inner-hero {
-  background-image: linear-gradient(109deg, #5C0201e0, #8B1A18), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee0172361531614ce3c83_ionut-comanici-250659.jpg");
+  background-image: linear-gradient(109deg, #4990b7e0, #59c3ea), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee0172361531614ce3c83_ionut-comanici-250659.jpg");
   background-position: 0 0, 50%;
   background-repeat: repeat, no-repeat;
   background-size: auto, cover;
@@ -6227,7 +6227,7 @@ figcaption {
 }
 
 .small-icon._1 {
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
@@ -6362,7 +6362,7 @@ figcaption {
 
 .circle {
   text-align: center;
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee6691a07b03e35e05ab1_iconweiss.png"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee6691a07b03e35e05ab1_iconweiss.png"), linear-gradient(133deg, #4990b7, #59c3ea);
   background-position: 50%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 25px, auto;
@@ -6379,7 +6379,7 @@ figcaption {
 }
 
 .circle.world {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/635a84eaa3441036c692b1a9_lo%CC%88wenfrankfurt.png"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/635a84eaa3441036c692b1a9_lo%CC%88wenfrankfurt.png"), linear-gradient(133deg, #4990b7, #59c3ea);
   background-size: 60px, auto;
   width: 100px;
   height: 100px;
@@ -6391,7 +6391,7 @@ figcaption {
 }
 
 .circle.world.wcd {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/62039e41663903836850654b_60ba2f1d9cdb1e88c29d0351_WCD%20LOGO_wei%C3%9F.png"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/62039e41663903836850654b_60ba2f1d9cdb1e88c29d0351_WCD%20LOGO_wei%C3%9F.png"), linear-gradient(133deg, #4990b7, #59c3ea);
 }
 
 .circle.world.wcd.asdfasf:hover {
@@ -6400,7 +6400,7 @@ figcaption {
 
 .circle-3 {
   text-align: center;
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee6691a07b03e35e05ab1_iconweiss.png"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee6691a07b03e35e05ab1_iconweiss.png"), linear-gradient(133deg, #4990b7, #59c3ea);
   background-position: 50%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 30px, auto;
@@ -6417,7 +6417,7 @@ figcaption {
 }
 
 .circle-3.jucad {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61f7fa6eac3e604e1b1c8193_Logo_JuCad_DE.svg"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61f7fa6eac3e604e1b1c8193_Logo_JuCad_DE.svg"), linear-gradient(133deg, #4990b7, #59c3ea);
   background-size: 65px, auto;
   border-radius: 100px;
   width: 100px;
@@ -6426,14 +6426,14 @@ figcaption {
 }
 
 .circle-3.jucad._4rechts {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/6400764c3d2fc76aa7c4c0a4_lo%CC%88weninvertweiss.png"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/6400764c3d2fc76aa7c4c0a4_lo%CC%88weninvertweiss.png"), linear-gradient(133deg, #4990b7, #59c3ea);
   left: auto;
   right: -4%;
 }
 
 .member-text-box {
   text-align: left;
-  background-image: linear-gradient(133deg, #5C0201e3, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7e3, #59c3ea);
   padding: 17px 25px 19px;
   font-size: 15px;
   font-weight: 500;
@@ -6514,7 +6514,7 @@ figcaption {
 }
 
 .social-link.facebook {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee0172361532db3ce3cfc_Mini-Fb.png"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee0172361532db3ce3cfc_Mini-Fb.png"), linear-gradient(133deg, #4990b7, #59c3ea);
   background-position: 50%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 12px, auto;
@@ -6528,7 +6528,7 @@ figcaption {
 }
 
 .social-link.instagram {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615383aece3cd7_001-logo-de-instagram.svg"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615383aece3cd7_001-logo-de-instagram.svg"), linear-gradient(133deg, #4990b7, #59c3ea);
   background-position: 50%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 12px, auto;
@@ -6542,7 +6542,7 @@ figcaption {
 }
 
 .social-link.linkedin {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615350ffce3cf9_002-logo-linkedin.svg"), linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615350ffce3cf9_002-logo-linkedin.svg"), linear-gradient(133deg, #4990b7, #59c3ea);
   background-position: 50%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 12px, auto;
@@ -6722,7 +6722,7 @@ figcaption {
 }
 
 .logo-grid._40 {
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   padding-top: 40px;
 }
 
@@ -6986,7 +6986,7 @@ figcaption {
 
 .div-block-7.recjs.asdf.sadfsdf {
   background-color: var(--background-2);
-  border: 2px #5C0201;
+  border: 2px #4990b7;
   padding-top: 20px;
   padding-bottom: 15px;
 }
@@ -7306,7 +7306,7 @@ figcaption {
 
 .left-arrow-3 {
   background-color: #d4a26f;
-  background-image: linear-gradient(#5C0201, #8B1A18);
+  background-image: linear-gradient(#4990b7, #59c3ea);
   justify-content: center;
   align-items: center;
   width: 60px;
@@ -7328,7 +7328,7 @@ figcaption {
 
 .right-arrow-3 {
   background-color: #0000;
-  background-image: linear-gradient(138deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(138deg, #4990b7, #59c3ea);
   justify-content: center;
   align-items: center;
   width: 60px;
@@ -7588,7 +7588,7 @@ figcaption {
 }
 
 .quote-wrapper.asdf {
-  background-image: linear-gradient(101deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(101deg, #4990b7, #59c3ea);
   margin-bottom: 0;
   margin-left: 0;
   margin-right: 0;
@@ -7775,8 +7775,8 @@ figcaption {
 
 .timeline-dot-v1 {
   z-index: 1;
-  background-color: #5C0201;
-  border: 1px solid #8B1A18;
+  background-color: #4990b7;
+  border: 1px solid #59c3ea;
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -7817,7 +7817,7 @@ figcaption {
 }
 
 .link-6 {
-  color: #5C0201;
+  color: #4990b7;
 }
 
 .div-block-24 {
@@ -7837,7 +7837,7 @@ figcaption {
 
 .dot {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(129deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(129deg, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
   margin-left: 2.5px;
@@ -8001,7 +8001,7 @@ figcaption {
 }
 
 .highligth-icon {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #4990b7, #59c3ea);
   background-position: 42% 60%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 30px, auto;
@@ -8015,16 +8015,16 @@ figcaption {
 }
 
 .highligth-icon._4 {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #4990b7, #59c3ea);
   background-size: 25px, auto;
 }
 
 .highligth-icon._3 {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #4990b7, #59c3ea);
 }
 
 .highligth-icon._2 {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #4990b7, #59c3ea);
   background-size: 25px, auto;
 }
 
@@ -8119,7 +8119,7 @@ figcaption {
 
 .text-span-11 {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(to right, #5C0201, #8B1A18);
+  background-image: linear-gradient(to right, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -8198,7 +8198,7 @@ figcaption {
 .link-13.klappezu {
   z-index: 10000;
   background-color: #000;
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61f10b199a160779adaa1dde_add-plus-button.svg"), linear-gradient(132deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61f10b199a160779adaa1dde_add-plus-button.svg"), linear-gradient(132deg, #4990b7, #59c3ea);
   background-position: 50%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 15px 15px, auto;
@@ -8239,7 +8239,7 @@ figcaption {
 
 .service-title.gradient-top-margin {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(86deg, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
   margin-top: 5px;
@@ -8270,7 +8270,7 @@ figcaption {
 .services-button {
   letter-spacing: -.4px;
   text-transform: uppercase;
-  background-image: linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(86deg, #4990b7, #59c3ea);
   width: 100%;
   font-family: Montserrat o, sans-serif;
   font-size: 14px;
@@ -8313,7 +8313,7 @@ figcaption {
 }
 
 .service-top-form {
-  background-image: linear-gradient(86deg, #5C0201, #000);
+  background-image: linear-gradient(86deg, #4990b7, #000);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   width: 100%;
@@ -8659,7 +8659,7 @@ figcaption {
 
 .text-gradient-2.reels.weissanders {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(98deg, #5C0201, #8B1A18 47%);
+  background-image: linear-gradient(98deg, #4990b7, #59c3ea 47%);
   -webkit-background-clip: text;
   background-clip: text;
   font-family: Integralcf Bold, sans-serif;
@@ -8691,7 +8691,7 @@ figcaption {
   filter: none;
   color: #000;
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(98deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(98deg, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
   padding-right: 5px;
@@ -8762,7 +8762,7 @@ figcaption {
 .div-block-29 {
   grid-column-gap: 16px;
   grid-row-gap: 16px;
-  background-image: linear-gradient(to right, #5C0201, #8B1A18);
+  background-image: linear-gradient(to right, #4990b7, #59c3ea);
   grid-template-rows: auto auto;
   grid-template-columns: 1fr 1fr;
   grid-auto-columns: 1fr;
@@ -8790,7 +8790,7 @@ figcaption {
 }
 
 .div-block-29.weiss.adfdsf.blau {
-  background-image: linear-gradient(111deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(111deg, #4990b7, #59c3ea);
 }
 
 .div-block-29.weiss.adfdsf.blau.asdfasdfdsf {
@@ -8813,7 +8813,7 @@ figcaption {
 }
 
 .div-block-29.weiss.nichtweis.sadfasdf.blau, .div-block-29.weiss.nichtweis.sadfasdf.blau.fdsf {
-  background-image: linear-gradient(111deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(111deg, #4990b7, #59c3ea);
 }
 
 .div-block-29.reels {
@@ -9028,7 +9028,7 @@ figcaption {
 }
 
 .button-6.android {
-  background-image: linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(86deg, #4990b7, #59c3ea);
   background-position: 0 0;
   background-repeat: repeat;
   background-size: auto;
@@ -9111,7 +9111,7 @@ figcaption {
 }
 
 .highligth-2._100.anders.andersafds {
-  border: 3px solid #8B1A18;
+  border: 3px solid #59c3ea;
 }
 
 .highligth-2._100.anders.andersafds:hover {
@@ -9300,7 +9300,7 @@ figcaption {
 }
 
 .content-section-2.double.bluebackground {
-  background-image: linear-gradient(131deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(131deg, #4990b7, #59c3ea);
 }
 
 .content-section-2.double.bluebackground.reels {
@@ -9417,7 +9417,7 @@ figcaption {
 }
 
 .highligth-icon-2._2 {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826e95d12226c_Padlock.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826e95d12226c_Padlock.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
   background-size: 25px, auto;
 }
 
@@ -9432,26 +9432,26 @@ figcaption {
 }
 
 .highligth-icon-2._2.googleads.check.asfdasdf {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/61eee01723615349e7ce3ccf_marca-de-verificacion-en-contorno-negro.svg"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
   background-position: 42% 60%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 26px, auto;
 }
 
 .highligth-icon-2._2.googleads.adsfadsf {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826a0bc1222bf_googleads.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826a0bc1222bf_googleads.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
   background-position: 42% 60%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 30px, auto;
 }
 
 .highligth-icon-2._2.adsf {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826e37a1222cb_ads.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826e37a1222cb_ads.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
   background-size: 35px, auto;
 }
 
 .highligth-icon-2._2.insgarm {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a533088261d7a1222bb_instagram.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a533088261d7a1222bb_instagram.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
   background-size: 30px, auto;
 }
 
@@ -9463,11 +9463,11 @@ figcaption {
 }
 
 .highligth-icon-2._2.insgarm.ugc {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a533088263da21222c3_tracking.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a533088263da21222c3_tracking.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
 }
 
 .highligth-icon-2._2.tracking {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a533088263da21222c3_tracking.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a533088263da21222c3_tracking.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
   background-size: 30px, auto;
 }
 
@@ -9479,7 +9479,7 @@ figcaption {
 }
 
 .highligth-icon-2._2.tracking.schnitt {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/64f0a7377d120ce3a64f9c69_schnitt.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/64f0a7377d120ce3a64f9c69_schnitt.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
 }
 
 .highligth-icon-2._2.tiktok {
@@ -9488,21 +9488,21 @@ figcaption {
 }
 
 .highligth-icon-2._2.tiktok.tidsfkok {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a5330882687481222b7_tiktokicon.png"), linear-gradient(86deg, #5C0201, #8B1A18 73%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a5330882687481222b7_tiktokicon.png"), linear-gradient(86deg, #4990b7, #59c3ea 73%);
   background-position: 42% 60%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 25px, auto;
 }
 
 .highligth-icon-2.links {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826a195122268_percent.svg"), linear-gradient(86deg, #5C0201, #8B1A18 75%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826a195122268_percent.svg"), linear-gradient(86deg, #4990b7, #59c3ea 75%);
   background-position: 42% 60%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 30px, auto;
 }
 
 .highligth-icon-2.links.om {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826fc411222c7_onlinemarketing.png"), linear-gradient(86deg, #5C0201, #8B1A18 75%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826fc411222c7_onlinemarketing.png"), linear-gradient(86deg, #4990b7, #59c3ea 75%);
 }
 
 .highligth-icon-2.links.om.reels {
@@ -9513,7 +9513,7 @@ figcaption {
 }
 
 .highligth-icon-2.links.om.reels.lpwen {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/6400764c3d2fc76aa7c4c0a4_lo%CC%88weninvertweiss.png"), linear-gradient(152deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/6400764c3d2fc76aa7c4c0a4_lo%CC%88weninvertweiss.png"), linear-gradient(152deg, #4990b7, #59c3ea);
   background-position: 42% 60%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 40px, auto;
@@ -9525,7 +9525,7 @@ figcaption {
 .highligth-icon-2.links.om.reels.lpwen.dasfasf {
   -webkit-text-fill-color: inherit;
   object-fit: fill;
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/6400764c3d2fc76aa7c4c0a4_lo%CC%88weninvertweiss.png"), linear-gradient(152deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/6400764c3d2fc76aa7c4c0a4_lo%CC%88weninvertweiss.png"), linear-gradient(152deg, #4990b7, #59c3ea);
   background-position: 0 0, 0 0;
   background-size: auto, auto;
   background-clip: border-box;
@@ -9539,7 +9539,7 @@ figcaption {
 }
 
 .highligth-icon-2.links.om.produciton {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/64f0a739fd4667c14fdd4e72_videoproduktion.png"), linear-gradient(86deg, #5C0201, #8B1A18 75%);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/64f0a739fd4667c14fdd4e72_videoproduktion.png"), linear-gradient(86deg, #4990b7, #59c3ea 75%);
 }
 
 .slide-nav-6 {
@@ -9678,7 +9678,7 @@ figcaption {
 
 .vertical.color {
   color: #393fd3;
-  background-color: #5C0201;
+  background-color: #4990b7;
 }
 
 .heading-14 {
@@ -10196,7 +10196,7 @@ figcaption {
 
 .horizontal.color {
   color: #393fd3;
-  background-color: #5C0201;
+  background-color: #4990b7;
 }
 
 .right-arrow {
@@ -10437,14 +10437,14 @@ figcaption {
 }
 
 .pricing-plan-3 {
-  background-image: linear-gradient(27deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(27deg, #4990b7, #59c3ea);
   border-radius: 0 15px 15px 0;
   width: 50%;
   padding: 25px 3% 30px 4%;
 }
 
 .play-button-2 {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a5330882645bb122263_tocar.svg"), linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a5330882645bb122263_tocar.svg"), linear-gradient(86deg, #4990b7, #59c3ea);
   background-position: 55%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 16px, auto;
@@ -10547,7 +10547,7 @@ figcaption {
 }
 
 .navbar-bg {
-  background-image: linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(86deg, #4990b7, #59c3ea);
   position: absolute;
   inset: 0%;
 }
@@ -10629,12 +10629,12 @@ figcaption {
 }
 
 .hero.auto.andersauto.blacuverlauf {
-  background-image: linear-gradient(110deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(110deg, #4990b7, #59c3ea);
 }
 
 .hero.auto.andersauto.blacuverlauf.unterineander {
   text-align: left;
-  background-image: radial-gradient(circle, #5C0201, #000);
+  background-image: radial-gradient(circle, #4990b7, #000);
   flex-direction: column;
   align-items: center;
   display: flex;
@@ -10866,7 +10866,7 @@ figcaption {
 
 .hero-bg {
   background-color: #13181f;
-  background-image: radial-gradient(circle, #000, #8B1A18);
+  background-image: radial-gradient(circle, #000, #59c3ea);
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -10899,7 +10899,7 @@ figcaption {
 
 .text-span-15 {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(to right, #5C0201, #8B1A18);
+  background-image: linear-gradient(to right, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -11178,7 +11178,7 @@ figcaption {
 }
 
 .div-block-37 {
-  background-image: linear-gradient(to right, #5C0201, #8B1A18);
+  background-image: linear-gradient(to right, #4990b7, #59c3ea);
   width: 100%;
   height: 5px;
   position: absolute;
@@ -11229,7 +11229,7 @@ figcaption {
 }
 
 .checklist.backgorund {
-  background-image: linear-gradient(132deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(132deg, #4990b7, #59c3ea);
   border-style: none;
   border-radius: 4px;
 }
@@ -11261,7 +11261,7 @@ figcaption {
 .div-block-38 {
   grid-column-gap: 16px;
   grid-row-gap: 16px;
-  background-image: linear-gradient(to right, #5C0201, #8B1A18);
+  background-image: linear-gradient(to right, #4990b7, #59c3ea);
   border-radius: 3px;
   grid-template-rows: auto auto;
   grid-template-columns: 1fr 1fr;
@@ -11395,7 +11395,7 @@ figcaption {
 .button-primary:hover {
   color: #fff;
   background-color: #000;
-  background-image: linear-gradient(113deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(113deg, #4990b7, #59c3ea);
   border-color: #000;
   transform: translate3d(0, -2px, .01px);
 }
@@ -11756,7 +11756,7 @@ figcaption {
 
 .card.text-center {
   background-color: #f0f0f0;
-  background-image: linear-gradient(151deg, #5C0201, #8B1A18), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63ff606d948f04200e0a0e81_scalecom.jpg");
+  background-image: linear-gradient(151deg, #4990b7, #59c3ea), url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63ff606d948f04200e0a0e81_scalecom.jpg");
   background-position: 0 0, 0 0;
   background-size: auto, cover;
   border-style: none;
@@ -12133,7 +12133,7 @@ figcaption {
 
 .weisdfs.andersf {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(to right, #5C0201, #8B1A18);
+  background-image: linear-gradient(to right, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
   padding-right: 3px;
@@ -12148,7 +12148,7 @@ figcaption {
 
 .weisdfs.andersf.black {
   filter: none;
-  background-image: linear-gradient(90deg, #8B1A18 95%, #5C0201);
+  background-image: linear-gradient(90deg, #59c3ea 95%, #4990b7);
 }
 
 .weisdfs.andersf.dafsf {
@@ -12531,7 +12531,7 @@ figcaption {
 }
 
 .asdfas {
-  background-image: linear-gradient(#5C0201, #8B1A18);
+  background-image: linear-gradient(#4990b7, #59c3ea);
   border-radius: 5px;
   margin-top: 60px;
   padding-top: 10px;
@@ -12590,7 +12590,7 @@ figcaption {
 }
 
 .underlay-right.bg-primary-2 {
-  background-image: linear-gradient(118deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(118deg, #4990b7, #59c3ea);
   max-width: 497px;
 }
 
@@ -12642,7 +12642,7 @@ figcaption {
 
 .div-block-42 {
   background-color: #fff;
-  background-image: linear-gradient(133deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(133deg, #4990b7, #59c3ea);
   border: 2px #ed6930;
   border-radius: 100px;
   padding: 2px;
@@ -12719,7 +12719,7 @@ figcaption {
   letter-spacing: 0;
   text-transform: none;
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(to right, #5C0201, #8B1A18);
+  background-image: linear-gradient(to right, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
   margin-bottom: 20px;
@@ -12746,7 +12746,7 @@ figcaption {
 
 .div-block-43 {
   background-color: #535353e0;
-  background-image: linear-gradient(135deg, #000, #5C0201);
+  background-image: linear-gradient(135deg, #000, #4990b7);
   border: 1px solid #fff;
   border-radius: 10px;
   width: 100%;
@@ -12836,12 +12836,12 @@ figcaption {
 }
 
 .workflow-video-wrapper-2 {
-  background-image: linear-gradient(108deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(108deg, #4990b7, #59c3ea);
   border: 5px #fff;
   border-radius: 0;
   width: 85%;
   max-height: none;
-  box-shadow: 0 0 20px #5C0201c4;
+  box-shadow: 0 0 20px #4990b7c4;
 }
 
 .workflow-video-wrapper-2.asdfasf {
@@ -12852,7 +12852,7 @@ figcaption {
 
 .workflow-video-wrapper-2.asdfasf.asdfaf {
   background-color: #fff;
-  background-image: linear-gradient(108deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(108deg, #4990b7, #59c3ea);
   border-style: none;
   width: 100%;
   position: relative;
@@ -12959,7 +12959,7 @@ figcaption {
 }
 
 .text-span-17 {
-  text-shadow: 2px 2px 20px #8B1A184a;
+  text-shadow: 2px 2px 20px #59c3ea4a;
   font-family: Integralcf, Verdana, sans-serif;
   font-weight: 700;
 }
@@ -13271,7 +13271,7 @@ figcaption {
 }
 
 .div-block-55 {
-  background-image: linear-gradient(#5C0201, #8B1A18);
+  background-image: linear-gradient(#4990b7, #59c3ea);
   border-radius: 100px;
   justify-content: center;
   align-items: center;
@@ -13399,7 +13399,7 @@ figcaption {
 
 .heading-20.blue {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(114deg, #5C0201, #55b5dc 57%, #8B1A18);
+  background-image: linear-gradient(114deg, #4990b7, #55b5dc 57%, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -13470,7 +13470,7 @@ figcaption {
 .tab-link-tab-1.w--current {
   color: #fff;
   background-color: #0000;
-  background-image: linear-gradient(#5C0201, #8B1A18);
+  background-image: linear-gradient(#4990b7, #59c3ea);
   border-radius: 50px;
   padding-top: 4px;
   padding-bottom: 7px;
@@ -13530,7 +13530,7 @@ figcaption {
 
 .tab-link-tab-3.w--current {
   color: #fff;
-  background-image: linear-gradient(102deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(102deg, #4990b7, #59c3ea);
   border-radius: 100px;
 }
 
@@ -13544,7 +13544,7 @@ figcaption {
 
 .tab-link-tab-4.w--current {
   color: #fff;
-  background-image: linear-gradient(#5C0201, #8B1A18);
+  background-image: linear-gradient(#4990b7, #59c3ea);
   border-radius: 100px;
 }
 
@@ -13565,7 +13565,7 @@ figcaption {
 }
 
 .feature-number-wrap.blueee {
-  background-image: linear-gradient(110deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(110deg, #4990b7, #59c3ea);
   border: 2px solid #fff;
   border-radius: 20px;
   margin-bottom: 0;
@@ -13735,7 +13735,7 @@ figcaption {
 }
 
 .div-block-63 {
-  background-image: linear-gradient(105deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(105deg, #4990b7, #59c3ea);
   height: 7px;
 }
 
@@ -13826,7 +13826,7 @@ figcaption {
 
 .uui-layout32_progress-bar {
   background-color: var(--background);
-  background-image: linear-gradient(#5C0201, #8B1A18);
+  background-image: linear-gradient(#4990b7, #59c3ea);
   width: 2px;
   height: 100%;
 }
@@ -15684,7 +15684,7 @@ figcaption {
 
 .text-span-22 {
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(99deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(99deg, #4990b7, #59c3ea);
   -webkit-background-clip: text;
   background-clip: text;
   padding-right: 5px;
@@ -16234,7 +16234,7 @@ figcaption {
 }
 
 .play-button-3 {
-  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a5330882645bb122263_tocar.svg"), linear-gradient(86deg, #5C0201, #8B1A18);
+  background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a5330882645bb122263_tocar.svg"), linear-gradient(86deg, #4990b7, #59c3ea);
   background-position: 55%, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 16px, auto;
@@ -16778,7 +16778,7 @@ figcaption {
 }
 
 .div-block-70 {
-  background-image: linear-gradient(99deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(99deg, #4990b7, #59c3ea);
   width: 100%;
   height: 10px;
   position: absolute;
@@ -17181,7 +17181,7 @@ figcaption {
 .cf-form-gradient-submit {
   color: #fff;
   background-color: #0000;
-  background-image: linear-gradient(90deg, #5C0201, #8B1A18);
+  background-image: linear-gradient(90deg, #4990b7, #59c3ea);
   border-radius: 8px;
   width: 100%;
   padding-top: 15px;
@@ -20139,7 +20139,7 @@ figcaption {
   }
 
   .quote-wrapper.asdf {
-    background-image: linear-gradient(107deg, #5C0201, #8B1A18);
+    background-image: linear-gradient(107deg, #4990b7, #59c3ea);
     margin-bottom: 0;
     margin-left: 0;
     margin-right: 0;
@@ -20210,7 +20210,7 @@ figcaption {
   }
 
   .subtitle {
-    background-image: linear-gradient(to right, #5C0201, #8B1A18);
+    background-image: linear-gradient(to right, #4990b7, #59c3ea);
   }
 
   ._100 {
@@ -25224,7 +25224,7 @@ figcaption {
   }
 
   .highligth-icon-2.links.om {
-    background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826fc411222c7_onlinemarketing.png"), linear-gradient(86deg, #5C0201, #8B1A18 75%);
+    background-image: url("https://cdn.prod.website-files.com/61eee016236153163cce3c45/63a58a53308826fc411222c7_onlinemarketing.png"), linear-gradient(86deg, #4990b7, #59c3ea 75%);
     background-position: 42% 60%, 0 0;
     background-repeat: no-repeat, repeat;
     background-size: 30px, auto;
