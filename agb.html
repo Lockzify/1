@@ -5,16 +5,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AGB | ADLIONS</title>
-  <meta name="description" content="Allgemeine Geschäftsbedingungen (AGB) von ADLIONS." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-    rel="stylesheet" />
+  <meta name="description" content="Allgemeine Geschäftsbedingungen (AGB) von ADLIONS. Stand 01.01.2026." />
   <link href="/output-onlinepngtools-6.webp" rel="icon" type="image/webp" />
   <link href="/css/adlions-topbar.css" rel="stylesheet" type="text/css" />
   <link rel="preconnect" href="https://connect.facebook.net" />
   <link rel="preconnect" href="https://www.facebook.com" />
-  <!-- Facebook Pixel Code -->
   <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -26,80 +21,33 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '4466988160210272');
 fbq('track', 'PageView');
-</script>
+  </script>
   <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 /></noscript>
-  <!-- End Facebook Pixel Code -->
   <style>
-    :root {
-      color-scheme: light;
-      --bg: #f8fafc;
-      --text: #0f172a;
-      --muted: #475569;
-      --link: #0369a1;
-      --border: #e2e8f0;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    html, body { margin: 0; height: 100%; }
     body {
-      margin: 0;
-      font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      font-size: 17px;
-      line-height: 1.65;
-      color: var(--text);
-      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      background: #0f172a;
     }
-
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 2.5rem 1.25rem 4rem;
-    }
-
-    h1 {
-      margin: 0 0 1.5rem;
-      font-size: clamp(1.75rem, 4vw, 2.25rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-
-    h2 {
-      margin: 2.25rem 0 0.75rem;
-      font-size: 1.125rem;
-      font-weight: 700;
-    }
-
-    p,
-    ul {
-      margin: 0 0 1rem;
-      color: var(--muted);
-    }
-
-    ul {
-      padding-left: 1.25rem;
-    }
-
-    a {
-      color: var(--link);
-    }
-
-    .legal-block {
+    .agb-frame {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      border: 0;
       background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem 1.35rem;
-      margin-bottom: 1.5rem;
     }
-
-    .legal-block p:last-child {
-      margin-bottom: 0;
+    .agb-fallback {
+      display: none;
+      margin: 2rem auto;
+      max-width: 40rem;
+      padding: 0 1.25rem;
+      color: #e2e8f0;
+      font: 16px/1.5 system-ui, sans-serif;
     }
-
+    .agb-fallback a { color: #7dd3fc; }
   </style>
 </head>
 
@@ -110,7 +58,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       <button type="button" class="topbar-menu-btn" aria-expanded="false" aria-controls="topbar-nav"
         aria-label="Menü öffnen"><span class="topbar-menu-icon" aria-hidden="true"></span></button>
       <nav class="nav-main" id="topbar-nav" aria-label="Hauptnavigation">
-        <a href="/index.html" aria-current="page">Home</a>
+        <a href="/index.html">Home</a>
         <a href="/index.html#ueber-uns">Über uns</a>
         <a href="/index.html#neukundengewinnung">Kernbereiche</a>
         <a href="/karriere.html">Karriere</a>
@@ -119,147 +67,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       <a class="topbar-cta" href="/index.html#kontakt">Jetzt anfragen</a>
     </div>
   </header>
-  <main>
-    <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
-    <p>Stand: 01.01.2026 · Erstellt am 01.01.2026 · <a href="/agb.pdf">PDF herunterladen</a></p>
-
-    <div class="legal-block">
-      <h2 style="margin-top:0">1. Geltungsbereich</h2>
-      <p>Diese Allgemeinen Geschäftsbedingungen gelten für alle Verträge zwischen ADLIONS (nachfolgend "Auftragnehmer")
-        und Unternehmern im Sinne des § 14 BGB (nachfolgend "Kunde"), sofern nicht ausdrücklich etwas anderes in
-        Textform vereinbart wird.</p>
-      <p>Abweichende oder ergänzende Geschäftsbedingungen des Kunden finden nur Anwendung, wenn der Auftragnehmer
-        ihrer Geltung ausdrücklich in Textform zugestimmt hat.</p>
-    </div>
-
-    <h2>2. Vertragsgegenstand und Vertragsart</h2>
-    <p>Der Auftragnehmer erbringt Marketing-, Beratungs- und Umsetzungsleistungen, insbesondere in den Bereichen
-      Neukundengewinnung, Mitarbeitergewinnung, Anzeigenmanagement, Funnel- und Webseitenoptimierung sowie
-      damit zusammenhängende Dienstleistungen.</p>
-    <p>Sämtliche Leistungen des Auftragnehmers stellen Dienstleistungen im Sinne der §§ 611 ff. BGB dar. Es handelt
-      sich durchgängig um Dienstleistungsverträge. Ein Werkvertrag im Sinne der §§ 631 ff. BGB kommt nicht zustande,
-      es sei denn, der Auftragnehmer hat dies ausdrücklich in Textform vereinbart.</p>
-    <p>Der Auftragnehmer schuldet die vereinbarte sorgfältige Erbringung der Dienstleistung, nicht einen bestimmten
-      wirtschaftlichen oder sonstigen Erfolg (z. B. bestimmte Anzahl an Leads, Bewerbungen, Umsätze, Reichweiten oder
-      Conversion-Raten). Die Vergütung bezieht sich auf die Erbringung der vertraglich vereinbarten Dienstleistung,
-      nicht auf das Eintreten eines bestimmten Ergebnisses.</p>
-
-    <h2>3. Vertragsschluss</h2>
-    <p>Ein Vertrag kommt durch Annahme eines Angebots, durch gesonderte Vereinbarung in Textform oder durch
-      tatsächliche Inanspruchnahme der Leistung zustande.</p>
-
-    <h2>4. Vergütung und Zahlungsbedingungen</h2>
-    <p>Strategie- und Beratungsgespräche, in denen das Konzept des Auftragnehmers besprochen und beraten wird, werden
-      mit 350,00 EUR zuzüglich 19 % gesetzlicher Umsatzsteuer je angefangene Stunde vergütet, sofern in diesem Gespräch
-      kein explizites Angebot unterzeichnet wird. Die Vergütung ist zeitabhängig und erhöht sich entsprechend der in
-      Anspruch genommenen Dauer (Beispiel: zwei Stunden = 700,00 EUR zuzüglich 19 % Umsatzsteuer).</p>
-    <p>Wird in dem Strategie- oder Beratungsgespräch ein explizites Angebot unterzeichnet, entfällt dieser Stundensatz
-      von 350,00 EUR zuzüglich 19 % Umsatzsteuer für das betreffende Gespräch. Wird kein explizites Angebot
-      unterzeichnet, bleibt der Vergütungsanspruch nach Zeitaufwand bestehen und wird gesondert in Rechnung gestellt.</p>
-    <p>Sämtliche vereinbarten Vergütungen sind innerhalb der auf Rechnung genannten Frist ohne Abzug fällig.
-      Bei Zahlungsverzug gelten die gesetzlichen Vorschriften.</p>
-    <p>Rechnungen werden zu den im Angebot, Leistungsbeschreibung oder Vertrag vereinbarten Zeitpunkten bzw.
-      Fälligkeitsterminen ausgestellt. Der Kunde ist verpflichtet, die ausgewiesenen Beträge zu diesen Fälligkeiten
-      zu zahlen, auch wenn die geschuldete Leistung des Auftragnehmers zu dem jeweiligen Zeitpunkt noch nicht
-      vollständig erbracht ist. Eine teilweise bereits erfolgte Leistungserbringung begründet ohne ausdrückliche
-      abweichende Vereinbarung in Textform weder ein Recht auf Minderung noch auf Zahlungsaufschub.</p>
-    <p>Sofern im Angebot, in der Leistungsbeschreibung oder im Vertrag kein früherer Leistungsbeginn bestimmt ist,
-      beginnt der Vertrag spätestens mit Ablauf von vier (4) Wochen nach Vertragsschluss. Mit diesem Beginn wird die
-      erste vereinbarte Vergütung fällig. Dieser Beginn und diese Fälligkeit treten nur dann nicht ein, wenn dem
-      Auftragnehmer vor Ablauf der Vier-Wochen-Frist eine Ablehnung der INQA-Förderung oder der BAFA-Förderung
-      Unternehmensberatung in Textform zugeht und die Förderung bei Adlions, beim FDD Verband e. V. oder bei einem
-      vom Auftragnehmer benannten Partnerunternehmen beantragt worden ist. Für diesen Fall gelten die individuell
-      vereinbarten Rechtsfolgen des Förderausfalls; soweit dort vorgesehen, entfällt die Zahlungspflicht. Maßgeblich
-      ist ausschließlich eine innerhalb der Vier-Wochen-Frist zugegangene Ablehnung. Eine erst nach Ablauf dieser Frist
-      gestellte oder nachgereichte Antragstellung sowie eine erst danach zugehende Ablehnung bleiben für Vertragsbeginn
-      und Fälligkeit unbeachtlich; sie heben die bereits eingetretene Zahlungspflicht nicht auf und begründen kein
-      Zurückbehaltungsrecht, keine Stundung und keinen sonstigen Aufschub. Dass ein Förderantrag noch nicht gestellt,
-      noch nicht beschieden oder noch nicht ausgezahlt ist, hemmt weder den Vertragsbeginn noch die Fälligkeit.</p>
-    <p>Ist der Kunde mit fälligen Zahlungen in Verzug, ist der Auftragnehmer berechtigt, weitere Leistungen bis zum
-      Ausgleich der offenen Beträge nicht auszuführen.</p>
-
-    <h2>5. SEPA-Lastschrift und Einzugsermächtigung</h2>
-    <p>Der Kunde erteilt dem Auftragnehmer mit Vertragsschluss die Berechtigung, fällige und zukünftige Forderungen
-      aus der Geschäftsbeziehung per SEPA-Lastschrift vom angegebenen Konto einzuziehen.</p>
-    <p>Der Einzug darf auch ohne weitere schriftliche Zustimmung des Kunden erfolgen, soweit ein gültiges
-      SEPA-Mandat vorliegt oder der Kunde die Kontodaten im Rahmen des Vertragsschlusses angegeben hat. Der Kunde
-      stellt sicher, dass das angegebene Konto ausreichend gedeckt ist.</p>
-    <p>Rücklastschriftkosten, die der Kunde zu vertreten hat (z. B. unzureichende Kontodeckung oder unberechtigter
-      Widerspruch), sind vom Kunden zu tragen.</p>
-
-    <h2>6. Mitwirkungspflichten des Kunden</h2>
-    <p>Der Kunde verpflichtet sich, alle zur ordnungsgemäßen Durchführung der vereinbarten Leistungen erforderlichen
-      Mitwirkungshandlungen rechtzeitig zu erbringen. Dazu gehören insbesondere die Bereitstellung vollständiger und
-      korrekter Informationen, Unterlagen und Inhalte, die Einräumung erforderlicher Zugänge und Berechtigungen
-      (z. B. Webseite, Hosting, Meta Business Manager, Werbekonten, Analytics-Tools), die Ermöglichung vereinbarter
-      Termine – insbesondere Vor-Ort-Termine wie Videoproduktionen – sowie die rechtzeitige Freigabe von Entwürfen,
-      Konzepten und Zwischenergebnissen.</p>
-    <p>Der Kunde stellt Mitwirkung spätestens bis zu den im Projektplan, Angebot oder Leistungsbeschreibung genannten
-      Fristen bereit. Fehlen Fristen, gilt eine angemessene Frist nach schriftlicher Anforderung durch den
-      Auftragnehmer.</p>
-    <p>Der Kunde wirkt an Anträgen auf BAFA- oder INQA-Förderung bei Adlions, dem FDD Verband e. V. oder einem
-      benannten Partnerunternehmen unverzüglich und vollständig mit. Liegt bis zum Ablauf der Frist nach Ziff. 4 keine
-      Ablehnung im Sinne der Ziff. 4 vor, bleiben Vertragsbeginn und Fälligkeit nach Ziff. 4 unberührt. Eine danach
-      erfolgende Antragstellung oder Ablehnung hebt die Zahlungspflicht nicht mehr auf.</p>
-    <p>Verzögerungen aufgrund fehlender, unvollständiger oder verspäteter Mitwirkung gehen nicht zulasten des
-      Auftragnehmers.</p>
-    <p>Übermittelt der Auftragnehmer dem Kunden per E-Mail Entwürfe, Freigaben, Korrekturabfragen oder sonstige
-      Mitteilungen, auf die der Kunde mit Stellungnahme oder Änderungswünschen reagieren soll, gilt: Erfolgt innerhalb
-      von fünf (5) Werktagen weder eine Antwort auf diese E-Mail noch die Mitteilung von Änderungswünschen, gelten
-      die übermittelten Inhalte und die darauf bezogenen Leistungsbeschreibungen als vom Kunden genehmigt und
-      akzeptiert.</p>
-
-    <h2>7. Fehlende Mitwirkung, Annahmeverzug und Vergütung</h2>
-    <p>Verzögert oder verhindert der Kunde die Leistungserbringung durch fehlende Mitwirkung, verweigerte Zugänge,
-      nicht gewährte Termine oder sonstige aktive oder passive Verhinderung, bleibt der Vergütungsanspruch des
-      Auftragnehmers unberührt. Der Kunde gerät in diesem Fall in Annahmeverzug im Sinne des § 293 BGB.</p>
-    <p>Der Auftragnehmer ist berechtigt, die betroffenen Leistungen als vertragsgemäß bereitgestellt zu behandeln und
-      die vereinbarte Vergütung abzurechnen, soweit die Leistungen aufgrund der Mitwirkungspflichten des Kunden nicht
-      mehr oder nicht fristgerecht erbracht werden können.</p>
-    <p>Kommt ein vereinbarter Vor-Ort-Termin (insbesondere für Videoproduktionen) durch fehlende Verfügbarkeit,
-      kurzfristige Absage, Zutrittsverweigerung oder sonstige Verhinderung durch den Kunden nicht zustande, gelten die
-      hierfür vorgesehenen Leistungen sowie reservierte Produktionskapazitäten als zur Durchführung bereitgestellt.
-      Der Auftragnehmer kann den vereinbarten Aufwand sowie entstandene Stillstands- und Opportunitätskosten in
-      Rechnung stellen.</p>
-    <p>Werden erforderliche Zugänge, Accounts oder Berechtigungen nicht oder nicht rechtzeitig bereitgestellt, kann der
-      Auftragnehmer die vereinbarten Leistungen nicht oder nur eingeschränkt erbringen. Die Vergütung für die
-      betroffenen Leistungen bleibt hiervon unberührt, sofern die Nichtbereitstellung im Verantwortungsbereich des
-      Kunden liegt.</p>
-    <p>Erklärt der Kunde, dass er die weitere Durchführung des Vertrags nicht mehr wünscht, die Mitwirkung verweigert
-      oder die Zusammenarbeit beendet, bleibt der Auftragnehmer berechtigt, die bis dahin erbrachten Leistungen sowie
-      die vereinbarte Vergütung für bereits bereitgestellte oder vorbereitete Leistungen abzurechnen. Bereits
-      angefallene Vorbereitungs-, Planungs-, Reservierungs- und Produktionskosten sind gesondert vergütungspflichtig,
-      soweit der Auftragnehmer nachweist, dass diese Kosten aufgrund der vertraglichen Vereinbarung entstanden sind.</p>
-
-    <h2>8. Haftung</h2>
-    <p>Der Auftragnehmer haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie bei Schäden aus der
-      Verletzung des Lebens, des Körpers oder der Gesundheit. Im Übrigen haftet der Auftragnehmer nur bei Verletzung
-      wesentlicher Vertragspflichten (Kardinalpflichten), begrenzt auf den vertragstypisch vorhersehbaren Schaden.</p>
-    <p>Soweit gesetzlich zulässig, haftet für Schäden oder offene Forderungen aus dem Vertragsverhältnis nicht nur
-      die beauftragte Gesellschaft (einschließlich GmbH), sondern auch die jeweiligen Gesellschafter und der/die
-      Geschäftsführer persönlich bzw. privat als Gesamtschuldner.</p>
-
-    <h2>9. Laufzeit und Kündigung</h2>
-    <p>Vertragslaufzeiten und Kündigungsfristen richten sich nach der individuellen Vereinbarung. Das Recht zur
-      außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt.</p>
-    <p>Eine Kündigung oder Beendigung des Vertrags durch den Kunden entbindet diesen nicht von der Zahlung bereits
-      fälliger oder gemäß Ziff. 7 geschuldeter Vergütungen für erbrachte, vorbereitete oder als bereitgestellt
-      geltende Leistungen.</p>
-
-    <h2>10. Schlussbestimmungen</h2>
-    <p>Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts. Ausschließlicher
-      Gerichtsstand für alle Streitigkeiten aus oder im Zusammenhang mit dem Vertragsverhältnis ist, soweit gesetzlich
-      zulässig, Berlin.</p>
-    <p>Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit
-      der übrigen Bestimmungen unberührt.</p>
-  </main>
-  <footer class="adlions-site-footer">
-    <nav aria-label="Footer">
-      <a href="/impressum.html">Impressum</a> ·
-      <a href="/datenschutz.html">Datenschutz</a> ·
-      <a href="/index.html">Startseite</a>
-    </nav>
-  </footer>
+  <iframe class="agb-frame" src="/agb.pdf" title="Allgemeine Geschäftsbedingungen ADLIONS"></iframe>
+  <p class="agb-fallback">Die AGB als PDF: <a href="/agb.pdf">adlions.de/agb.pdf</a></p>
   <script src="/js/adlions-topbar.js" defer></script>
 </body>
 
