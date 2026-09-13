@@ -637,6 +637,29 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       display: inline-block;
     }
 
+    .funnel-map-wrap {
+      margin: 0 0 1.15rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(14, 165, 233, 0.22);
+      background: #e8eef4;
+    }
+
+    .funnel-map-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+
+    .funnel-map-caption {
+      margin: 0 0 1.1rem;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.45;
+    }
+
     @media (max-width: 480px) {
       .funnel-page .topbar a.logo img {
         height: 24px;
@@ -671,7 +694,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   </div>
 
   <main>
-    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 7</p>
+    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 8</p>
 
     <div class="flow-screen quiz-screen" data-flow-step="0">
       <div class="card funnel-card">
@@ -742,7 +765,22 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <div class="flow-screen funnel-contact" data-flow-step="6" data-application="real" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="6" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">📍</span>Wärst du bereit, jeden Tag nach Hoppegarten zu kommen?</h3>
+        <p class="contact-lead">Unser Büro liegt in Hoppegarten, östlich von Berlin. Die Stelle ist vor Ort – kein Homeoffice.</p>
+        <div class="funnel-map-wrap">
+          <img src="/assets/berlin-hoppegarten-karte.webp" alt="Karte von Berlin mit dem ADLIONS-Standort in Hoppegarten" width="1280" height="768" decoding="async" />
+        </div>
+        <p class="funnel-map-caption">Handwerkerstraße 5a, 15366 Hoppegarten · östlich von Berlin<br><span style="font-size:11px;opacity:.75">Kartendaten © OpenStreetMap</span></p>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="hoppegarten" data-value="Ja"><span class="inline-emoji" aria-hidden="true">✅</span>Ja, das passt</button>
+          <button type="button" class="choice-btn" data-key="hoppegarten" data-value="Nein"><span class="inline-emoji" aria-hidden="true">❌</span>Nein</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-screen funnel-contact" data-flow-step="7" data-application="real" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📇</span>Deine Kontaktdaten</h3>
         <p class="contact-lead"><span class="inline-emoji" aria-hidden="true">🎉</span>Fast geschafft – trage deine Daten ein und sende deine Bewerbung ab.</p>
@@ -767,7 +805,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <div class="flow-screen funnel-contact" data-flow-step="7" data-application="alt" hidden>
+    <div class="flow-screen funnel-contact" data-flow-step="8" data-application="alt" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📇</span>Deine Kontaktdaten</h3>
         <p class="contact-lead"><span class="inline-emoji" aria-hidden="true">🎉</span>Fast geschafft – trage deine Daten ein und sende deine Bewerbung ab.</p>
@@ -810,11 +848,11 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       var THANKYOU_URL_1 = "/karriere-danke-1.html";
       /** Query fuer Meta Event-Setup (Lead bei URL mit funnel_bewerbung=1) */
       var THANKYOU_QUERY = "funnel_bewerbung=1";
-      var TOTAL_STEPS = 7;
+      var TOTAL_STEPS = 8;
       var QUIZ_FIRST = 0;
-      var QUIZ_LAST = 5;
-      var CONTACT_STEP = 6;
-      var DECOY_CONTACT_STEP = 7;
+      var QUIZ_LAST = 6;
+      var CONTACT_STEP = 7;
+      var DECOY_CONTACT_STEP = 8;
       var AGE_QUALIFIED = "16 - 25";
       var DECOY_SEND_MS = 900;
 
