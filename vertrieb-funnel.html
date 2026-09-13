@@ -844,6 +844,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   <script>
     (function () {
       var WEB3FORMS_KEY = "d7aa098b-83d4-4a29-8a31-a336d22d12da";
+      var REMIND_URL = "https://crm.adlions.de/api.php?action=karriere_booking_remind";
       var THANKYOU_URL_REAL = "/karriere-danke.html";
       var THANKYOU_URL_1 = "/karriere-danke-1.html";
       /** Query fuer Meta Event-Setup (Lead bei URL mit funnel_bewerbung=1) */
@@ -907,6 +908,23 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           return;
         }
         window.location.href = THANKYOU_URL_1;
+      }
+
+      function queueBookingReminder(name, email) {
+        var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+        var timer = window.setTimeout(function () {
+          if (ctrl) ctrl.abort();
+        }, 3500);
+        return fetch(REMIND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ name: name, email: email, source: "vertrieb-funnel" }),
+          signal: ctrl ? ctrl.signal : undefined
+        })
+          .catch(function () {})
+          .then(function () {
+            window.clearTimeout(timer);
+          });
       }
 
       function submitDecoyApplication() {
@@ -997,7 +1015,9 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           })
           .then(function (out) {
             if (out.ok && out.data && out.data.success) {
-              redirectToThankYou(true);
+              queueBookingReminder(name, email).then(function () {
+                redirectToThankYou(true);
+              });
             } else {
               var errMsg =
                 (out.data && (out.data.message || out.data.error)) || "Unbekannter Fehler";
