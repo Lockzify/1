@@ -861,8 +861,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       var progressEl = document.getElementById("flow-progress");
       var resultEl = document.getElementById("form-result");
 
-      function isAgeQualified() {
-        return answers.alter === AGE_QUALIFIED;
+      function isRealApplicant() {
+        return answers.alter === AGE_QUALIFIED && answers.hoppegarten === "Ja";
       }
 
       function showFlowStep(i) {
@@ -884,7 +884,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           showFlowStep(flowStep);
           return;
         }
-        flowStep = isAgeQualified() ? CONTACT_STEP : DECOY_CONTACT_STEP;
+        flowStep = isRealApplicant() ? CONTACT_STEP : DECOY_CONTACT_STEP;
         showFlowStep(flowStep);
       }
 
