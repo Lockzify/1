@@ -625,6 +625,31 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       gap: 0.5rem;
     }
 
+    .funnel-page .choice-grid--scale {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .funnel-page .choice-grid--scale .choice-btn {
+      width: auto;
+      flex: 1 1 2.5rem;
+      min-width: 2.5rem;
+      max-width: 3.1rem;
+      justify-content: center;
+      text-align: center;
+      padding: 0.75rem 0.15rem;
+    }
+
+    .scale-ends {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.55rem 0.1rem 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
     .funnel-page .contact-lead {
       margin: 0 0 1.25rem;
       font-size: 14px;
@@ -687,7 +712,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   </header>
 
   <main>
-    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 5</p>
+    <p class="flow-progress" id="flow-progress">🎯 Schritt 1 von 7</p>
 
     <div class="flow-screen quiz-screen" data-flow-step="0">
       <div class="card funnel-card">
@@ -714,6 +739,35 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     <div class="flow-screen quiz-screen" data-flow-step="2" hidden>
       <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">💬</span>Bist du extrovertiert und kannst du gut mit Menschen sprechen?</h3>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-key="extrovertiert" data-value="Ja"><span class="inline-emoji" aria-hidden="true">✅</span>Ja</button>
+          <button type="button" class="choice-btn" data-key="extrovertiert" data-value="Nein"><span class="inline-emoji" aria-hidden="true">❌</span>Nein</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="3" hidden>
+      <div class="card funnel-card">
+        <h3><span class="inline-emoji" aria-hidden="true">🗣️</span>Wie gesprächig bist du?</h3>
+        <div class="choice-grid choice-grid--scale">
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="1">1</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="2">2</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="3">3</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="4">4</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="5">5</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="6">6</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="7">7</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="8">8</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="9">9</button>
+          <button type="button" class="choice-btn" data-key="gespraechig" data-value="10">10</button>
+        </div>
+        <p class="scale-ends"><span>1 · eher ruhig</span><span>10 · sehr gesprächig</span></p>
+      </div>
+    </div>
+
+    <div class="flow-screen quiz-screen" data-flow-step="4" hidden>
+      <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📆</span>Ab wann kannst du bei uns durchstarten?</h3>
         <div class="choice-grid">
           <button type="button" class="choice-btn" data-key="start" data-value="Sofort"><span class="inline-emoji" aria-hidden="true">⚡</span>Sofort</button>
@@ -723,7 +777,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <div class="flow-screen quiz-screen" data-flow-step="3" hidden>
+    <div class="flow-screen quiz-screen" data-flow-step="5" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📍</span>Wärst du bereit, jeden Tag nach Hoppegarten zu kommen?</h3>
         <p class="contact-lead">Unser Büro liegt in Hoppegarten, östlich von Berlin. Die Stelle ist vor Ort – kein Homeoffice.</p>
@@ -738,7 +792,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <div class="flow-screen funnel-contact" data-flow-step="4" data-application="real" hidden>
+    <div class="flow-screen funnel-contact" data-flow-step="6" data-application="real" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📇</span>Deine Kontaktdaten</h3>
         <p class="contact-lead"><span class="inline-emoji" aria-hidden="true">🎉</span>Fast geschafft – trage deine Daten ein und sende deine Bewerbung ab.</p>
@@ -763,7 +817,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <div class="flow-screen funnel-contact" data-flow-step="5" data-application="alt" hidden>
+    <div class="flow-screen funnel-contact" data-flow-step="7" data-application="alt" hidden>
       <div class="card funnel-card">
         <h3><span class="inline-emoji" aria-hidden="true">📇</span>Deine Kontaktdaten</h3>
         <p class="contact-lead"><span class="inline-emoji" aria-hidden="true">🎉</span>Fast geschafft – trage deine Daten ein und sende deine Bewerbung ab.</p>
@@ -807,11 +861,11 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       var THANKYOU_URL_1 = "/karriere-danke-1.html";
       /** Query fuer Meta Event-Setup (Lead bei URL mit funnel_bewerbung=1) */
       var THANKYOU_QUERY = "funnel_bewerbung=1";
-      var TOTAL_STEPS = 5;
+      var TOTAL_STEPS = 7;
       var QUIZ_FIRST = 0;
-      var QUIZ_LAST = 3;
-      var CONTACT_STEP = 4;
-      var DECOY_CONTACT_STEP = 5;
+      var QUIZ_LAST = 5;
+      var CONTACT_STEP = 6;
+      var DECOY_CONTACT_STEP = 7;
       var AGE_QUALIFIED = "16 - 25";
       var DECOY_SEND_MS = 900;
 
@@ -821,7 +875,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       var resultEl = document.getElementById("form-result");
 
       function isRealApplicant() {
-        return answers.alter === AGE_QUALIFIED && answers.deutsch === "Muttersprache" && answers.hoppegarten === "Ja";
+        return answers.alter === AGE_QUALIFIED && answers.deutsch === "Muttersprache" && Number(answers.gespraechig) >= 6 && answers.hoppegarten === "Ja";
       }
 
       function showFlowStep(i) {
