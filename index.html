@@ -1087,6 +1087,76 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       }
     }
 
+    .adlions-team {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(0.75rem, 2vw, 1.25rem);
+      align-items: start;
+    }
+
+    .adlions-team-card {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .adlions-team-photo {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(14, 116, 144, 0.24);
+      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.12);
+      background: #e2e8f0;
+      aspect-ratio: 4 / 5;
+      transition: transform 0.4s ease;
+    }
+
+    .adlions-team-card:hover .adlions-team-photo {
+      transform: translateY(-4px);
+    }
+
+    .adlions-team-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .adlions-team-card figcaption {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      margin: 0;
+      padding: 0 0.25rem;
+      background: none;
+      border-radius: 0;
+      text-align: left;
+      font-family: var(--adlions-font);
+      line-height: 1.3;
+    }
+
+    .adlions-team-name {
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #0f172a;
+    }
+
+    .adlions-team-role {
+      font-size: clamp(0.85rem, 1.3vw, 0.95rem);
+      font-weight: 600;
+      color: #0369a1;
+    }
+
+    @media screen and (max-width: 900px) {
+      .adlions-team {
+        max-width: 560px;
+        width: 100%;
+        margin: 0 auto;
+      }
+    }
+
     .adlions-ueber-uns-title {
       margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
       font-family: var(--adlions-font);
@@ -2036,10 +2106,28 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   </section>
   <section id="ueber-uns" class="adlions-ueber-uns-section" aria-labelledby="adlions-ueber-uns-title">
     <div class="adlions-ueber-uns-inner">
-      <figure class="adlions-ueber-uns-media adlions-reveal">
-        <img src="/assets/leander-portrait-office.webp" alt="Leander Jede – ADLIONS" width="1000" height="1250"
-          loading="lazy" decoding="async" />
-      </figure>
+      <div class="adlions-team adlions-reveal" aria-label="Unser Team">
+        <figure class="adlions-team-card">
+          <div class="adlions-team-photo">
+            <img src="/assets/team-leander-jede.webp" alt="Leander Jede – Geschäftsführer, ADLIONS" width="800"
+              height="1000" loading="lazy" decoding="async" />
+          </div>
+          <figcaption>
+            <strong class="adlions-team-name">Leander Jede</strong>
+            <span class="adlions-team-role">Geschäftsführer</span>
+          </figcaption>
+        </figure>
+        <figure class="adlions-team-card">
+          <div class="adlions-team-photo">
+            <img src="/assets/team-timon-noeske.webp" alt="Timon Nöske – Kundenbetreuung und Vertrieb, ADLIONS"
+              width="800" height="1000" loading="lazy" decoding="async" />
+          </div>
+          <figcaption>
+            <strong class="adlions-team-name">Timon Nöske</strong>
+            <span class="adlions-team-role">Kundenbetreuung + Vertrieb</span>
+          </figcaption>
+        </figure>
+      </div>
       <div class="adlions-ueber-uns-copy adlions-reveal">
         <span class="adlions-eyebrow">Das Team</span>
         <h2 id="adlions-ueber-uns-title" class="adlions-ueber-uns-title">Über <span
