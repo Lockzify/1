@@ -1048,9 +1048,15 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       max-width: 1180px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1fr);
-      gap: clamp(1.25rem, 3vw, 2.5rem);
-      align-items: center;
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(1.75rem, 4vw, 3rem);
+      justify-items: center;
+    }
+
+    .adlions-ueber-uns-inner > .adlions-team,
+    .adlions-ueber-uns-inner > .adlions-ueber-uns-copy {
+      width: 100%;
+      max-width: 960px;
     }
 
     @media screen and (max-width: 900px) {
@@ -1151,7 +1157,6 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
 
     @media screen and (max-width: 900px) {
       .adlions-team {
-        max-width: 560px;
         width: 100%;
         margin: 0 auto;
       }
