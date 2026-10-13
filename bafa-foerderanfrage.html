@@ -573,7 +573,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         </div>
 
         <h2>Kredit ergänzen</h2>
-        <p class="hint" style="margin-top:0">Optional. Die beiden Linien stehen auf der <a href="/kredit.html">Kreditseite</a>. Wenn Sie den Kredit mit anfragen, laden Sie die Belege hier hoch. Alles geht per E-Mail an info@adlions.de.</p>
+        <p class="hint" style="margin-top:0">Optional. Die beiden Linien stehen auf der <a href="/kredit.html">Kreditseite</a>. Die INQA-Angaben füllen Sie einmal auf der <a href="/inqa.html">INQA-Seite</a> aus. Wenn Sie den Kredit mit anfragen, laden Sie die Belege hier hoch. Alles geht per E-Mail an info@adlions.de.</p>
         <div class="checkbox-row" style="margin-top:0">
           <input id="kredit-add" name="Kredit_ergaenzen" type="checkbox" value="Ja" />
           <label for="kredit-add">Kredit bis 15.000 € oder bis 25.000 € zu dieser BAFA-Anfrage hinzufügen</label>
@@ -699,6 +699,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       });
 
       var vorwahl = new URLSearchParams(window.location.search).get('kredit');
+      var inqaLink = document.querySelector('a[href="/inqa.html"]');
+      if (inqaLink && (vorwahl === '15' || vorwahl === '25')) inqaLink.href = '/inqa.html?kredit=' + vorwahl;
       if (vorwahl === '15' || vorwahl === '25') {
         add.checked = true;
         var radio = panel.querySelector('input[data-kredit="' + vorwahl + '"]');

@@ -138,6 +138,11 @@
       padding: 0.85rem 1.25rem;
     }
     .btn[aria-disabled="true"] { opacity: 0.4; pointer-events: none; }
+    .btn-line {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
     .note { color: var(--muted); font-size: 14px; }
     .partners {
       margin-top: 1.75rem;
@@ -238,7 +243,8 @@
       </div>
       <div class="go">
         <a class="btn" id="weiter" href="/bafa-foerderanfrage.html" aria-disabled="true">Auf der BAFA-Anfrage eintragen</a>
-        <p class="note" id="hinweis">Bitte zuerst eine Linie wählen.</p>
+        <a class="btn btn-line" id="inqa" href="/inqa.html" aria-disabled="true">INQA-Daten ausfüllen</a>
+        <p class="note" id="hinweis">Bitte zuerst eine Linie wählen. Die INQA-Angaben werden einmal getrennt abgefragt.</p>
       </div>
 
       <section class="partners" aria-label="Banken und Finanzierungspartner">
@@ -257,15 +263,18 @@
     (function () {
       var form = document.getElementById('wahl');
       var weiter = document.getElementById('weiter');
+      var inqa = document.getElementById('inqa');
       var hinweis = document.getElementById('hinweis');
       form.addEventListener('change', function () {
         var gewählt = form.querySelector('input[name="linie"]:checked');
         if (!gewählt) return;
         weiter.href = '/bafa-foerderanfrage.html?kredit=' + gewählt.value;
+        inqa.href = '/inqa.html?kredit=' + gewählt.value;
         weiter.removeAttribute('aria-disabled');
+        inqa.removeAttribute('aria-disabled');
         hinweis.textContent = gewählt.value === '25'
-          ? 'Kredit bis 25.000 € wird auf der BAFA-Anfrage vorausgewählt.'
-          : 'Kredit bis 15.000 € wird auf der BAFA-Anfrage vorausgewählt.';
+          ? 'Kredit bis 25.000 € ist gewählt. Die INQA-Angaben fragen wir einmal gesondert ab.'
+          : 'Kredit bis 15.000 € ist gewählt. Die INQA-Angaben fragen wir einmal gesondert ab.';
       });
     })();
   </script>
