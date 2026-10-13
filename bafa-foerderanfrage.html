@@ -282,58 +282,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       line-height: 1.5;
     }
 
-    .option-grid {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    @media (min-width: 560px) {
-      .option-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .option-card {
-      display: flex;
-      gap: 0.75rem;
-      align-items: flex-start;
-      margin: 0;
-      padding: 1rem 1.05rem;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      background: #fff;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    .option-card:has(input:checked) {
-      border-color: #0284c7;
-      background: #f0f9ff;
-    }
-
-    .option-card input {
-      width: auto;
-      margin-top: 0.2rem;
-      flex-shrink: 0;
-    }
-
-    .option-card strong {
-      display: block;
-      font-size: 15px;
-      color: #0f172a;
-    }
-
-    .option-card small {
-      display: block;
-      margin-top: 0.2rem;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
     .linie-detail {
-      margin-top: 1rem;
+      margin: 0 0 1.5rem;
       padding: 1rem 1.1rem;
       background: #f8fafc;
       border: 1px solid var(--border);
@@ -430,34 +380,34 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         <input type="hidden" name="redirect" value="bafa-foerderanfrage.html?danke=1" />
         <input type="hidden" name="Meldung" value="Es wurde eine neue BAFA-Förderanfrage über das Online-Formular eingereicht." />
         <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="display:none" />
-        <input type="hidden" name="Unterlagen_per_E-Mail" id="unterlagen-mail" value="" />
+        <input type="hidden" name="Linie" value="Kredit bis 15.000 €" />
+        <input type="hidden" name="Unterlagen_per_E-Mail" value="Gewerbeanmeldung mit aktueller geschäftlicher und privater Anschrift; Kopie Personalausweis oder Aufenthaltstitel; Kontoauszüge der letzten 90 Tage" />
 
-        <h2>Gewünschte Linie</h2>
-        <p class="hint" style="margin:0 0 0.85rem">Bitte eine Linie wählen. Die ausgefüllten Angaben gehen per E-Mail an ADLIONS. Belege, die nicht im Formular stehen, schicken Sie anschließend ebenfalls an info@adlions.de.</p>
-        <div class="option-grid">
-          <label class="option-card">
-            <input type="radio" name="Linie" value="Bis 15.000 €" required />
-            <span>
-              <strong>Bis 15.000 €</strong>
-              <small>Ausweis und Kontoauszüge der letzten 90 Tage</small>
-            </span>
-          </label>
-          <label class="option-card">
-            <input type="radio" name="Linie" value="Bis 25.000 €" />
-            <span>
-              <strong>Bis 25.000 €</strong>
-              <small>Zusätzlich BWA und SuSa bzw. EÜR</small>
-            </span>
-          </label>
-        </div>
-        <div class="linie-detail" id="linie-detail" hidden>
+        <h2>Kredit bis 15.000 €</h2>
+        <p class="hint" style="margin:0 0 0.85rem">Die ausgefüllten Angaben gehen per E-Mail an ADLIONS. Belege, die nicht im Formular stehen, schicken Sie anschließend ebenfalls an info@adlions.de.</p>
+        <div class="linie-detail">
           <h3>Produkt</h3>
-          <ul id="linie-produkt"></ul>
+          <ul>
+            <li>Flexible, kurzfristige Kredite von 1.000 € bis 15.000 €</li>
+            <li>Kreditlaufzeit bis zu 24 Monate</li>
+            <li>Kreditentscheidung und Auszahlung innerhalb weniger Stunden, maximal 3 Tage</li>
+            <li>Vorzeitige Rückzahlung jederzeit kostenlos</li>
+            <li>Flexible Rückzahlung oder Aufstockung der Kreditlinie ohne zusätzliche Kosten</li>
+          </ul>
           <h3>Mindestkriterien</h3>
-          <ul id="linie-kriterien"></ul>
+          <ul>
+            <li>Mehr als 22.000 € Jahresumsatz</li>
+            <li>Mindestens seit 2 Monaten operativ tätig</li>
+            <li>Unternehmenssitz in Deutschland</li>
+            <li>Crefo-Score besser als 333</li>
+          </ul>
           <h3>Diese Belege danach per E-Mail an info@adlions.de</h3>
-          <ul id="linie-belege"></ul>
-          <p class="hint" id="linie-hinweis"></p>
+          <ul>
+            <li>Gewerbeanmeldung mit aktueller geschäftlicher und privater Anschrift</li>
+            <li>Kopie Personalausweis oder Aufenthaltstitel</li>
+            <li>Kontoauszüge der letzten 90 Tage</li>
+          </ul>
+          <p class="hint">Diese Belege bitte als Anhang an info@adlions.de. Im Formular selbst sind keine Dateien möglich.</p>
         </div>
 
         <h2>Unternehmen</h2>
@@ -624,7 +574,7 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         <div class="submit-wrap">
           <button type="submit" class="btn btn-primary">Anfrage absenden</button>
           <p class="form-note">Ihre Angaben gehen per E-Mail an <strong>info@adlions.de</strong>. Die unterschriebene
-            Vollmacht und die Belege der gewählten Linie senden Sie bitte <strong>zusätzlich per E-Mail</strong> an
+            Vollmacht und die Belege zum Kredit bis 15.000 € senden Sie bitte <strong>zusätzlich per E-Mail</strong> an
             dieselbe Adresse.</p>
         </div>
       </form>
@@ -652,80 +602,6 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           history.replaceState(null, '', 'bafa-foerderanfrage.html');
         } catch (e) { /* ignore */ }
       }
-
-      var produkt = [
-        'Flexible, kurzfristige Kredite von 1.000 € bis LIMIT',
-        'Kreditlaufzeit bis zu 24 Monate',
-        'Kreditentscheidung und Auszahlung innerhalb weniger Stunden, maximal 3 Tage',
-        'Vorzeitige Rückzahlung jederzeit kostenlos',
-        'Flexible Rückzahlung oder Aufstockung der Kreditlinie ohne zusätzliche Kosten'
-      ];
-      var kriterien = [
-        'Mehr als 22.000 € Jahresumsatz',
-        'Mindestens seit 2 Monaten operativ tätig',
-        'Unternehmenssitz in Deutschland',
-        'Crefo-Score besser als 333'
-      ];
-      var belege = {
-        'Bis 15.000 €': [
-          'Gewerbeanmeldung mit aktueller geschäftlicher und privater Anschrift',
-          'Kopie Personalausweis oder Aufenthaltstitel',
-          'Kontoauszüge der letzten 90 Tage'
-        ],
-        'Bis 25.000 €': [
-          'Gewerbeanmeldung mit aktueller geschäftlicher und privater Anschrift',
-          'Kopie Personalausweis',
-          'Kontoauszüge der letzten 90 Tage',
-          'BWA und SuSa 12/2024, alternativ EÜR 2024',
-          'BWA und SuSa 12/2025, alternativ EÜR 2025',
-          'Aktuelle BWA und SuSa'
-        ]
-      };
-
-      var detail = document.getElementById('linie-detail');
-      var listeProdukt = document.getElementById('linie-produkt');
-      var listeKriterien = document.getElementById('linie-kriterien');
-      var listeBelege = document.getElementById('linie-belege');
-      var hinweis = document.getElementById('linie-hinweis');
-      var hidden = document.getElementById('unterlagen-mail');
-      var form = document.getElementById('bafa-form');
-
-      function fill(list, items) {
-        list.innerHTML = '';
-        items.forEach(function (text) {
-          var li = document.createElement('li');
-          li.textContent = text;
-          list.appendChild(li);
-        });
-      }
-
-      function gewaehlt() {
-        var radio = form.querySelector('input[name="Linie"]:checked');
-        return radio ? radio.value : '';
-      }
-
-      function zeigen() {
-        var linie = gewaehlt();
-        if (!linie) {
-          detail.hidden = true;
-          hidden.value = '';
-          return;
-        }
-        var obergrenze = linie === 'Bis 25.000 €' ? '25.000 €' : '15.000 €';
-        fill(listeProdukt, produkt.map(function (zeile) {
-          return zeile.replace('LIMIT', obergrenze);
-        }));
-        fill(listeKriterien, kriterien);
-        fill(listeBelege, belege[linie]);
-        hinweis.textContent = 'Diese Belege bitte als Anhang an info@adlions.de. Im Formular selbst sind keine Dateien möglich.';
-        hidden.value = belege[linie].join('; ');
-        detail.hidden = false;
-      }
-
-      form.addEventListener('change', function (event) {
-        if (event.target && event.target.name === 'Linie') zeigen();
-      });
-      form.addEventListener('submit', zeigen);
     })();
   </script>
   <script src="/js/adlions-topbar.js" defer></script>
