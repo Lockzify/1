@@ -203,59 +203,6 @@
         </div>
       </div>
 
-      <h2>Beteiligungen</h2>
-      <p class="hint" style="margin-bottom:0.8rem">Alle direkten und indirekten Eigentümer sowie Beteiligungen an anderen Firmen.</p>
-      <div class="grid two">
-        <div>
-          <label for="ges1">Gesellschafter 1 <span class="req">*</span></label>
-          <input id="ges1" name="Gesellschafter_1" type="text" required />
-        </div>
-        <div>
-          <label for="ant1">Anteil in % <span class="req">*</span></label>
-          <input id="ant1" name="Anteil_1" type="text" required inputmode="decimal" />
-        </div>
-        <div style="grid-column:1/-1">
-          <label for="bem1">Geschäftsführer? / Bemerkung</label>
-          <input id="bem1" name="Bemerkung_1" type="text" />
-        </div>
-        <div>
-          <label for="ges2">Gesellschafter 2</label>
-          <input id="ges2" name="Gesellschafter_2" type="text" />
-        </div>
-        <div>
-          <label for="ant2">Anteil in %</label>
-          <input id="ant2" name="Anteil_2" type="text" inputmode="decimal" />
-        </div>
-        <div style="grid-column:1/-1">
-          <label for="bem2">Geschäftsführer? / Bemerkung</label>
-          <input id="bem2" name="Bemerkung_2" type="text" />
-        </div>
-      </div>
-      <div style="margin-top:0.9rem">
-        <label>Weitere Firmenbeteiligungen <span class="req">*</span></label>
-        <div class="yn">
-          <label><input type="radio" name="Weitere_Firmenbeteiligungen" value="Nein" required /> Nein</label>
-          <label><input type="radio" name="Weitere_Firmenbeteiligungen" value="Ja" /> Ja</label>
-        </div>
-        <input id="beteiligungen" name="Weitere_Firmenbeteiligungen_Details" type="text" placeholder="Falls ja: welche" disabled />
-      </div>
-      <div style="margin-top:0.9rem">
-        <label>Unternehmensverbund / Gruppe <span class="req">*</span></label>
-        <div class="yn">
-          <label><input type="radio" name="Unternehmensverbund" value="Nein" required /> Nein</label>
-          <label><input type="radio" name="Unternehmensverbund" value="Ja" /> Ja</label>
-        </div>
-        <input id="verbund" name="Unternehmensverbund_Name" type="text" placeholder="Falls ja: Name" disabled />
-      </div>
-      <div style="margin-top:0.9rem">
-        <label>Änderungen an den Beteiligungen <span class="req">*</span></label>
-        <div class="yn">
-          <label><input type="radio" name="Beteiligungsaenderungen" value="Keine" required /> Keine</label>
-          <label><input type="radio" name="Beteiligungsaenderungen" value="Kürzlich oder geplant" /> Kürzlich oder geplant</label>
-        </div>
-        <input id="aenderungen" name="Beteiligungsaenderungen_Details" type="text" placeholder="Falls ja: was und wann" disabled />
-      </div>
-
       <h2>Beschäftigte</h2>
       <table class="people">
         <thead>
@@ -339,21 +286,6 @@
         wrap.appendChild(opts);
         box.appendChild(wrap);
       });
-
-      function paar(radioName, fieldId, aktivWert) {
-        var feld = document.getElementById(fieldId);
-        document.querySelectorAll('input[name="' + radioName + '"]').forEach(function (radio) {
-          radio.addEventListener("change", function () {
-            var an = radio.value === aktivWert && radio.checked;
-            feld.disabled = !an;
-            feld.required = an;
-            if (!an) feld.value = "";
-          });
-        });
-      }
-      paar("Weitere_Firmenbeteiligungen", "beteiligungen", "Ja");
-      paar("Unternehmensverbund", "verbund", "Ja");
-      paar("Beteiligungsaenderungen", "aenderungen", "Kürzlich oder geplant");
 
       var kredit = new URLSearchParams(location.search).get("kredit");
       var linie = kredit === "25" ? "Kredit bis 25.000 €" : kredit === "15" ? "Kredit bis 15.000 €" : "";
