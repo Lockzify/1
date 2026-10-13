@@ -309,6 +309,44 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
       margin-bottom: 0;
     }
 
+    .option-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 560px) {
+      .option-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .option-card {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      margin: 0;
+      padding: 1rem 1.05rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .option-card:has(input:checked) {
+      border-color: #0284c7;
+      background: #f0f9ff;
+    }
+
+    .option-card input {
+      width: auto;
+      margin-top: 0.2rem;
+    }
+
+    .option-card strong { display: block; font-size: 15px; }
+    .option-card small { display: block; margin-top: 0.2rem; color: var(--muted); font-size: 13px; }
+
+    #kredit-panel { margin-bottom: 0.5rem; }
+    input[type="file"] { width: 100%; padding: 0.45rem; background: #fff; }
+
     .toast {
       position: fixed;
       bottom: 1.25rem;
@@ -354,10 +392,10 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
   <div class="hero">
     <div class="hero-inner">
       <h1>BAFA-Förderanfrage</h1>
-      <p>Bitte füllen Sie alle Pflichtfelder (<span style="color:#7dd3fc">*</span>) vollständig aus und senden Sie das
-        Formular ab. Die <strong style="color:#fff">unterschriebene Vollmacht</strong> hängen Sie bitte in einer
-        <strong style="color:#fff">separaten E-Mail</strong> an <strong style="color:#fff">info@adlions.de</strong> an
-        (kein Datei-Upload im Formular).</p>
+      <p>Bitte füllen Sie alle Pflichtfelder (<span style="color:#7dd3fc">*</span>) vollständig aus. Die
+        <strong style="color:#fff">unterschriebene Vollmacht</strong> senden Sie per E-Mail an
+        <strong style="color:#fff">info@adlions.de</strong>. Einen Kredit können Sie unten ergänzen und die Belege
+        direkt anhängen.</p>
     </div>
   </div>
 
@@ -367,49 +405,19 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         <h2>Vollmacht</h2>
         <p class="hint" style="margin:0 0 0.5rem;color:#334155">Laden Sie die Vollmacht herunter, unterschreiben Sie
           sie und senden Sie die unterschriebene Datei <strong>per E-Mail</strong> an
-          <strong>info@adlions.de</strong> – im Formular selbst sind keine Dateien möglich.</p>
+          <strong>info@adlions.de</strong>. Belege zum Kredit hängen Sie weiter unten an, wenn Sie den Kredit mit anfragen.</p>
         <div class="vollmacht-actions">
           <a class="btn btn-secondary" href="/unb_vollmacht-2-3.pdf" download>Vollmacht (PDF) herunterladen</a>
         </div>
       </div>
 
-      <form id="bafa-form" action="https://api.web3forms.com/submit" method="POST">
+      <form id="bafa-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="access_key" value="d7aa098b-83d4-4a29-8a31-a336d22d12da" />
         <input type="hidden" name="subject" value="Neue BAFA-Förderanfrage eingereicht" />
         <input type="hidden" name="from_name" value="ADLIONS BAFA-Formular" />
         <input type="hidden" name="redirect" value="bafa-foerderanfrage.html?danke=1" />
         <input type="hidden" name="Meldung" value="Es wurde eine neue BAFA-Förderanfrage über das Online-Formular eingereicht." />
         <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="display:none" />
-        <input type="hidden" name="Linie" value="Kredit bis 15.000 €" />
-        <input type="hidden" name="Unterlagen_per_E-Mail" value="Gewerbeanmeldung mit aktueller geschäftlicher und privater Anschrift; Kopie Personalausweis oder Aufenthaltstitel; Kontoauszüge der letzten 90 Tage" />
-
-        <h2>Kredit bis 15.000 €</h2>
-        <p class="hint" style="margin:0 0 0.85rem">Die ausgefüllten Angaben gehen per E-Mail an ADLIONS. Belege, die nicht im Formular stehen, schicken Sie anschließend ebenfalls an info@adlions.de.</p>
-        <div class="linie-detail">
-          <h3>Produkt</h3>
-          <ul>
-            <li>Flexible, kurzfristige Kredite von 1.000 € bis 15.000 €</li>
-            <li>Kreditlaufzeit bis zu 24 Monate</li>
-            <li>Kreditentscheidung und Auszahlung innerhalb weniger Stunden, maximal 3 Tage</li>
-            <li>Vorzeitige Rückzahlung jederzeit kostenlos</li>
-            <li>Flexible Rückzahlung oder Aufstockung der Kreditlinie ohne zusätzliche Kosten</li>
-          </ul>
-          <h3>Mindestkriterien</h3>
-          <ul>
-            <li>Mehr als 22.000 € Jahresumsatz</li>
-            <li>Mindestens seit 2 Monaten operativ tätig</li>
-            <li>Unternehmenssitz in Deutschland</li>
-            <li>Crefo-Score besser als 333</li>
-          </ul>
-          <h3>Diese Belege danach per E-Mail an info@adlions.de</h3>
-          <ul>
-            <li>Gewerbeanmeldung mit aktueller geschäftlicher und privater Anschrift</li>
-            <li>Kopie Personalausweis oder Aufenthaltstitel</li>
-            <li>Kontoauszüge der letzten 90 Tage</li>
-          </ul>
-          <p class="hint">Diese Belege bitte als Anhang an info@adlions.de. Im Formular selbst sind keine Dateien möglich.</p>
-        </div>
-
         <h2>Unternehmen</h2>
         <div class="form-grid">
           <div style="grid-column:1/-1">
@@ -564,6 +572,52 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
           </div>
         </div>
 
+        <h2>Kredit ergänzen</h2>
+        <p class="hint" style="margin-top:0">Optional. Die beiden Linien stehen auf der <a href="/kredit.html">Kreditseite</a>. Wenn Sie den Kredit mit anfragen, laden Sie die Belege hier hoch. Alles geht per E-Mail an info@adlions.de.</p>
+        <div class="checkbox-row" style="margin-top:0">
+          <input id="kredit-add" name="Kredit_ergaenzen" type="checkbox" value="Ja" />
+          <label for="kredit-add">Kredit bis 15.000 € oder bis 25.000 € zu dieser BAFA-Anfrage hinzufügen</label>
+        </div>
+        <div id="kredit-panel" hidden>
+          <div class="option-grid">
+            <label class="option-card">
+              <input type="radio" name="Kreditlinie" value="Kredit bis 15.000 €" data-kredit="15" />
+              <span><strong>Kredit bis 15.000 €</strong><small>Ausweis und Kontoauszüge</small></span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="Kreditlinie" value="Kredit bis 25.000 €" data-kredit="25" />
+              <span><strong>Kredit bis 25.000 €</strong><small>Zusätzlich BWA und SuSa</small></span>
+            </label>
+          </div>
+          <div class="form-grid" style="margin-top:1rem">
+            <div>
+              <label for="file-gewerbe">Gewerbeanmeldung <span class="req">*</span></label>
+              <input id="file-gewerbe" name="Gewerbeanmeldung" type="file" accept="application/pdf,image/*" data-kredit-file="both" />
+            </div>
+            <div>
+              <label for="file-ausweis">Personalausweis oder Aufenthaltstitel <span class="req">*</span></label>
+              <input id="file-ausweis" name="Ausweis" type="file" accept="application/pdf,image/*" data-kredit-file="both" />
+            </div>
+            <div>
+              <label for="file-konto">Kontoauszüge der letzten 90 Tage <span class="req">*</span></label>
+              <input id="file-konto" name="Kontoauszuege" type="file" accept="application/pdf,image/*" data-kredit-file="both" />
+            </div>
+            <div data-kredit-block="25">
+              <label for="file-bwa24">BWA und SuSa 12/2024, alternativ EÜR 2024 <span class="req">*</span></label>
+              <input id="file-bwa24" name="BWA_SuSa_2024" type="file" accept="application/pdf,image/*" data-kredit-file="25" />
+            </div>
+            <div data-kredit-block="25">
+              <label for="file-bwa25">BWA und SuSa 12/2025, alternativ EÜR 2025 <span class="req">*</span></label>
+              <input id="file-bwa25" name="BWA_SuSa_2025" type="file" accept="application/pdf,image/*" data-kredit-file="25" />
+            </div>
+            <div data-kredit-block="25">
+              <label for="file-bwa-aktuell">Aktuelle BWA und SuSa <span class="req">*</span></label>
+              <input id="file-bwa-aktuell" name="BWA_SuSa_aktuell" type="file" accept="application/pdf,image/*" data-kredit-file="25" />
+            </div>
+          </div>
+          <p class="hint">Jede Datei höchstens 5 MB, PDF oder Foto. Die Vollmacht bleibt eine separate E-Mail.</p>
+        </div>
+
         <div class="checkbox-row">
           <input id="confirm" name="Bestaetigung" type="checkbox" value="ja" required />
           <label for="confirm">Ich bestätige die Hinweise zur Bearbeitung meiner Förderanfrage und werde die
@@ -574,8 +628,8 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         <div class="submit-wrap">
           <button type="submit" class="btn btn-primary">Anfrage absenden</button>
           <p class="form-note">Ihre Angaben gehen per E-Mail an <strong>info@adlions.de</strong>. Die unterschriebene
-            Vollmacht und die Belege zum Kredit bis 15.000 € senden Sie bitte <strong>zusätzlich per E-Mail</strong> an
-            dieselbe Adresse.</p>
+            Vollmacht senden Sie bitte zusätzlich per E-Mail. Belege zum Kredit hängen Sie oben an, wenn Sie den Kredit
+            mit anfragen.</p>
         </div>
       </form>
     </div>
@@ -601,6 +655,58 @@ src="https://www.facebook.com/tr?id=4466988160210272&ev=PageView&noscript=1"
         try {
           history.replaceState(null, '', 'bafa-foerderanfrage.html');
         } catch (e) { /* ignore */ }
+      }
+
+      var form = document.getElementById('bafa-form');
+      var add = document.getElementById('kredit-add');
+      var panel = document.getElementById('kredit-panel');
+      var subject = form.querySelector('input[name="subject"]');
+
+      function linie() {
+        var radio = panel.querySelector('input[name="Kreditlinie"]:checked');
+        return radio ? radio.getAttribute('data-kredit') : '';
+      }
+
+      function syncKredit() {
+        var on = add.checked;
+        var gewählt = linie();
+        panel.hidden = !on;
+        panel.querySelectorAll('[data-kredit-block]').forEach(function (block) {
+          block.hidden = !on || gewählt !== block.getAttribute('data-kredit-block');
+        });
+        panel.querySelectorAll('input').forEach(function (feld) {
+          var art = feld.getAttribute('data-kredit-file') || (feld.name === 'Kreditlinie' ? 'both' : '');
+          var aktiv = on && (art === 'both' || art === gewählt);
+          feld.disabled = !aktiv;
+          if (feld.type === 'file' || feld.type === 'radio') feld.required = aktiv;
+        });
+        subject.value = on && gewählt
+          ? 'BAFA-Förderanfrage inkl. Kredit bis ' + (gewählt === '25' ? '25.000' : '15.000') + ' €'
+          : 'Neue BAFA-Förderanfrage eingereicht';
+      }
+
+      add.addEventListener('change', syncKredit);
+      panel.addEventListener('change', syncKredit);
+      form.addEventListener('submit', function (event) {
+        var zuGross = Array.prototype.some.call(form.querySelectorAll('input[type="file"]'), function (feld) {
+          return !feld.disabled && feld.files[0] && feld.files[0].size > 5 * 1024 * 1024;
+        });
+        if (zuGross) {
+          event.preventDefault();
+          toast.textContent = 'Bitte jede Datei unter 5 MB halten.';
+          toast.classList.add('show');
+        }
+      });
+
+      var vorwahl = new URLSearchParams(window.location.search).get('kredit');
+      if (vorwahl === '15' || vorwahl === '25') {
+        add.checked = true;
+        var radio = panel.querySelector('input[data-kredit="' + vorwahl + '"]');
+        if (radio) radio.checked = true;
+        syncKredit();
+        panel.scrollIntoView({ block: 'start' });
+      } else {
+        syncKredit();
       }
     })();
   </script>
